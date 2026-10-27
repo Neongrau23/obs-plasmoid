@@ -1,0 +1,405 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: io.github.neongrau23.obscontrol\n"
+"Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
+"POT-Creation-Date: 2026-10-21 18:14+0200\n"
+"PO-Revision-Date: 2026-10-21 08:45+0200\n"
+"Last-Translator: Neongrau23\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: package/contents/config/config.qml:5
+msgid "Connection"
+msgstr "Verbindung"
+
+#: package/contents/config/config.qml:10
+msgid "Appearance & Behavior"
+msgstr "Darstellung & Bedienung"
+
+#: package/contents/config/config.qml:15
+msgid "Follow Mouse Pointer"
+msgstr "Mauszeiger folgen"
+
+#: package/contents/ui/Mixer.qml:29
+msgid "Audio Mixer"
+msgstr "Audio-Mixer"
+
+#: package/contents/ui/Mixer.qml:66
+msgid "muted"
+msgstr "stumm"
+
+#: package/contents/ui/Mixer.qml:78
+msgid "Mute"
+msgstr "Stummschalten"
+
+#: package/contents/ui/Mixer.qml:78
+msgid "Unmute"
+msgstr "Ton einschalten"
+
+#: package/contents/ui/Mixer.qml:109
+msgid "No audio sources"
+msgstr "Keine Audioquellen"
+
+#: package/contents/ui/Mixer.qml:109
+msgid "OBS is not running"
+msgstr "OBS läuft nicht"
+
+#: package/contents/ui/SceneComboBox.qml:18
+msgid "None"
+msgstr "Keine"
+
+#: package/contents/ui/SceneComboBox.qml:21
+msgid "%1 (not found in OBS)"
+msgstr "%1 (nicht in OBS gefunden)"
+
+#: package/contents/ui/configAppearance.qml:51
+#: package/contents/ui/configFollowMouse.qml:105
+msgid "%1 s"
+msgstr "%1 s"
+
+#: package/contents/ui/configAppearance.qml:77
+msgid "Use system color"
+msgstr "Systemfarbe verwenden"
+
+#: package/contents/ui/configAppearance.qml:95
+msgid "%1 %"
+msgstr "%1 %"
+
+#: package/contents/ui/configAppearance.qml:115
+msgid "OBS closed:"
+msgstr "OBS geschlossen:"
+
+#: package/contents/ui/configAppearance.qml:121
+msgid "OBS running:"
+msgstr "OBS läuft:"
+
+#: package/contents/ui/configAppearance.qml:127
+msgid "Recording:"
+msgstr "Aufnahme läuft:"
+
+#: package/contents/ui/configAppearance.qml:133
+msgid "Start/stop recording:"
+msgstr "Aufnahme starten/stoppen:"
+
+#: package/contents/ui/configAppearance.qml:134
+msgid "Single click"
+msgstr "Einzelklick"
+
+#: package/contents/ui/configAppearance.qml:141 package/contents/ui/main.qml:36
+msgid "Double click"
+msgstr "Doppelklick"
+
+#: package/contents/ui/configAppearance.qml:148
+msgid "Start with single click, stop only with double click"
+msgstr "Start mit Einzelklick, Stopp nur mit Doppelklick"
+
+#: package/contents/ui/configAppearance.qml:159
+msgid "Scroll up:"
+msgstr "Mausrad hoch:"
+
+#: package/contents/ui/configAppearance.qml:166
+msgid "Scroll down:"
+msgstr "Mausrad runter:"
+
+#: package/contents/ui/configAppearance.qml:178
+#: package/contents/ui/configFollowMouse.qml:90
+msgid "OBS is not running, so no scenes are listed. Start OBS to see them."
+msgstr "OBS läuft nicht, deshalb fehlen hier die Szenen. OBS starten, dann erscheinen sie."
+
+#: package/contents/ui/configAppearance.qml:187
+msgid "Hold to discard:"
+msgstr "Halten zum Verwerfen:"
+
+#: package/contents/ui/configAppearance.qml:192
+msgid "Hold to launch:"
+msgstr "Halten zum Starten:"
+
+#: package/contents/ui/configAppearance.qml:200
+msgid "How long the button has to be held to discard a running recording, or to launch OBS when it is not running."
+msgstr "Wie lange der Knopf gedrückt bleiben muss, um eine laufende Aufnahme zu verwerfen oder OBS zu starten, wenn es nicht läuft."
+
+#: package/contents/ui/configAppearance.qml:204
+msgid "Launch OBS:"
+msgstr "OBS starten:"
+
+#: package/contents/ui/configAppearance.qml:205
+msgid "Normally"
+msgstr "Normal"
+
+#: package/contents/ui/configAppearance.qml:212
+msgid "Minimized to the task manager"
+msgstr "Minimiert in der Taskleiste"
+
+#: package/contents/ui/configAppearance.qml:219
+msgid "Minimized to the system tray"
+msgstr "Minimiert im Systemabschnitt"
+
+#: package/contents/ui/configAppearance.qml:231
+msgid "Applies only when the widget launches OBS. The system tray icon has to be enabled in OBS under Settings → General, otherwise the window cannot be reached."
+msgstr "Gilt nur für den Start über das Widget. Das OBS-Symbol im Systemabschnitt muss in OBS unter Einstellungen → Allgemein eingeschaltet sein, sonst bleibt das Fenster unerreichbar."
+
+#: package/contents/ui/configAppearance.qml:236
+msgid "Start recording right away"
+msgstr "Nach dem Start sofort aufnehmen"
+
+#: package/contents/ui/configAppearance.qml:240
+msgid "Discarded recording:"
+msgstr "Verworfene Aufnahme:"
+
+#: package/contents/ui/configAppearance.qml:241
+msgid "Move to trash"
+msgstr "In den Papierkorb verschieben"
+
+#: package/contents/ui/configAppearance.qml:248
+msgid "Delete permanently"
+msgstr "Endgültig löschen"
+
+#: package/contents/ui/configAppearance.qml:259
+msgid "Discarded recordings cannot be restored then."
+msgstr "Verworfene Aufnahmen lassen sich dann nicht wiederherstellen."
+
+#: package/contents/ui/configAppearance.qml:268
+msgid "While recording:"
+msgstr "Während der Aufnahme:"
+
+#: package/contents/ui/configAppearance.qml:269
+msgid "Show duration"
+msgstr "Dauer anzeigen"
+
+#: package/contents/ui/configAppearance.qml:274
+msgid "After stopping:"
+msgstr "Nach dem Stoppen:"
+
+#: package/contents/ui/configAppearance.qml:275
+msgid "Show a notification with the file name"
+msgstr "Benachrichtigung mit Dateinamen anzeigen"
+
+#: package/contents/ui/configAppearance.qml:283
+msgid "The slider sets the opacity of the dot, 0 % hides it. Without a custom color, the color of the Plasma theme is used. Pause (orange) and password errors (red outline) cannot be changed."
+msgstr "Der Schieberegler stellt die Deckkraft des Punkts ein, 0 % macht ihn unsichtbar. Ohne eigene Farbe gilt die Farbe des Plasma-Designs. Pause (orange) und Passwortfehler (roter Rand) bleiben fest."
+
+#: package/contents/ui/configFollowMouse.qml:55
+msgctxt "@label screen: connector (maker and model)"
+msgid "%1 (%2):"
+msgstr "%1 (%2):"
+
+#: package/contents/ui/configFollowMouse.qml:56
+msgctxt "@label screen connector"
+msgid "%1:"
+msgstr "%1:"
+
+#: package/contents/ui/configFollowMouse.qml:64
+msgid "Shows the scene of the screen the mouse pointer is on. Turn it on and off in the right-click menu of the widget. Changing the scene any other way, by mouse wheel, menu or in OBS, turns it off."
+msgstr "Zeigt die Szene des Bildschirms, auf dem der Mauszeiger ist. Ein- und ausschalten lässt sich das im Rechtsklick-Menü des Widgets. Wird die Szene auf anderem Weg gewechselt, per Mausrad, Menü oder in OBS, schaltet es sich aus."
+
+#: package/contents/ui/configFollowMouse.qml:89
+msgid "Screens without a scene switch nothing."
+msgstr "Bildschirme ohne Szene lösen keinen Wechsel aus."
+
+#: package/contents/ui/configFollowMouse.qml:100
+msgid "Switch after:"
+msgstr "Wechseln nach:"
+
+#: package/contents/ui/configFollowMouse.qml:104
+msgid "Immediately"
+msgstr "Sofort"
+
+#: package/contents/ui/configFollowMouse.qml:117
+msgid "How long the pointer has to stay on a screen before its scene shows. Passing over a screen on the way to another then switches nothing."
+msgstr "So lange muss der Mauszeiger auf einem Bildschirm bleiben, bis dessen Szene erscheint. Fährt er nur auf dem Weg zu einem anderen Bildschirm darüber, wechselt nichts."
+
+#: package/contents/ui/configGeneral.qml:36
+msgid "Host:"
+msgstr "Host:"
+
+#: package/contents/ui/configGeneral.qml:41
+msgid "Port:"
+msgstr "Port:"
+
+#: package/contents/ui/configGeneral.qml:51
+msgid "Password:"
+msgstr "Passwort:"
+
+#: package/contents/ui/configGeneral.qml:59
+msgid "Port and password are shown in OBS under Tools → WebSocket Server Settings → Show Connect Info. Leave the password empty if authentication is disabled there."
+msgstr "Port und Passwort stehen in OBS unter Werkzeuge → WebSocket-Servereinstellungen → Verbindungsinformationen anzeigen. Leer lassen, wenn dort die Authentifizierung ausgeschaltet ist."
+
+#: package/contents/ui/main.qml:36
+msgid "Click"
+msgstr "Klick"
+
+#: package/contents/ui/main.qml:164
+msgid "Scroll up: %1 · down: %2"
+msgstr "Mausrad hoch: %1 · runter: %2"
+
+#: package/contents/ui/main.qml:167
+msgid "Scroll up: %1"
+msgstr "Mausrad hoch: %1"
+
+#: package/contents/ui/main.qml:169
+msgid "Scroll down: %1"
+msgstr "Mausrad runter: %1"
+
+#: package/contents/ui/main.qml:192
+msgid "OBS Control"
+msgstr "OBS-Steuerung"
+
+#: package/contents/ui/main.qml:195
+msgid "Error: %1"
+msgstr "Fehler: %1"
+
+#: package/contents/ui/main.qml:197
+msgid "Scene: %1"
+msgstr "Szene: %1"
+
+#: package/contents/ui/main.qml:198
+msgid "Scene follows the mouse pointer"
+msgstr "Szene folgt dem Mauszeiger"
+
+#: package/contents/ui/main.qml:203
+msgid "Recording paused – %1"
+msgstr "Aufnahme pausiert – %1"
+
+#: package/contents/ui/main.qml:204
+msgid "%1: stop · Middle click: resume"
+msgstr "%1: Stoppen · Mittelklick: Fortsetzen"
+
+#: package/contents/ui/main.qml:205 package/contents/ui/main.qml:209
+msgid "Hold: discard recording"
+msgstr "Gedrückt halten: Aufnahme verwerfen"
+
+#: package/contents/ui/main.qml:207
+msgid "Recording – %1"
+msgstr "Aufnahme läuft – %1"
+
+#: package/contents/ui/main.qml:208
+msgid "%1: stop · Middle click: pause"
+msgstr "%1: Stoppen · Mittelklick: Pausieren"
+
+#: package/contents/ui/main.qml:210
+msgid "%1: start recording"
+msgstr "%1: Aufnahme starten"
+
+#: package/contents/ui/main.qml:210
+msgid "Ready"
+msgstr "Bereit"
+
+#: package/contents/ui/main.qml:212
+msgid ""
+"OBS requires a password\n"
+"Click to enter it in the settings"
+msgstr ""
+"OBS verlangt ein Passwort\n"
+"Klicken, um es in den Einstellungen einzutragen"
+
+#: package/contents/ui/main.qml:214
+msgid ""
+"Password rejected\n"
+"Click to check it in the settings"
+msgstr ""
+"Passwort abgelehnt\n"
+"Klicken, um es in den Einstellungen zu prüfen"
+
+#: package/contents/ui/main.qml:217
+msgid "Launching OBS…"
+msgstr "OBS wird gestartet …"
+
+#: package/contents/ui/main.qml:219
+msgid "OBS is not running – connects automatically once OBS starts"
+msgstr "OBS läuft nicht – verbinde automatisch, sobald OBS startet"
+
+#: package/contents/ui/main.qml:220
+msgid "Hold: launch OBS and record"
+msgstr "Gedrückt halten: OBS starten und aufnehmen"
+
+#: package/contents/ui/main.qml:221
+msgid "Hold: launch OBS"
+msgstr "Gedrückt halten: OBS starten"
+
+#: package/contents/ui/main.qml:271
+msgid "OBS is already running"
+msgstr "OBS läuft bereits"
+
+#: package/contents/ui/main.qml:272
+msgid "But the widget cannot reach it. In OBS, enable the server under Tools → WebSocket Server Settings and compare port and password with the widget settings."
+msgstr "Das Widget erreicht OBS aber nicht. In OBS unter Werkzeuge → WebSocket-Servereinstellungen den Server aktivieren und Port und Passwort mit den Widget-Einstellungen vergleichen."
+
+#: package/contents/ui/main.qml:275 package/contents/ui/main.qml:279
+msgid "Could not launch OBS"
+msgstr "OBS konnte nicht gestartet werden"
+
+#: package/contents/ui/main.qml:276
+msgid "Neither the command “obs” nor the Flatpak com.obsproject.Studio is installed."
+msgstr "Weder der Befehl „obs“ noch das Flatpak com.obsproject.Studio ist installiert."
+
+#: package/contents/ui/main.qml:372
+msgid "Could not quit OBS"
+msgstr "OBS konnte nicht beendet werden"
+
+#: package/contents/ui/main.qml:406
+msgid "Recording saved"
+msgstr "Aufnahme gespeichert"
+
+#: package/contents/ui/main.qml:407 package/contents/ui/main.qml:430
+msgid "Open Folder"
+msgstr "Ordner öffnen"
+
+#: package/contents/ui/main.qml:428
+msgid "Could not remove the recording"
+msgstr "Aufnahme konnte nicht entfernt werden"
+
+#: package/contents/ui/main.qml:429
+msgid ""
+"%1 is still in the recording folder.\n"
+"%2"
+msgstr ""
+"%1 liegt noch im Aufnahmeordner.\n"
+"%2"
+
+#: package/contents/ui/main.qml:432
+msgid "%1 was moved to the trash."
+msgstr "%1 liegt im Papierkorb."
+
+#: package/contents/ui/main.qml:432 package/contents/ui/main.qml:435
+msgid "Recording discarded"
+msgstr "Aufnahme verworfen"
+
+#: package/contents/ui/main.qml:433
+msgid "Open Trash"
+msgstr "Papierkorb öffnen"
+
+#: package/contents/ui/main.qml:435
+msgid "%1 was deleted permanently."
+msgstr "%1 wurde endgültig gelöscht."
+
+#: package/contents/ui/main.qml:500
+msgid "Audio Mixer…"
+msgstr "Audio-Mixer …"
+
+#: package/contents/ui/main.qml:515
+msgid "Quitting OBS…"
+msgstr "OBS wird beendet …"
+
+#: package/contents/ui/main.qml:516
+msgid "Quit OBS"
+msgstr "OBS beenden"
+
+#: package/contents/ui/main.qml:516
+msgid "Stop Recording and Quit OBS"
+msgstr "Aufnahme stoppen und OBS beenden"
+
+#: package/contents/ui/main.qml:530
+msgid "Scene"
+msgstr "Szene"
+
+#: package/contents/ui/main.qml:536
+msgid "Scene Follows Mouse Pointer"
+msgstr "Szene folgt dem Mauszeiger"
+
+#: package/contents/ui/main.qml:536
+msgid "Scene Follows Mouse Pointer…"
+msgstr "Szene folgt dem Mauszeiger …"

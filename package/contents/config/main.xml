@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kcfg xmlns="http://www.kde.org/standards/kcfg/1.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
+  <kcfgfile name=""/>
+  <group name="General">
+    <entry name="host" type="String">
+      <default>localhost</default>
+    </entry>
+    <entry name="port" type="Int">
+      <default>4455</default>
+    </entry>
+    <entry name="password" type="String">
+      <default></default>
+    </entry>
+  </group>
+  <group name="Appearance">
+    <entry name="showDuration" type="Bool">
+      <default>true</default>
+    </entry>
+    <!-- "single" | "double" | "doubleToStop" (start with a single click, stop only with a double click) -->
+    <entry name="clickMode" type="String">
+      <default>single</default>
+    </entry>
+    <!-- Holding the button during a recording stops it and removes the file. -->
+    <entry name="holdDurationMs" type="Int">
+      <default>1500</default>
+      <min>500</min>
+      <max>5000</max>
+    </entry>
+    <!-- Holding the button while OBS is not reachable starts it. -->
+    <entry name="launchHoldDurationMs" type="Int">
+      <default>1500</default>
+      <min>500</min>
+      <max>5000</max>
+    </entry>
+    <!-- How holding the button starts OBS: "normal" | "minimized" | "tray" (hidden in the system tray) -->
+    <entry name="launchMode" type="String">
+      <default>normal</default>
+    </entry>
+    <!-- Start recording right away when holding the button launches OBS. -->
+    <entry name="launchRecording" type="Bool">
+      <default>false</default>
+    </entry>
+    <!-- "trash" | "delete" -->
+    <entry name="discardMode" type="String">
+      <default>trash</default>
+    </entry>
+    <!-- Scene switched to by scrolling up/down over the widget; empty = nothing. -->
+    <entry name="scrollUpScene" type="String">
+      <default></default>
+    </entry>
+    <entry name="scrollDownScene" type="String">
+      <default></default>
+    </entry>
+    <entry name="notifyOnSave" type="Bool">
+      <default>true</default>
+    </entry>
+    <!-- Empty color means: use the Plasma theme color. -->
+    <entry name="offlineColor" type="String">
+      <default></default>
+    </entry>
+    <entry name="offlineOpacity" type="Int">
+      <default>40</default>
+    </entry>
+    <entry name="readyColor" type="String">
+      <default></default>
+    </entry>
+    <entry name="readyOpacity" type="Int">
+      <default>100</default>
+    </entry>
+    <entry name="recordingColor" type="String">
+      <default></default>
+    </entry>
+    <entry name="recordingOpacity" type="Int">
+      <default>100</default>
+    </entry>
+  </group>
+  <group name="FollowMouse">
+    <!-- Switches the scene to the one assigned to the screen the mouse pointer is on.
+         Toggled in the context menu; any other scene change turns it off. -->
+    <entry name="followMouse" type="Bool">
+      <default>false</default>
+    </entry>
+    <!-- JSON object { KWin output name: scene name }, see follow.js. -->
+    <entry name="followMouseScenes" type="String">
+      <default>{}</default>
+    </entry>
+    <!-- How long the pointer has to stay on a screen before its scene shows; 0 = immediately. -->
+    <entry name="followMouseDelayMs" type="Int">
+      <default>500</default>
+      <min>0</min>
+      <max>5000</max>
+    </entry>
+  </group>
+</kcfg>

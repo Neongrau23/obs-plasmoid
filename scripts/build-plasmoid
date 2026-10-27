@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Packs the widget into dist/<id>-<version>.plasmoid, the file the KDE Store
+# takes and "kpackagetool6 -t Plasma/Applet -i" installs.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+read -r id version < <(python3 -c 'import json; k = json.load(open("package/metadata.json"))["KPlugin"]; print(k["Id"], k["Version"])')
+scripts/update-translations
+
+mkdir -p dist
+out="dist/$id-$version.plasmoid"
+rm -f "$out"
+(cd package && zip -q -r -X "../$out" .)
+echo "$out"

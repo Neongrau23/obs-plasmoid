@@ -1,0 +1,22 @@
+{
+    "KPlugin": {
+        "Id": "io.github.neongrau23.obscontrol",
+        "Name": "OBS Control",
+        "Name[de]": "OBS-Steuerung",
+        "Description": "Shows whether OBS Studio is recording and controls recording, scenes and audio from the panel",
+        "Description[de]": "Zeigt an, ob OBS Studio aufnimmt, und steuert Aufnahme, Szenen und Ton aus der Leiste",
+        "Icon": "media-record",
+        "Category": "Multimedia",
+        "Authors": [
+            {
+                "Name": "Neongrau23"
+            }
+        ],
+        "License": "GPL-2.0-or-later",
+        "Website": "https://github.com/Neongrau23/obs-plasmoid",
+        "BugReportUrl": "https://github.com/Neongrau23/obs-plasmoid/issues",
+        "Version": "0.7.0"
+    },
+    "KPackageStructure": "Plasma/Applet",
+    "X-Plasma-API-Minimum-Version": "6.0"
+}

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Extracts the i18n() strings into po/template.pot, merges them into every
+# po/<lang>.po and compiles those into the package, where Plasma looks for them.
+# Run after changing user-visible strings, then translate the new entries.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+id=$(python3 -c 'import json; print(json.load(open("package/metadata.json"))["KPlugin"]["Id"])')
+domain="plasma_applet_$id"
+
+find package -name '*.qml' -o -name '*.js' | sort | xargs xgettext \
+    --language=JavaScript --from-code=UTF-8 --no-wrap --sort-by-file \
+    --keyword=i18n --keyword=i18nc:1c,2 --keyword=i18np:1,2 --keyword=i18ncp:1c,2,3 \
+    --package-name="$id" --msgid-bugs-address="https://github.com/Neongrau23/obs-plasmoid/issues" \
+    --output=po/template.pot
+
+for po in po/*.po; do
+    lang=$(basename "$po" .po)
+    msgmerge --quiet --update --backup=none --no-wrap --no-fuzzy-matching "$po" po/template.pot
+    mkdir -p "package/contents/locale/$lang/LC_MESSAGES"
+    msgfmt --check --output-file="package/contents/locale/$lang/LC_MESSAGES/$domain.mo" "$po"
+    echo "$lang: $(msgfmt --statistics --output-file=/dev/null "$po" 2>&1)"
+done
