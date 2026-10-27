@@ -65,4 +65,10 @@ port 14455 and password `testpass` in the widget.
 3. `scripts/build-plasmoid` creates `dist/<id>-<version>.plasmoid`. `dist/`
    is in `.gitignore`.
 4. Commit and `git push`.
-5. Upload the `.plasmoid` file to the KDE Store by hand.
+5. Upload the `.plasmoid` file to the KDE Store by hand: on the
+   [product page](https://store.kde.org/p/2380430) → “Edit Product”, or via
+   the avatar menu → “My Products” → “Edit”. The editor has the steps
+   Basics, Settings, Files and Changelog. Under “Files”, “Update” in the
+   row of the old file replaces it with the new one; then enter the
+   version there and under “Basics”, and add an entry under “Changelog”.
+   “Save” stores everything.

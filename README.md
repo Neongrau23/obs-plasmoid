@@ -69,6 +69,12 @@ While OBS is not running, the widget tries to connect every 3 seconds, every
 
 ## Installation
 
+From the [KDE Store](https://store.kde.org/p/2380430): right-click the
+panel → “Add Widgets…” → “Get New Widgets…” → “Download New Plasma
+Widgets…” → search for “OBS Control”.
+
+From the source code:
+
 ```sh
 kpackagetool6 -t Plasma/Applet -i package
 ```
