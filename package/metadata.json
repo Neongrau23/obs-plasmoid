@@ -3,8 +3,10 @@
         "Id": "io.github.neongrau23.obscontrol",
         "Name": "OBS Control",
         "Name[de]": "OBS-Steuerung",
+        "Name[nl]": "OBS-bediening",
         "Description": "Shows whether OBS Studio is recording and controls recording, scenes and audio from the panel",
         "Description[de]": "Zeigt an, ob OBS Studio aufnimmt, und steuert Aufnahme, Szenen und Ton aus der Leiste",
+        "Description[nl]": "Toon of OBS Studio aan het opnemen is en bedien de opname, scènes en audio, direct vanaf het paneel",
         "Icon": "media-record",
         "Category": "Multimedia",
         "Authors": [
