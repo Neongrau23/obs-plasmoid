@@ -5,6 +5,10 @@ pauses the recording with a click. The context menu lets you switch scenes
 and open an audio mixer. Speaks obs-websocket v5 (built into OBS since
 version 28).
 
+![Context menu with scenes while recording](docs/images/context-menu.png)
+
+![Tooltip showing state, scene and mouse wheel scenes](docs/images/tooltip.png)
+
 | Indicator | Meaning | Click |
 | --- | --- | --- |
 | Red, pulsing dot + duration | Recording | Stop recording |
@@ -31,10 +35,14 @@ a screen does not trigger a switch. The feature is toggled in the context
 menu. Switching the scene any other way (mouse wheel, menu, in OBS) turns it
 off. The tooltip shows whether it is active.
 
+![Settings page assigning a scene to each screen](docs/images/settings-follow-mouse.png)
+
 The audio mixer shows every OBS source with audio, each with a volume slider
 and a mute button. The slider follows the same curve as the mixer in OBS, so
 the same position means the same volume. Changes in OBS show up in the widget
 immediately and vice versa.
+
+![Audio mixer popup with volume sliders](docs/images/mixer.png)
 
 When discarding, the file goes to the trash or is deleted permanently,
 depending on the setting; the hold duration (0.5–5 s, default 1.5 s) can be
