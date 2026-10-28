@@ -42,7 +42,9 @@ port 14455 and password `testpass` in the widget.
 
 1. Write the text in English in the code inside `i18n("…")`.
 2. `scripts/update-translations`
-3. Translate the new entries in `po/de.po`.
+3. Translate the new entries in `po/de.po`. Other languages (`po/nl.po`) keep
+   them untranslated until their translator sends an update; Plasma shows the
+   English text in the meantime.
 4. Run `scripts/update-translations` once more so that the `.mo` file in the
    package is up to date.
 
