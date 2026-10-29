@@ -45,7 +45,13 @@ Item {
         if (connected && recording) {
             d.lastError = "";
             d.discardPending = true;
-            d.request("StopRecord");
+            d.request("StopRecord", {}, (ok, data, status) => {
+                // Otherwise the flag would discard the next recording that stops normally.
+                if (!ok) {
+                    d.discardPending = false;
+                    d.lastError = d.errorText(status);
+                }
+            });
         }
     }
 
@@ -84,8 +90,7 @@ Item {
         d.lastError = "";
         d.switchLocked = true;
         // Safety net in case the end of the transition is never reported.
-        switchFallback.interval = Math.max(d.transitionDuration, 0) + 1000;
-        switchFallback.restart();
+        d.startSwitchFallback();
         d.request("SetCurrentProgramScene", { sceneName: name }, (ok, data) => {
             if (!ok) {
                 d.switchLocked = false;
@@ -173,6 +178,19 @@ Item {
                 callbacks[id] = callback;
             }
             send(6, { requestType: type, requestId: id, requestData: data || {} });
+        }
+
+        // Fixed transitions report no duration, and a stinger can run for several seconds.
+        // Releasing the lock before it ends lets the next switch cut it short.
+        readonly property int fixedTransitionFallback: 10000
+
+        function startSwitchFallback() {
+            switchFallback.interval = transitionDuration < 0 ? fixedTransitionFallback : transitionDuration + 1000;
+            switchFallback.restart();
+        }
+
+        function errorText(status) {
+            return status.comment || ("Fehler " + status.code);
         }
 
         function requestTransition() {
@@ -273,8 +291,7 @@ Item {
             } else if (data.eventType === "SceneTransitionStarted") {
                 transitioning = true;
                 // OBS sends no end event when a transition is interrupted.
-                switchFallback.interval = Math.max(transitionDuration, 0) + 1000;
-                switchFallback.restart();
+                startSwitchFallback();
             } else if (data.eventType === "SceneTransitionEnded") {
                 transitioning = false;
                 switchLocked = false;
@@ -301,11 +318,11 @@ Item {
             const callback = callbacks[data.requestId];
             if (callback) {
                 delete callbacks[data.requestId];
-                callback(data.requestStatus.result, data.responseData);
+                callback(data.requestStatus.result, data.responseData, data.requestStatus);
                 return;
             }
             if (!data.requestStatus.result) {
-                lastError = data.requestStatus.comment || ("Fehler " + data.requestStatus.code);
+                lastError = errorText(data.requestStatus);
                 return;
             }
             if (data.requestType === "GetRecordStatus") {

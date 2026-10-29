@@ -97,6 +97,26 @@ TestCase {
         compare(discardedSpy.count, 1);
     }
 
+    function test_3a2_failedDiscardKeepsNextRecording() {
+        savedSpy.clear();
+        discardedSpy.clear();
+        control.active = true;
+        tryCompare(control, "status", WebSocket.Open, 3000);
+        obs.toggleRecord();
+        tryCompare(obs, "recording", true, 3000);
+
+        control.sendTextMessage(JSON.stringify({ cmd: "failNext", request: "StopRecord" }));
+        wait(200);
+        obs.discardRecording();
+        tryVerify(() => obs.lastError !== "", 3000);
+        verify(obs.recording, "the failed stop leaves the recording running");
+
+        obs.toggleRecord();
+        tryCompare(obs, "recording", false, 3000);
+        tryCompare(savedSpy, "count", 1, 3000);
+        compare(discardedSpy.count, 0, "the failed discard does not hit the next recording");
+    }
+
     function test_3b_pausesAndResumes() {
         obs.toggleRecordPause();
         wait(300);
@@ -141,6 +161,24 @@ TestCase {
         verify(!obs.switchScene("Gameplay"), "already the current scene");
         verify(obs.switchScene("Kamera"), "accepted again after the transition");
         tryCompare(obs, "currentScene", "Kamera", 3000);
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+    }
+
+    function test_3d2_waitsForFixedTransition() {
+        // A stinger reports no duration; the lock must outlast it instead of falling back after 1 s.
+        control.active = true;
+        tryCompare(control, "status", WebSocket.Open, 3000);
+        control.sendTextMessage(JSON.stringify({ cmd: "setTransition", fixed: true, ms: 2000 }));
+        wait(300);
+        verify(obs.switchScene("Gameplay"));
+        wait(1500);
+        verify(obs.sceneSwitchBusy, "still locked while the stinger runs");
+        verify(!obs.switchScene("Kamera"));
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+
+        control.sendTextMessage(JSON.stringify({ cmd: "setTransition", fixed: false, ms: 300 }));
+        wait(300);
+        verify(obs.switchScene("Kamera"));
         tryCompare(obs, "sceneSwitchBusy", false, 3000);
     }
 

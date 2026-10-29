@@ -202,11 +202,11 @@ PlasmoidItem {
             if (obs.paused) {
                 return i18n("Recording paused – %1", durationText) + scene
                      + "\n" + i18n("%1: stop · Middle click: resume", toggleHint)
-                     + "\n" + i18n("Hold: discard recording");
+                     + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "");
             }
             return obs.recording ? i18n("Recording – %1", durationText) + scene
                                    + "\n" + i18n("%1: stop · Middle click: pause", toggleHint)
-                                   + "\n" + i18n("Hold: discard recording")
+                                   + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "")
                                  : i18n("Ready") + scene + "\n" + i18n("%1: start recording", toggleHint);
         case "authRequired":
             return i18n("OBS requires a password\nClick to enter it in the settings");
@@ -325,6 +325,13 @@ PlasmoidItem {
         kwinScripting("unloadScript", [minimizeScriptName], () => {});
     }
 
+    // Discarding deletes the file and quitting kills the process on this computer, so both
+    // are only offered when OBS runs here: with a remote host they would hit a local file
+    // with the same path, or a local OBS that is not the one connected.
+    readonly property bool obsIsLocal: ["localhost", "127.0.0.1", "::1", "[::1]"]
+        .includes(Plasmoid.configuration.host.trim().toLowerCase())
+    onObsIsLocalChanged: Qt.callLater(updateContextualActions)
+
     ObsClient {
         id: obs
         host: Plasmoid.configuration.host
@@ -353,7 +360,7 @@ PlasmoidItem {
     property bool quittingObs: false
 
     function quitObs() {
-        if (!obs.connected || quittingObs) {
+        if (!obs.connected || quittingObs || !obsIsLocal) {
             return;
         }
         quittingObs = true;
@@ -366,8 +373,14 @@ PlasmoidItem {
 
     function terminateObs() {
         executable.run("pkill -x -u \"$(id -u)\" obs", (exitCode, stderr) => {
-            // Exit code 1: no OBS process (any more), nothing to do.
-            if (exitCode > 1) {
+            // Exit code 1: no process named obs, e.g. a differently named build. The
+            // connection then stays up and would never clear quittingObs.
+            if (exitCode === 1) {
+                quittingObs = false;
+                if (obs.connected) {
+                    notify(i18n("Could not quit OBS"), "", "dialog-error");
+                }
+            } else if (exitCode > 1) {
                 quittingObs = false;
                 notify(i18n("Could not quit OBS"), errorText(stderr), "dialog-error");
             }
@@ -490,7 +503,11 @@ PlasmoidItem {
             actions.push(followAction, sceneSeparator);
         }
         if (obs.connected) {
-            actions.push(mixerAction, quitAction, mixerSeparator);
+            actions.push(mixerAction);
+            if (obsIsLocal) {
+                actions.push(quitAction);
+            }
+            actions.push(mixerSeparator);
         }
         Plasmoid.contextualActions = actions;
     }
@@ -616,7 +633,7 @@ PlasmoidItem {
         }
 
         function beginHold() {
-            if (obs.connected && obs.recording) {
+            if (obs.connected && obs.recording && root.obsIsLocal) {
                 holdAction = "discard";
             } else if (!obs.connected && !obs.connectionState.startsWith("auth") && !root.launchingObs) {
                 holdAction = "launch";
@@ -655,6 +672,8 @@ PlasmoidItem {
                 root.handleClick();
             }
         }
+        // A second middle click within the double-click interval arrives here and is dropped
+        // on purpose: a double click pauses or resumes once instead of toggling twice.
         onDoubleClicked: mouse => {
             if (mouse.button === Qt.LeftButton && !suppressClick) {
                 root.handleDoubleClick();

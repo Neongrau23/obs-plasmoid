@@ -63,7 +63,9 @@ Requests go through `d.request(type, data, callback)`:
 - `RecordStateChanged` sets `recording`/`paused`. The file path is only
   available in the state `OBS_WEBSOCKET_OUTPUT_STOPPED`; only then is the
   file completely written. That is where `recordingSaved` fires or, after
-  `discardRecording()`, `recordingDiscarded`.
+  `discardRecording()`, `recordingDiscarded`. If the `StopRecord` of a
+  discard fails, the discard flag is cleared right away; otherwise the next
+  normally stopped recording would be discarded.
 - OBS does not deliver the duration as an event. During a recording a timer
   queries `GetRecordStatus` every second.
 
@@ -72,7 +74,8 @@ Requests go through `d.request(type, data, callback)`:
 - OBS counts `sceneIndex` from the bottom; the client reorders so that
   `scenes` matches the order in OBS from top to bottom.
 - `switchScene()` (mouse wheel) blocks further switches until
-  `SceneTransitionEnded` arrives. A safety timer (transition duration + 1 s)
+  `SceneTransitionEnded` arrives. A safety timer (transition duration + 1 s,
+  10 s for fixed transitions such as a stinger, which report no duration)
   lifts the block if the event never comes, e.g. for an aborted transition.
   `setScene()` (menu) does not block.
 - On `SceneNameChanged` the client emits `sceneRenamed`; `main.qml` updates

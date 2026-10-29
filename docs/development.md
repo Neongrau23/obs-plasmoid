@@ -19,7 +19,7 @@ If the output stays empty, the widget loads. Exit code 124 comes from
 
 ## What the tests cover and what they don't
 
-`tests/run-tests.sh` checks `sha256.js`, `fader.js`, `follow.js`, the
+`tests/run-tests.sh` checks `sha256.js`, `fader.js`, `follow.js`, `seconds.js`, the
 `ObsClient` and the `ScreenFollower` against the mock server
 `tests/mock-obs.py` (port 14455, password `testpass`).
 

@@ -6,6 +6,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 
 import "follow.js" as Follow
+import "seconds.js" as Seconds
 
 KCM.SimpleKCM {
     id: page
@@ -104,8 +105,8 @@ KCM.SimpleKCM {
             textFromValue: value => value === 0 ? i18n("Immediately")
                 : i18n("%1 s", (value / 1000).toLocaleString(Qt.locale(), "f", 1).replace(/[,.]0$/, ""))
             valueFromText: text => {
-                const seconds = Number.fromLocaleString(Qt.locale(), text.replace(/[^0-9,.]/g, "") || "0");
-                return Math.round(seconds * 1000);
+                const seconds = Seconds.parse(text);
+                return isNaN(seconds) ? value : Math.round(seconds * 1000);
             }
         }
 

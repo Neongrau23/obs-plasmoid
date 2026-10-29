@@ -22,9 +22,9 @@ version 28).
 | Click | Start or stop recording (configurable: double-click for both, or only for stopping) |
 | Middle click | Pause or resume the running recording |
 | Mouse wheel up/down | Switch to the scene chosen for it in the settings |
-| Press and hold | Stop and discard the running recording (a red ring shows the progress, releasing early cancels) |
+| Press and hold | Stop and discard the running recording (a red ring shows the progress, releasing early cancels; only when OBS runs on this computer) |
 | Press and hold while OBS is not running | Start OBS (green ring); if OBS is already running but without a WebSocket connection, the widget says so instead of starting a second OBS. Optionally OBS starts minimized to the taskbar or the system tray and begins recording right away (Settings → Appearance & Behavior) |
-| Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Audio Mixer…” and “Quit OBS”; a running recording is stopped and saved first |
+| Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
 
 **Scene follows the mouse pointer:** With several screens, OBS shows the
 scene of the screen the mouse pointer is currently on. Which scene belongs to
@@ -157,6 +157,7 @@ anywhere else does not belong there.
 | `package/contents/ui/Mixer.qml` | Audio mixer popup |
 | `package/contents/ui/fader.js` | Slider curve of the OBS mixer (position ↔ volume) |
 | `package/contents/ui/follow.js` | Scene follows the mouse pointer: screen → scene mapping, hold time |
+| `package/contents/ui/seconds.js` | Reads seconds typed with comma or point in the settings |
 | `package/contents/ui/ScreenFollower.qml` | Scene follows the mouse pointer: switching and detecting other scene changes |
 | `package/contents/ui/SceneComboBox.qml` | Scene picker for the settings pages |
 | `package/contents/ui/sha256.js` | SHA-256 and Base64 for authentication (QML has no access to `QCryptographicHash`) |

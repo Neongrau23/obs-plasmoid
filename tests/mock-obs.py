@@ -12,6 +12,9 @@ the server then behaves like OBS quitting and starting again N ms later.
 {"cmd": "addInput", "name": "..."} adds an audio input and sends InputCreated.
 {"cmd": "setPath", "path": "..."} sets the file path reported when a recording stops.
 {"cmd": "renameScene", "from": "...", "to": "..."} renames a scene and sends SceneNameChanged.
+{"cmd": "failNext", "request": "..."} makes the next request of that type fail.
+{"cmd": "setTransition", "fixed": true, "ms": N} switches to a transition of N ms; a fixed
+one (e.g. stinger) reports no duration, like OBS. Sends CurrentSceneTransitionChanged.
 
 Usage: mock-obs.py [--port 14455] [--password testpass]
 """
@@ -48,6 +51,8 @@ class MockObs:
         self.scene = self.scenes[0]
         self.recording_path = RECORDING_PATH
         self.transition_ms = 300
+        self.transition_fixed = False
+        self.fail_next = set()
         # Input list order as OBS returns it; inputs without audio reject volume/mute requests.
         self.inputs = {
             "Desktop-Audio": {"audio": True, "mul": 1.0, "muted": False},
@@ -103,7 +108,10 @@ class MockObs:
         rtype = d["requestType"]
         status = {"result": True, "code": 100}
         data = None
-        if rtype == "GetRecordStatus":
+        if rtype in self.fail_next:
+            self.fail_next.discard(rtype)
+            status = {"result": False, "code": 702, "comment": "Mock failure."}
+        elif rtype == "GetRecordStatus":
             data = self.record_status()
         elif rtype == "ToggleRecord":
             await self.set_recording(not self.recording)
@@ -119,7 +127,8 @@ class MockObs:
                 status = {"result": False, "code": 501, "comment": "Output not running."}
         elif rtype == "GetCurrentSceneTransition":
             data = {"transitionName": "Überblende", "transitionKind": "fade_transition",
-                    "transitionFixed": False, "transitionDuration": self.transition_ms,
+                    "transitionFixed": self.transition_fixed,
+                    "transitionDuration": None if self.transition_fixed else self.transition_ms,
                     "transitionConfigurable": True, "transitionSettings": {}}
         elif rtype == "GetSceneList":
             data = self.scene_list()
@@ -174,6 +183,12 @@ class MockObs:
                     if self.scene == cmd["from"]:
                         self.scene = cmd["to"]
                     await self.broadcast_event("SceneNameChanged", {"oldSceneName": cmd["from"], "sceneName": cmd["to"]})
+                if cmd.get("cmd") == "failNext":
+                    self.fail_next.add(cmd["request"])
+                if cmd.get("cmd") == "setTransition":
+                    self.transition_fixed = cmd.get("fixed", False)
+                    self.transition_ms = cmd["ms"]
+                    await self.broadcast_event("CurrentSceneTransitionChanged", {"transitionName": "Überblende"})
                 if cmd.get("cmd") == "setPath":
                     self.recording_path = cmd["path"]
                 if cmd.get("cmd") == "addInput":

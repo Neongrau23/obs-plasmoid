@@ -6,6 +6,8 @@ import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 import org.kde.kquickcontrols as KQuickControls
 
+import "seconds.js" as Seconds
+
 KCM.SimpleKCM {
     id: page
 
@@ -49,7 +51,10 @@ KCM.SimpleKCM {
         to: 5000
         stepSize: 250
         textFromValue: value => i18n("%1 s", (value / 1000).toLocaleString(Qt.locale(), "f", 2).replace(/[,.]?0+$/, ""))
-        valueFromText: text => Math.round(Number.fromLocaleString(Qt.locale(), text.replace(/[^0-9,.]/g, "")) * 1000)
+        valueFromText: text => {
+            const seconds = Seconds.parse(text);
+            return isNaN(seconds) ? value : Math.round(seconds * 1000);
+        }
     }
 
     // Color and opacity of one state, stored in cfg_<key>Color / cfg_<key>Opacity.

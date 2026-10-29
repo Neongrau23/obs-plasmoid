@@ -31,6 +31,18 @@ notification and the deletion on discard would point to a half-written file.
 `main.qml`), via `kioclient` to the trash or via `rm`. OBS cannot delete
 files over the WebSocket.
 
+**Discarding and quitting only when OBS runs on this computer**
+(`obsIsLocal` in `main.qml`: `localhost`, `127.0.0.1`, `::1`). Both act
+locally: discarding deletes the path OBS reports, quitting kills the local
+process. With a remote host they would hit a local file with the same path
+or the wrong OBS, so the hold gesture and the menu entry are not offered
+there. The machine's own host name or LAN address counts as remote.
+
+**A double middle click pauses or resumes once.** Qt delivers the second
+click as a double click, which the widget ignores for the middle button. A
+deliberate pause and immediate resume makes no sense, and an accidental
+double click thus does not toggle twice.
+
 **“Start recording right away” via `--startrecording`** instead of a request
 after connecting. OBS then starts on its own as soon as it has loaded; a
 request sent right after connecting can get lost before that.
@@ -39,7 +51,10 @@ request sent right after connecting can get lost before that.
 
 **Mouse wheel switches wait for the transition to end** (`switchScene()`).
 A new switch during a transition makes OBS hard-cut, and a mouse wheel
-delivers several notches per turn within milliseconds.
+delivers several notches per turn within milliseconds. Fixed transitions
+such as a stinger report no duration, so the safety timer then waits 10 s:
+a stinger rarely runs longer, and the timer only matters if OBS never
+reports the end.
 
 **Query the screen under the mouse pointer from KWin via D-Bus**
 (`activeOutputName`, every 100 ms). On Wayland only the compositor knows the

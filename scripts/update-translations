@@ -8,11 +8,20 @@ cd "$(dirname "$0")/.."
 id=$(python3 -c 'import json; print(json.load(open("package/metadata.json"))["KPlugin"]["Id"])')
 domain="plasma_applet_$id"
 
+pot=$(mktemp)
+trap 'rm -f "$pot"' EXIT
+
 find package -name '*.qml' -o -name '*.js' | sort | xargs xgettext \
     --language=JavaScript --from-code=UTF-8 --no-wrap --sort-by-file \
     --keyword=i18n --keyword=i18nc:1c,2 --keyword=i18np:1,2 --keyword=i18ncp:1c,2,3 \
     --package-name="$id" --msgid-bugs-address="https://github.com/Neongrau23/obs-plasmoid/issues" \
-    --output=po/template.pot
+    --output="$pot"
+
+# xgettext stamps the current time into every run. Keep the old template when nothing
+# else changed, so building a package does not leave a modified file behind.
+if ! diff -q -I '^"POT-Creation-Date:' "$pot" po/template.pot >/dev/null 2>&1; then
+    cp "$pot" po/template.pot
+fi
 
 for po in po/*.po; do
     lang=$(basename "$po" .po)

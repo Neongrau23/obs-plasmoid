@@ -17,7 +17,7 @@
         "License": "GPL-2.0-or-later",
         "Website": "https://github.com/Neongrau23/obs-plasmoid",
         "BugReportUrl": "https://github.com/Neongrau23/obs-plasmoid/issues",
-        "Version": "0.7.0"
+        "Version": "0.7.1"
     },
     "KPackageStructure": "Plasma/Applet",
     "X-Plasma-API-Minimum-Version": "6.0"
