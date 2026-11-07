@@ -46,6 +46,20 @@ Item {
         }
     }
 
+    // Switches to scene and starts following from scratch (mouse wheel with following on).
+    // The switch counts as own, otherwise OBS reporting it would turn following off again.
+    // Returns false if the client refused the switch (transition running, same scene). Then
+    // nothing is reset: further notches of one wheel flick arrive during the transition of
+    // the first, and dropping its requestedScene would turn following off again.
+    function switchAndFollow(scene) {
+        if (!client.switchScene(scene)) {
+            return false;
+        }
+        reset();
+        requestedScene = scene;
+        return true;
+    }
+
     // The current scene arrives under its new name; that is no scene change.
     function sceneRenamed(oldName, newName) {
         if (requestedScene === oldName) {

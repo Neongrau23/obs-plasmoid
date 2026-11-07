@@ -53,6 +53,13 @@
     <entry name="scrollDownScene" type="String">
       <default></default>
     </entry>
+    <!-- Scrolling up/down also turns "scene follows the mouse pointer" on instead of off. -->
+    <entry name="scrollUpFollowMouse" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="scrollDownFollowMouse" type="Bool">
+      <default>false</default>
+    </entry>
     <entry name="notifyOnSave" type="Bool">
       <default>true</default>
     </entry>

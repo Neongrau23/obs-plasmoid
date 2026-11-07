@@ -102,7 +102,12 @@ ScreenFollower.pointerOn("DP-1")
   change of `obs.currentScene`. If the new scene is not the one last
   requested (`requestedScene`), it emits `otherSceneChange`, and `main.qml`
   turns `followMouse` off. Mouse wheel and menu additionally turn it off
-  directly, even when they switch to the scene already shown. Not counted as
+  directly, even when they switch to the scene already shown. A wheel
+  direction with `scrollUpFollowMouse`/`scrollDownFollowMouse` set instead
+  calls `switchAndFollow()`: the wheel scene becomes `requestedScene`, so its
+  report from OBS does not count as foreign, and `followMouse` goes on. The
+  follower takes over after the delay, with the scene of the pointer's
+  screen. Not counted as
   a switch: the first scene after connecting (`lastScene` is empty then) and
   renaming the current scene (`sceneRenamed()` updates `lastScene` and
   `requestedScene` beforehand).

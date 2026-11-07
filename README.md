@@ -21,7 +21,7 @@ version 28).
 | --- | --- |
 | Click | Start or stop recording (configurable: double-click for both, or only for stopping) |
 | Middle click | Pause or resume the running recording |
-| Mouse wheel up/down | Switch to the scene chosen for it in the settings |
+| Mouse wheel up/down | Switch to the scene chosen for it in the settings; a toggle next to each scene makes the switch turn “Scene Follows Mouse Pointer” on instead of off |
 | Press and hold | Stop and discard the running recording (a red ring shows the progress, releasing early cancels; only when OBS runs on this computer) |
 | Press and hold while OBS is not running | Start OBS (green ring); if OBS is already running but without a WebSocket connection, the widget says so instead of starting a second OBS. Optionally OBS starts minimized to the taskbar or the system tray and begins recording right away (Settings → Appearance & Behavior) |
 | Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
@@ -32,8 +32,10 @@ which screen is set under “Follow Mouse Pointer” in the settings, as is how
 long the pointer has to stay on a screen before the scene switches
 (immediately up to 5 s, default 0.5 s). That way a pointer just passing over
 a screen does not trigger a switch. The feature is toggled in the context
-menu. Switching the scene any other way (mouse wheel, menu, in OBS) turns it
-off. The tooltip shows whether it is active.
+menu, or by a mouse wheel direction whose follow toggle is on (Settings →
+Appearance & Behavior, next to the wheel scene). Switching the scene any other
+way (mouse wheel without the toggle, menu, in OBS) turns it off. The tooltip
+shows whether it is active.
 
 ![Settings page assigning a scene to each screen](docs/images/settings-follow-mouse.png)
 

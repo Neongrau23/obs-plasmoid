@@ -6,6 +6,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
 import org.kde.kquickcontrols as KQuickControls
 
+import "follow.js" as Follow
 import "seconds.js" as Seconds
 
 KCM.SimpleKCM {
@@ -21,6 +22,8 @@ KCM.SimpleKCM {
     property string cfg_discardMode
     property string cfg_scrollUpScene
     property string cfg_scrollDownScene
+    property alias cfg_scrollUpFollowMouse: scrollUpFollowButton.checked
+    property alias cfg_scrollDownFollowMouse: scrollDownFollowButton.checked
     property string cfg_offlineColor
     property int cfg_offlineOpacity
     property string cfg_readyColor
@@ -43,6 +46,22 @@ KCM.SimpleKCM {
         host: page.cfg_host
         port: page.cfg_port
         password: page.cfg_password
+    }
+
+    // Screens assigned on the "Follow Mouse Pointer" page, as saved when the dialog opened.
+    readonly property bool canFollow: Object.keys(Follow.parseScenes(cfg_followMouseScenes)).length > 0
+
+    // Toggle next to a wheel scene: scrolling turns following on instead of off.
+    component FollowButton: QQC2.ToolButton {
+        icon.name: "input-mouse"
+        checkable: true
+        enabled: page.canFollow
+        display: QQC2.AbstractButton.IconOnly
+        text: i18n("Turn on “Scene follows the mouse pointer”")
+        QQC2.ToolTip.visible: hovered
+        QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
+        QQC2.ToolTip.text: page.canFollow ? text
+                                          : i18n("Assign a scene to a screen on the “Follow Mouse Pointer” page first.")
     }
 
     // Hold duration in milliseconds, shown in seconds.
@@ -160,18 +179,32 @@ KCM.SimpleKCM {
             Kirigami.FormData.isSection: true
         }
 
-        SceneComboBox {
+        RowLayout {
             Kirigami.FormData.label: i18n("Scroll up:")
-            scenes: sceneSource.scenes
-            current: page.cfg_scrollUpScene
-            onPicked: scene => page.cfg_scrollUpScene = scene
+
+            SceneComboBox {
+                scenes: sceneSource.scenes
+                current: page.cfg_scrollUpScene
+                onPicked: scene => page.cfg_scrollUpScene = scene
+            }
+
+            FollowButton {
+                id: scrollUpFollowButton
+            }
         }
 
-        SceneComboBox {
+        RowLayout {
             Kirigami.FormData.label: i18n("Scroll down:")
-            scenes: sceneSource.scenes
-            current: page.cfg_scrollDownScene
-            onPicked: scene => page.cfg_scrollDownScene = scene
+
+            SceneComboBox {
+                scenes: sceneSource.scenes
+                current: page.cfg_scrollDownScene
+                onPicked: scene => page.cfg_scrollDownScene = scene
+            }
+
+            FollowButton {
+                id: scrollDownFollowButton
+            }
         }
 
         QQC2.Label {

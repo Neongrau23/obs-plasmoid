@@ -27,6 +27,8 @@ KCM.SimpleKCM {
     property string cfg_discardMode
     property string cfg_scrollUpScene
     property string cfg_scrollDownScene
+    property bool cfg_scrollUpFollowMouse
+    property bool cfg_scrollDownFollowMouse
     property string cfg_offlineColor
     property int cfg_offlineOpacity
     property string cfg_readyColor

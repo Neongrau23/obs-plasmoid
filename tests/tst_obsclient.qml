@@ -224,6 +224,24 @@ TestCase {
         tryCompare(obs, "sceneSwitchBusy", false, 3000);
     }
 
+    // Mouse wheel with following switched on: its own switch must not turn following off.
+    function test_3g_wheelSwitchStartsFollowing() {
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+        compare(obs.currentScene, "Kamera");
+        otherChangeSpy.clear();
+        verify(follower.switchAndFollow("Pause"));
+        tryCompare(obs, "currentScene", "Pause", 3000);
+        compare(otherChangeSpy.count, 0, "wheel switch counts as own");
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+
+        // During a transition the switch is refused, as with switchScene().
+        verify(follower.switchAndFollow("Kamera"));
+        verify(!follower.switchAndFollow("Gameplay"));
+        tryCompare(obs, "currentScene", "Kamera", 3000);
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+        compare(otherChangeSpy.count, 0);
+    }
+
     function inputs() {
         const rows = [];
         for (let i = 0; i < obs.audioInputs.count; i++) {

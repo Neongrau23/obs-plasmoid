@@ -75,6 +75,18 @@ scene; in the recording that looks restless.
 by mouse wheel, menu or in OBS. Otherwise the widget would overwrite the
 deliberately chosen scene on the next pointer move. Requested by the user.
 
+**Exception: a mouse wheel direction can turn following on** (toggle next to
+the wheel scene, `scroll*FollowMouse`). Requested by the user, to get back to
+the main screen and following with one notch. A toggle on/off instead of a
+third “leave unchanged” state: a wheel switch with following still running
+would be a foreign change and turn it off anyway. The toggle is disabled
+while no screen has a scene, since there is nothing to follow then.
+`switchAndFollow()` resets the follower only after `switchScene()` accepted
+the switch: the further notches of one flick arrive during the transition,
+and resetting there dropped `requestedScene`, so the reported wheel scene
+counted as foreign and following went off again. Reproduced in
+`test_3g_wheelSwitchStartsFollowing`.
+
 **Only a scene that `switchScene()` accepted counts as an own switch**
 (`requestedScene`). OBS reports the switch a moment later. If the pointer
 moved on faster (top → middle → left with “Immediately”), the rejected next

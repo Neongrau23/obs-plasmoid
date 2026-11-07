@@ -77,12 +77,21 @@ PlasmoidItem {
         if (Math.abs(wheelDelta) < 120) {
             return;
         }
-        const scene = wheelDelta > 0 ? Plasmoid.configuration.scrollUpScene
-                                     : Plasmoid.configuration.scrollDownScene;
+        const up = wheelDelta > 0;
+        const scene = up ? Plasmoid.configuration.scrollUpScene : Plasmoid.configuration.scrollDownScene;
+        const follow = up ? Plasmoid.configuration.scrollUpFollowMouse
+                          : Plasmoid.configuration.scrollDownFollowMouse;
         wheelDelta = 0;
+        if (scene === "") {
+            return;
+        }
         // One flick of the wheel delivers several notches within milliseconds; switchScene()
         // ignores all of them until OBS has finished the transition of the first.
-        if (scene !== "") {
+        if (follow && follower.hasScenes) {
+            if (follower.switchAndFollow(scene)) {
+                Plasmoid.configuration.followMouse = true;
+            }
+        } else {
             stopFollowingMouse();
             obs.switchScene(scene);
         }
