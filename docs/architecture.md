@@ -67,6 +67,10 @@ Requests go through `d.request(type, data, callback)`:
   `discardRecording()`, `recordingDiscarded`. If the `StopRecord` of a
   discard fails, the discard flag is cleared right away; otherwise the next
   normally stopped recording would be discarded.
+- `d.recordFiles` collects the files of the running recording: the path from
+  `OUTPUT_STARTED` and one more per `RecordFileChanged` (automatic file
+  splitting). `recordingDiscarded` passes all of them; `recordingSaved`
+  keeps passing only the last one.
 - OBS does not deliver the duration as an event. During a recording a timer
   queries `GetRecordStatus` every second.
 
@@ -144,6 +148,16 @@ only those that answer both. The model is filled only once all responses
 have arrived. A generation counter discards responses from an older run.
 The list is refreshed on `InputCreated`, `InputRemoved` and
 `InputNameChanged`; volume and mute state arrive individually as events.
+`setInputVolume()` is throttled: the first value is sent at once, then the
+latest value per source every 50 ms (`volumeThrottle`) while the slider moves.
+
+## Settings pages
+
+Each page (`configGeneral.qml`, `configAppearance.qml`,
+`configFollowMouse.qml`) contains a `ConfigSync`. It follows
+`Plasmoid.configuration.valueChanged` while the dialog is open and updates
+every `cfg_` value the user has not edited on that page, so OK/Apply does not
+write back what was current when the page opened.
 
 ## Panel indicator (`main.qml`)
 

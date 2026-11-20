@@ -136,13 +136,17 @@ curve against reference values from libobs, the position of the replay buffer
 mark, the hold time and scene mapping
 of “Scene follows the mouse pointer”, and the connection client against a
 mock OBS server (`python3` with `websockets`): wrong password, connecting,
-starting/stopping a recording including duration and file path, discarding,
+starting/stopping a recording including duration and file path, discarding
+(also every file of a split recording),
 pausing and resuming, scene list, switching and renaming scenes, audio
-sources with volume and muting, replay buffer (start/stop, saving also via
+sources with volume and muting (throttled while dragging), replay buffer (start/stop, saving also via
 the OBS hotkey, autostart, turned off in OBS, length per output mode),
 restarting OBS with automatic reconnect,
-missing password. The real OBS instance is not touched (the mock runs on port
+missing password; settings pages that follow changes made while the dialog is
+open. The real OBS instance is not touched (the mock runs on port
 14455).
+The QML tests need the Qt 6 `qmltestrunner`; the script looks for it in the
+usual places and takes `QMLTESTRUNNER=/path/to/qmltestrunner` otherwise.
 
 `tests/mock-obs.py` can also be started on its own to try the widget without
 OBS: set the port in the widget to 14455 and the password to `testpass`.

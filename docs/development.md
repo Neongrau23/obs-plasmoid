@@ -59,7 +59,9 @@ port 14455 and password `testpass` in the widget.
    `cfg_<key>` and bind it to a control. Plasma reads and saves it by name.
    On the other pages declare it as a plain property, otherwise the dialog
    warns. Exception: keys that can change while the dialog is open (such as
-   `followMouse`) are not declared on any page.
+   `followMouse`) are not declared on any page. A new page also needs a
+   `ConfigSync` (see the existing pages), otherwise OK/Apply reverts changes
+   made while the dialog is open.
 3. Read it in the code via `Plasmoid.configuration.<key>`.
 4. Add to the usage section of the README, translate texts (see above).
 

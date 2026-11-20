@@ -47,6 +47,14 @@ double click thus does not toggle twice.
 after connecting. OBS then starts on its own as soon as it has loaded; a
 request sent right after connecting can get lost before that.
 
+**Discard every file of a split recording** (`d.recordFiles` in
+`ObsClient.qml`). With automatic file splitting, OBS reports the last file on
+`OUTPUT_STOPPED`; the earlier ones come from `OUTPUT_STARTED` (checked against
+OBS 33.0.1: it carries `outputPath`) and `RecordFileChanged`. All of them go to
+the trash in one `kioclient move`, which takes several sources, with one
+notification. A connection made during a recording knows only the files from
+then on.
+
 ## Replay buffer
 
 **The widget complements the OBS hotkey “Save Replay”, it does not replace
@@ -144,6 +152,18 @@ after a 400 ms pause (`handleWheel()`). Otherwise a remainder would swallow
 the next real notch.
 
 ## Display and interaction
+
+**Settings pages follow outside changes** (`ConfigSync.qml`). Plasma's dialog
+fills a page once when it opens and on OK/Apply writes back every `cfg_`
+value of the open page, including the plain properties it only declares. A
+scene renamed in OBS while the dialog is open (the widget renames it in the
+configuration) was therefore reverted. `ConfigSync` takes over a changed
+value unless the user edited it on the page; the user's edit wins.
+
+**Throttle the mixer slider** (`setInputVolume()`). Dragging sent a request
+for every move; now the first goes out at once and then the latest value
+every 50 ms, so the slider still reacts immediately and the end value always
+arrives.
 
 **Control hints in the tooltip can be turned off** (`showHints`, `hint()` in
 `main.qml`), on by default so new users find the gestures. Only the lines
