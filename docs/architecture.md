@@ -155,6 +155,9 @@ The list is refreshed on `InputCreated`, `InputRemoved` and
   appears only after 300 ms so that normal clicks do not make it flash.
   Releasing after the ring became visible cancels, and that does not count
   as a click (`suppressClick`).
+- **Replay buffer mark:** `ReplayMark.qml`, a sibling of the dot laid over it
+  (like the hold ring), geometry in `replaymark.js`. Visible while connected
+  and the buffer runs; `blink()` on every `replaySaved`.
 - **Context menu:** `updateContextualActions()` rebuilds the menu whenever
   the scene list or the connection changes. The scene entries are created by
   an `Instantiator`.

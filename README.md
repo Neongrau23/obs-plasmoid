@@ -66,10 +66,13 @@ from OBS applies then). A length set in the widget is written to the OBS
 settings for the active output mode and applies from the next start of the
 buffer. The replay buffer itself has to be turned on in OBS under Settings →
 Output → Replay Buffer; OBS does not allow that from outside, so the widget
-says so instead.
+says so instead. While the buffer runs, a mark at the dot shows it: a line
+below the dot (default), a small dot or a circular arrow at its top right, or
+nothing (Settings → Appearance & Behavior). It pulses briefly for every saved
+clip.
 
-Color and opacity for “OBS closed”, “OBS running” and “Recording”, as well as
-the duration display, can be changed under “Appearance & Behavior” in the
+Color and opacity for “OBS closed”, “OBS running”, “Recording” and “Replay
+buffer running”, as well as the duration display, can be changed under “Appearance & Behavior” in the
 widget settings. Without a custom color, the Plasma theme color applies. At
 0 % opacity the dot stays invisible but remains clickable.
 
@@ -127,7 +130,8 @@ tests/run-tests.sh
 ```
 
 Checks the SHA-256/Base64 implementation against Node (`node`), the slider
-curve against reference values from libobs, the hold time and scene mapping
+curve against reference values from libobs, the position of the replay buffer
+mark, the hold time and scene mapping
 of “Scene follows the mouse pointer”, and the connection client against a
 mock OBS server (`python3` with `websockets`): wrong password, connecting,
 starting/stopping a recording including duration and file path, discarding,

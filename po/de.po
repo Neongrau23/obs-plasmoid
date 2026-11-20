@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-20 19:59+0100\n"
+"POT-Creation-Date: 2026-11-20 20:33+0100\n"
 "PO-Revision-Date: 2026-10-21 08:45+0200\n"
 "Last-Translator: Neongrau23\n"
 "Language-Team: German\n"
@@ -49,6 +49,7 @@ msgid "OBS is not running"
 msgstr "OBS läuft nicht"
 
 #: package/contents/ui/SceneComboBox.qml:18
+#: package/contents/ui/configAppearance.qml:175
 msgid "None"
 msgstr "Keine"
 
@@ -56,209 +57,229 @@ msgstr "Keine"
 msgid "%1 (not found in OBS)"
 msgstr "%1 (nicht in OBS gefunden)"
 
-#: package/contents/ui/configAppearance.qml:63
+#: package/contents/ui/configAppearance.qml:66
 msgid "Turn on “Scene follows the mouse pointer”"
 msgstr "„Szene folgt dem Mauszeiger“ einschalten"
 
-#: package/contents/ui/configAppearance.qml:67
+#: package/contents/ui/configAppearance.qml:70
 msgid "Assign a scene to a screen on the “Follow Mouse Pointer” page first."
 msgstr "Erst auf der Seite „Mauszeiger folgen“ einem Bildschirm eine Szene zuordnen."
 
-#: package/contents/ui/configAppearance.qml:75
-#: package/contents/ui/configAppearance.qml:344
-#: package/contents/ui/configFollowMouse.qml:111
+#: package/contents/ui/configAppearance.qml:78
+#: package/contents/ui/configAppearance.qml:369
+#: package/contents/ui/configFollowMouse.qml:114
 msgid "%1 s"
 msgstr "%1 s"
 
-#: package/contents/ui/configAppearance.qml:104
+#: package/contents/ui/configAppearance.qml:107
 msgid "Use system color"
 msgstr "Systemfarbe verwenden"
 
-#: package/contents/ui/configAppearance.qml:122
+#: package/contents/ui/configAppearance.qml:125
 msgid "%1 %"
 msgstr "%1 %"
 
-#: package/contents/ui/configAppearance.qml:142
+#: package/contents/ui/configAppearance.qml:145
 msgid "OBS closed:"
 msgstr "OBS geschlossen:"
 
-#: package/contents/ui/configAppearance.qml:148
+#: package/contents/ui/configAppearance.qml:151
 msgid "OBS running:"
 msgstr "OBS läuft:"
 
-#: package/contents/ui/configAppearance.qml:154
+#: package/contents/ui/configAppearance.qml:157
 msgid "Recording:"
 msgstr "Aufnahme läuft:"
 
-#: package/contents/ui/configAppearance.qml:160
+#: package/contents/ui/configAppearance.qml:163
+msgid "Replay buffer running:"
+msgstr "Wiederholungspuffer läuft:"
+
+#: package/contents/ui/configAppearance.qml:172
+msgid "Line below the dot"
+msgstr "Strich unter dem Punkt"
+
+#: package/contents/ui/configAppearance.qml:173
+msgid "Small dot at the top right"
+msgstr "Kleiner Punkt oben rechts"
+
+#: package/contents/ui/configAppearance.qml:174
+msgid "Circular arrow at the top right"
+msgstr "Kreispfeil oben rechts"
+
+#: package/contents/ui/configAppearance.qml:177
+msgid "Replay buffer indicator:"
+msgstr "Anzeige des Wiederholungspuffers:"
+
+#: package/contents/ui/configAppearance.qml:185
 msgid "Start/stop recording:"
 msgstr "Aufnahme starten/stoppen:"
 
-#: package/contents/ui/configAppearance.qml:161
+#: package/contents/ui/configAppearance.qml:186
 msgid "Single click"
 msgstr "Einzelklick"
 
-#: package/contents/ui/configAppearance.qml:168 package/contents/ui/main.qml:36
+#: package/contents/ui/configAppearance.qml:193 package/contents/ui/main.qml:36
 msgid "Double click"
 msgstr "Doppelklick"
 
-#: package/contents/ui/configAppearance.qml:175
+#: package/contents/ui/configAppearance.qml:200
 msgid "Start with single click, stop only with double click"
 msgstr "Start mit Einzelklick, Stopp nur mit Doppelklick"
 
-#: package/contents/ui/configAppearance.qml:186
+#: package/contents/ui/configAppearance.qml:211
 msgid "Scroll up:"
 msgstr "Mausrad hoch:"
 
-#: package/contents/ui/configAppearance.qml:200
+#: package/contents/ui/configAppearance.qml:225
 msgid "Scroll down:"
 msgstr "Mausrad runter:"
 
-#: package/contents/ui/configAppearance.qml:219
-#: package/contents/ui/configFollowMouse.qml:96
+#: package/contents/ui/configAppearance.qml:244
+#: package/contents/ui/configFollowMouse.qml:99
 msgid "OBS is not running, so no scenes are listed. Start OBS to see them."
 msgstr "OBS läuft nicht, deshalb fehlen hier die Szenen. OBS starten, dann erscheinen sie."
 
-#: package/contents/ui/configAppearance.qml:228
+#: package/contents/ui/configAppearance.qml:253
 msgid "Hold to discard:"
 msgstr "Halten zum Verwerfen:"
 
-#: package/contents/ui/configAppearance.qml:233
+#: package/contents/ui/configAppearance.qml:258
 msgid "Hold to launch:"
 msgstr "Halten zum Starten:"
 
-#: package/contents/ui/configAppearance.qml:241
+#: package/contents/ui/configAppearance.qml:266
 msgid "How long the button has to be held to discard a running recording, or to launch OBS when it is not running."
 msgstr "Wie lange der Knopf gedrückt bleiben muss, um eine laufende Aufnahme zu verwerfen oder OBS zu starten, wenn es nicht läuft."
 
-#: package/contents/ui/configAppearance.qml:245
+#: package/contents/ui/configAppearance.qml:270
 msgid "Launch OBS:"
 msgstr "OBS starten:"
 
-#: package/contents/ui/configAppearance.qml:246
+#: package/contents/ui/configAppearance.qml:271
 msgid "Normally"
 msgstr "Normal"
 
-#: package/contents/ui/configAppearance.qml:253
+#: package/contents/ui/configAppearance.qml:278
 msgid "Minimized to the task manager"
 msgstr "Minimiert in der Taskleiste"
 
-#: package/contents/ui/configAppearance.qml:260
+#: package/contents/ui/configAppearance.qml:285
 msgid "Minimized to the system tray"
 msgstr "Minimiert im Systemabschnitt"
 
-#: package/contents/ui/configAppearance.qml:272
+#: package/contents/ui/configAppearance.qml:297
 msgid "Applies only when the widget launches OBS. The system tray icon has to be enabled in OBS under Settings → General, otherwise the window cannot be reached."
 msgstr "Gilt nur für den Start über das Widget. Das OBS-Symbol im Systemabschnitt muss in OBS unter Einstellungen → Allgemein eingeschaltet sein, sonst bleibt das Fenster unerreichbar."
 
-#: package/contents/ui/configAppearance.qml:277
+#: package/contents/ui/configAppearance.qml:302
 msgid "Start recording right away"
 msgstr "Nach dem Start sofort aufnehmen"
 
-#: package/contents/ui/configAppearance.qml:281
+#: package/contents/ui/configAppearance.qml:306
 msgid "Discarded recording:"
 msgstr "Verworfene Aufnahme:"
 
-#: package/contents/ui/configAppearance.qml:282
+#: package/contents/ui/configAppearance.qml:307
 msgid "Move to trash"
 msgstr "In den Papierkorb verschieben"
 
-#: package/contents/ui/configAppearance.qml:289
+#: package/contents/ui/configAppearance.qml:314
 msgid "Delete permanently"
 msgstr "Endgültig löschen"
 
-#: package/contents/ui/configAppearance.qml:300
+#: package/contents/ui/configAppearance.qml:325
 msgid "Discarded recordings cannot be restored then."
 msgstr "Verworfene Aufnahmen lassen sich dann nicht wiederherstellen."
 
-#: package/contents/ui/configAppearance.qml:309
+#: package/contents/ui/configAppearance.qml:334
 msgid "While recording:"
 msgstr "Während der Aufnahme:"
 
-#: package/contents/ui/configAppearance.qml:310
+#: package/contents/ui/configAppearance.qml:335
 msgid "Show duration"
 msgstr "Dauer anzeigen"
 
-#: package/contents/ui/configAppearance.qml:315
+#: package/contents/ui/configAppearance.qml:340
 msgid "After stopping:"
 msgstr "Nach dem Stoppen:"
 
-#: package/contents/ui/configAppearance.qml:316
+#: package/contents/ui/configAppearance.qml:341
 msgid "Show a notification with the file name"
 msgstr "Benachrichtigung mit Dateinamen anzeigen"
 
-#: package/contents/ui/configAppearance.qml:321
-#: package/contents/ui/main.qml:535
+#: package/contents/ui/configAppearance.qml:346
+#: package/contents/ui/main.qml:548
 msgid "Replay Buffer"
 msgstr "Wiederholungspuffer"
 
-#: package/contents/ui/configAppearance.qml:326
+#: package/contents/ui/configAppearance.qml:351
 msgid "Replay buffer:"
 msgstr "Wiederholungspuffer:"
 
-#: package/contents/ui/configAppearance.qml:327
+#: package/contents/ui/configAppearance.qml:352
 msgid "Start automatically when OBS connects"
 msgstr "Automatisch starten, sobald OBS verbunden ist"
 
-#: package/contents/ui/configAppearance.qml:331
+#: package/contents/ui/configAppearance.qml:356
 msgid "Length:"
 msgstr "Länge:"
 
-#: package/contents/ui/configAppearance.qml:335
+#: package/contents/ui/configAppearance.qml:360
 msgid "Set in the widget"
 msgstr "Im Widget festlegen"
 
-#: package/contents/ui/configAppearance.qml:357
+#: package/contents/ui/configAppearance.qml:382
 msgid "The replay buffer has to be turned on in OBS under Settings → Output → Replay Buffer. A length set here is written to the OBS settings and applies from the next start of the buffer. In the advanced output mode of OBS, “Maximum Memory” can cut the buffer shorter."
 msgstr "Der Wiederholungspuffer muss in OBS unter Einstellungen → Ausgabe → Wiederholungspuffer eingeschaltet sein. Eine hier festgelegte Länge wird in die OBS-Einstellungen geschrieben und gilt ab dem nächsten Start des Puffers. Im erweiterten Ausgabemodus von OBS kann „Maximaler Speicher“ den Puffer kürzer machen."
 
-#: package/contents/ui/configAppearance.qml:365
+#: package/contents/ui/configAppearance.qml:390
 msgid "The slider sets the opacity of the dot, 0 % hides it. Without a custom color, the color of the Plasma theme is used. Pause (orange) and password errors (red outline) cannot be changed."
 msgstr "Der Schieberegler stellt die Deckkraft des Punkts ein, 0 % macht ihn unsichtbar. Ohne eigene Farbe gilt die Farbe des Plasma-Designs. Pause (orange) und Passwortfehler (roter Rand) bleiben fest."
 
-#: package/contents/ui/configFollowMouse.qml:61
+#: package/contents/ui/configFollowMouse.qml:64
 msgctxt "@label screen: connector (maker and model)"
 msgid "%1 (%2):"
 msgstr "%1 (%2):"
 
-#: package/contents/ui/configFollowMouse.qml:62
+#: package/contents/ui/configFollowMouse.qml:65
 msgctxt "@label screen connector"
 msgid "%1:"
 msgstr "%1:"
 
-#: package/contents/ui/configFollowMouse.qml:70
+#: package/contents/ui/configFollowMouse.qml:73
 msgid "Shows the scene of the screen the mouse pointer is on. Turn it on and off in the right-click menu of the widget. Changing the scene any other way, by mouse wheel, menu or in OBS, turns it off."
 msgstr "Zeigt die Szene des Bildschirms, auf dem der Mauszeiger ist. Ein- und ausschalten lässt sich das im Rechtsklick-Menü des Widgets. Wird die Szene auf anderem Weg gewechselt, per Mausrad, Menü oder in OBS, schaltet es sich aus."
 
-#: package/contents/ui/configFollowMouse.qml:95
+#: package/contents/ui/configFollowMouse.qml:98
 msgid "Screens without a scene switch nothing."
 msgstr "Bildschirme ohne Szene lösen keinen Wechsel aus."
 
-#: package/contents/ui/configFollowMouse.qml:106
+#: package/contents/ui/configFollowMouse.qml:109
 msgid "Switch after:"
 msgstr "Wechseln nach:"
 
-#: package/contents/ui/configFollowMouse.qml:110
+#: package/contents/ui/configFollowMouse.qml:113
 msgid "Immediately"
 msgstr "Sofort"
 
-#: package/contents/ui/configFollowMouse.qml:123
+#: package/contents/ui/configFollowMouse.qml:126
 msgid "How long the pointer has to stay on a screen before its scene shows. Passing over a screen on the way to another then switches nothing."
 msgstr "So lange muss der Mauszeiger auf einem Bildschirm bleiben, bis dessen Szene erscheint. Fährt er nur auf dem Weg zu einem anderen Bildschirm darüber, wechselt nichts."
 
-#: package/contents/ui/configGeneral.qml:41
+#: package/contents/ui/configGeneral.qml:44
 msgid "Host:"
 msgstr "Host:"
 
-#: package/contents/ui/configGeneral.qml:46
+#: package/contents/ui/configGeneral.qml:49
 msgid "Port:"
 msgstr "Port:"
 
-#: package/contents/ui/configGeneral.qml:56
+#: package/contents/ui/configGeneral.qml:59
 msgid "Password:"
 msgstr "Passwort:"
 
-#: package/contents/ui/configGeneral.qml:64
+#: package/contents/ui/configGeneral.qml:67
 msgid "Port and password are shown in OBS under Tools → WebSocket Server Settings → Show Connect Info. Leave the password empty if authentication is disabled there."
 msgstr "Port und Passwort stehen in OBS unter Werkzeuge → WebSocket-Servereinstellungen → Verbindungsinformationen anzeigen. Leer lassen, wenn dort die Authentifizierung ausgeschaltet ist."
 
@@ -390,19 +411,19 @@ msgstr "Einschalten in OBS unter Einstellungen → Ausgabe → Wiederholungspuff
 msgid "Recording saved"
 msgstr "Aufnahme gespeichert"
 
-#: package/contents/ui/main.qml:397 package/contents/ui/main.qml:401
+#: package/contents/ui/main.qml:410 package/contents/ui/main.qml:414
 msgid "Could not quit OBS"
 msgstr "OBS konnte nicht beendet werden"
 
-#: package/contents/ui/main.qml:436 package/contents/ui/main.qml:459
+#: package/contents/ui/main.qml:449 package/contents/ui/main.qml:472
 msgid "Open Folder"
 msgstr "Ordner öffnen"
 
-#: package/contents/ui/main.qml:457
+#: package/contents/ui/main.qml:470
 msgid "Could not remove the recording"
 msgstr "Aufnahme konnte nicht entfernt werden"
 
-#: package/contents/ui/main.qml:458
+#: package/contents/ui/main.qml:471
 msgid ""
 "%1 is still in the recording folder.\n"
 "%2"
@@ -410,50 +431,50 @@ msgstr ""
 "%1 liegt noch im Aufnahmeordner.\n"
 "%2"
 
-#: package/contents/ui/main.qml:461
+#: package/contents/ui/main.qml:474
 msgid "%1 was moved to the trash."
 msgstr "%1 liegt im Papierkorb."
 
-#: package/contents/ui/main.qml:461 package/contents/ui/main.qml:464
+#: package/contents/ui/main.qml:474 package/contents/ui/main.qml:477
 msgid "Recording discarded"
 msgstr "Aufnahme verworfen"
 
-#: package/contents/ui/main.qml:462
+#: package/contents/ui/main.qml:475
 msgid "Open Trash"
 msgstr "Papierkorb öffnen"
 
-#: package/contents/ui/main.qml:464
+#: package/contents/ui/main.qml:477
 msgid "%1 was deleted permanently."
 msgstr "%1 wurde endgültig gelöscht."
 
-#: package/contents/ui/main.qml:548
+#: package/contents/ui/main.qml:561
 msgid "Save Clip"
 msgstr "Clip speichern"
 
-#: package/contents/ui/main.qml:556
+#: package/contents/ui/main.qml:569
 msgid "Audio Mixer…"
 msgstr "Audio-Mixer …"
 
-#: package/contents/ui/main.qml:571
+#: package/contents/ui/main.qml:584
 msgid "Quitting OBS…"
 msgstr "OBS wird beendet …"
 
-#: package/contents/ui/main.qml:572
+#: package/contents/ui/main.qml:585
 msgid "Quit OBS"
 msgstr "OBS beenden"
 
-#: package/contents/ui/main.qml:572
+#: package/contents/ui/main.qml:585
 msgid "Stop Recording and Quit OBS"
 msgstr "Aufnahme stoppen und OBS beenden"
 
-#: package/contents/ui/main.qml:586
+#: package/contents/ui/main.qml:599
 msgid "Scene"
 msgstr "Szene"
 
-#: package/contents/ui/main.qml:592
+#: package/contents/ui/main.qml:605
 msgid "Scene Follows Mouse Pointer"
 msgstr "Szene folgt dem Mauszeiger"
 
-#: package/contents/ui/main.qml:592
+#: package/contents/ui/main.qml:605
 msgid "Scene Follows Mouse Pointer…"
 msgstr "Szene folgt dem Mauszeiger …"

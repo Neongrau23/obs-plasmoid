@@ -145,6 +145,18 @@ the next real notch.
 
 ## Display and interaction
 
+**The replay buffer mark sits beside the dot, not inside it** (`ReplayMark.qml`).
+The dot's opacity pulses while recording and is reduced while OBS is closed;
+as a child, the mark would pulse and fade with it. A line below is the
+default: it works in every state and at the dot's size of about 13 px. The
+small dot and the circular arrow sit top right with a disc in the theme
+background color, so they stand out from the dot's outline; the arrow gets a
+little more room than the dot to stay recognizable.
+
+**Combo box index from the array, not `indexOfValue()`** (replay mark style in
+`configAppearance.qml`). `indexOfValue()` can run before the combo box has
+built its model and would then always show the first entry.
+
 **The dot does not show the short “connecting” phase** (`shownState` in
 `main.qml`). Otherwise it would fade back and forth on every connection
 attempt every 3 s.

@@ -31,7 +31,8 @@ Not covered, only testable in the real panel with a real OBS:
 - Starting OBS (normal, taskbar, system tray, record right away) and
   quitting it
 - Notifications, discarding to the trash or permanently
-- Replay buffer menu entries, tooltip line and notifications; the length in
+- Replay buffer mark at the dot (drawing, blink; its geometry is tested);
+  replay buffer menu entries, tooltip line and notifications; the length in
   OBS's simple output mode (checked against real OBS only in advanced mode)
 - Translations: Plasma loads them only for the installed widget, not with
   `plasmoidviewer -a package`
