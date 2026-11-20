@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
+import org.kde.plasma.plasmoid
 import org.kde.kquickcontrols as KQuickControls
 
 import "follow.js" as Follow
@@ -400,5 +401,11 @@ KCM.SimpleKCM {
             font: Kirigami.Theme.smallFont
             text: i18n("The slider sets the opacity of the dot, 0 % hides it. Without a custom color, the color of the Plasma theme is used. Pause (orange) and password errors (red outline) cannot be changed.")
         }
+    }
+
+    // Follows changes made while the dialog is open, e.g. a scene renamed in OBS.
+    ConfigSync {
+        page: page
+        config: Plasmoid.configuration
     }
 }

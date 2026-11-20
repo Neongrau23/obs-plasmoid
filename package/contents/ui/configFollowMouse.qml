@@ -4,6 +4,7 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
+import org.kde.plasma.plasmoid
 
 import "follow.js" as Follow
 import "seconds.js" as Seconds
@@ -126,5 +127,11 @@ KCM.SimpleKCM {
             font: Kirigami.Theme.smallFont
             text: i18n("How long the pointer has to stay on a screen before its scene shows. Passing over a screen on the way to another then switches nothing.")
         }
+    }
+
+    // Follows changes made while the dialog is open, e.g. a scene renamed in OBS.
+    ConfigSync {
+        page: page
+        config: Plasmoid.configuration
     }
 }

@@ -19,3 +19,4 @@ for _ in $(seq 50); do
 done
 
 QT_QPA_PLATFORM=offscreen "${QMLTESTRUNNER:-/usr/lib/qt6/bin/qmltestrunner}" -input tst_obsclient.qml
+QT_QPA_PLATFORM=offscreen "${QMLTESTRUNNER:-/usr/lib/qt6/bin/qmltestrunner}" -input tst_configsync.qml

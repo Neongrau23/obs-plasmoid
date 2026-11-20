@@ -4,8 +4,10 @@ import QtQuick.Layouts
 
 import org.kde.kirigami as Kirigami
 import org.kde.kcmutils as KCM
+import org.kde.plasma.plasmoid
 
 KCM.SimpleKCM {
+    id: page
     property alias cfg_host: hostField.text
     property alias cfg_port: portField.value
     property alias cfg_password: passwordField.text
@@ -67,5 +69,11 @@ KCM.SimpleKCM {
             font: Kirigami.Theme.smallFont
             text: i18n("Port and password are shown in OBS under Tools → WebSocket Server Settings → Show Connect Info. Leave the password empty if authentication is disabled there.")
         }
+    }
+
+    // Follows changes made while the dialog is open, e.g. a scene renamed in OBS.
+    ConfigSync {
+        page: page
+        config: Plasmoid.configuration
     }
 }
