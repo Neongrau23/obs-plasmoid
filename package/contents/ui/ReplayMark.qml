@@ -6,8 +6,8 @@ import org.kde.kirigami as Kirigami
 import "replaymark.js" as Mark
 
 // Indicator for a running replay buffer, laid over a dot of dotSize at the item's origin:
-// a line below it ("bar"), a dot or circular arrow at its top right ("dot", "arrow"), or a
-// smaller dot in its middle ("center").
+// a line below it ("bar"), a small dot or circular arrow at its top right ("dot", "arrow"),
+// or in its middle ("center", "centerArrow").
 Item {
     id: mark
 
@@ -15,9 +15,11 @@ Item {
     property string style: "bar"
     property color markColor: Kirigami.Theme.positiveTextColor
 
+    readonly property bool corner: style === "dot" || style === "arrow"
     readonly property var badgeGeo: Mark.badge(dotSize)
     readonly property var barGeo: Mark.bar(dotSize)
     readonly property var coreGeo: Mark.core(dotSize)
+    readonly property var centerArrowGeo: Mark.centerArrow(dotSize)
     property real blinkScale: 1
 
     // Short double pulse, e.g. for a saved clip.
@@ -27,6 +29,47 @@ Item {
 
     width: dotSize
     height: dotSize
+
+    // Circular arrow filling its square item, open at the top, head pointing clockwise.
+    component Arrow: Shape {
+        id: arrowShape
+
+        property color color: mark.markColor
+        readonly property real strokeWidth: Math.max(1, Math.round(width / 7))
+        readonly property real radius: width / 2 - strokeWidth
+        readonly property var head: Mark.arrowHead(width / 2, width / 2, radius, 240,
+                                                   Math.max(strokeWidth * 2.2, radius * 0.9))
+
+        height: width
+        preferredRendererType: Shape.CurveRenderer
+
+        ShapePath {
+            strokeColor: arrowShape.color
+            strokeWidth: arrowShape.strokeWidth
+            fillColor: "transparent"
+            capStyle: ShapePath.RoundCap
+
+            PathAngleArc {
+                centerX: arrowShape.width / 2
+                centerY: arrowShape.width / 2
+                radiusX: arrowShape.radius
+                radiusY: arrowShape.radius
+                startAngle: -60
+                sweepAngle: 300
+            }
+        }
+
+        ShapePath {
+            strokeColor: "transparent"
+            fillColor: arrowShape.color
+            startX: arrowShape.head[0].x
+            startY: arrowShape.head[0].y
+
+            PathLine { x: arrowShape.head[1].x; y: arrowShape.head[1].y }
+            PathLine { x: arrowShape.head[2].x; y: arrowShape.head[2].y }
+            PathLine { x: arrowShape.head[0].x; y: arrowShape.head[0].y }
+        }
+    }
 
     Rectangle {
         visible: mark.style === "bar"
@@ -50,13 +93,20 @@ Item {
         scale: mark.blinkScale
     }
 
+    Arrow {
+        visible: mark.style === "centerArrow"
+        x: mark.centerArrowGeo.x
+        y: mark.centerArrowGeo.x
+        width: mark.centerArrowGeo.size
+        scale: mark.blinkScale
+    }
+
     Item {
         id: badge
         readonly property bool arrow: mark.style === "arrow"
 
-        visible: mark.style === "dot" || arrow
-        // The arrow needs a little more room than a plain dot to stay readable.
-        width: arrow ? Math.max(7, Math.round(mark.dotSize * 0.55)) : mark.badgeGeo.size
+        visible: mark.corner
+        width: arrow ? Mark.arrowSize(mark.dotSize) : mark.badgeGeo.size
         height: width
         x: mark.badgeGeo.cx - width / 2
         y: mark.badgeGeo.cy - height / 2
@@ -78,43 +128,9 @@ Item {
             color: mark.markColor
         }
 
-        Shape {
-            id: arrowShape
-            readonly property real strokeWidth: Math.max(1, Math.round(badge.width / 7))
-            readonly property real radius: badge.width / 2 - strokeWidth
-            readonly property var head: Mark.arrowHead(badge.width / 2, badge.width / 2, radius, 240,
-                                                       Math.max(strokeWidth * 2.2, radius * 0.9))
-
+        Arrow {
             visible: badge.arrow
-            anchors.fill: parent
-            preferredRendererType: Shape.CurveRenderer
-
-            ShapePath {
-                strokeColor: mark.markColor
-                strokeWidth: arrowShape.strokeWidth
-                fillColor: "transparent"
-                capStyle: ShapePath.RoundCap
-
-                PathAngleArc {
-                    centerX: badge.width / 2
-                    centerY: badge.width / 2
-                    radiusX: arrowShape.radius
-                    radiusY: arrowShape.radius
-                    startAngle: -60
-                    sweepAngle: 300
-                }
-            }
-
-            ShapePath {
-                strokeColor: "transparent"
-                fillColor: mark.markColor
-                startX: arrowShape.head[0].x
-                startY: arrowShape.head[0].y
-
-                PathLine { x: arrowShape.head[1].x; y: arrowShape.head[1].y }
-                PathLine { x: arrowShape.head[2].x; y: arrowShape.head[2].y }
-                PathLine { x: arrowShape.head[0].x; y: arrowShape.head[0].y }
-            }
+            width: badge.width
         }
     }
 

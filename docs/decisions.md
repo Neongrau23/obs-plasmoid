@@ -153,7 +153,11 @@ small dot and the circular arrow sit top right with a disc in the theme
 background color, so they stand out from the dot's outline; the arrow gets a
 little more room than the dot to stay recognizable. The small dot in the
 middle keeps a gap of at least 1 px inside the outline of the ready state and
-uses the mark color in every state, also on the red or orange fill.
+uses the mark color in every state, also on the red or orange fill. The same
+holds for the circular arrow in the middle; it is one pixel smaller than the
+corner arrow where needed to stay centered on whole pixels. Both arrows share
+one `Arrow` component in `ReplayMark.qml`, their sizes come from
+`replaymark.js`.
 
 **Combo box index from the array, not `indexOfValue()`** (replay mark style in
 `configAppearance.qml`). `indexOfValue()` can run before the combo box has

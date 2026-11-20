@@ -10,6 +10,19 @@ function badge(dotSize) {
     return { cx: r + offset, cy: r - offset, size: Math.max(4, Math.round(dotSize * 0.38)) };
 }
 
+// Size of the circular arrow; it needs more room than a plain dot to stay recognizable.
+function arrowSize(dotSize) {
+    return Math.max(7, Math.round(dotSize * 0.55));
+}
+
+// Circular arrow in the middle of the dot: one pixel smaller where needed, so it shares the
+// dot's parity and sits centered on whole pixels.
+function centerArrow(dotSize) {
+    const full = arrowSize(dotSize);
+    const size = full - (dotSize - full) % 2;
+    return { x: (dotSize - size) / 2, size: size };
+}
+
 // Smaller dot in the middle of the dot. Its size has the dot's parity, so it sits on whole
 // pixels, and it leaves a gap inside the outline of the ready state.
 function core(dotSize) {

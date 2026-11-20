@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-20 20:46+0100\n"
+"POT-Creation-Date: 2026-11-20 20:50+0100\n"
 "PO-Revision-Date: 2026-10-21 08:45+0200\n"
 "Last-Translator: Neongrau23\n"
 "Language-Team: German\n"
@@ -49,7 +49,7 @@ msgid "OBS is not running"
 msgstr "OBS läuft nicht"
 
 #: package/contents/ui/SceneComboBox.qml:18
-#: package/contents/ui/configAppearance.qml:176
+#: package/contents/ui/configAppearance.qml:177
 msgid "None"
 msgstr "Keine"
 
@@ -66,7 +66,7 @@ msgid "Assign a scene to a screen on the “Follow Mouse Pointer” page first."
 msgstr "Erst auf der Seite „Mauszeiger folgen“ einem Bildschirm eine Szene zuordnen."
 
 #: package/contents/ui/configAppearance.qml:78
-#: package/contents/ui/configAppearance.qml:370
+#: package/contents/ui/configAppearance.qml:371
 #: package/contents/ui/configFollowMouse.qml:114
 msgid "%1 s"
 msgstr "%1 s"
@@ -104,140 +104,144 @@ msgid "Small dot at the top right"
 msgstr "Kleiner Punkt oben rechts"
 
 #: package/contents/ui/configAppearance.qml:174
-msgid "Circular arrow at the top right"
-msgstr "Kreispfeil oben rechts"
-
-#: package/contents/ui/configAppearance.qml:175
 msgid "Small dot in the middle"
 msgstr "Kleiner Punkt in der Mitte"
 
-#: package/contents/ui/configAppearance.qml:178
+#: package/contents/ui/configAppearance.qml:175
+msgid "Circular arrow at the top right"
+msgstr "Kreispfeil oben rechts"
+
+#: package/contents/ui/configAppearance.qml:176
+msgid "Circular arrow in the middle"
+msgstr "Kreispfeil in der Mitte"
+
+#: package/contents/ui/configAppearance.qml:179
 msgid "Replay buffer indicator:"
 msgstr "Anzeige des Wiederholungspuffers:"
 
-#: package/contents/ui/configAppearance.qml:186
+#: package/contents/ui/configAppearance.qml:187
 msgid "Start/stop recording:"
 msgstr "Aufnahme starten/stoppen:"
 
-#: package/contents/ui/configAppearance.qml:187
+#: package/contents/ui/configAppearance.qml:188
 msgid "Single click"
 msgstr "Einzelklick"
 
-#: package/contents/ui/configAppearance.qml:194 package/contents/ui/main.qml:36
+#: package/contents/ui/configAppearance.qml:195 package/contents/ui/main.qml:36
 msgid "Double click"
 msgstr "Doppelklick"
 
-#: package/contents/ui/configAppearance.qml:201
+#: package/contents/ui/configAppearance.qml:202
 msgid "Start with single click, stop only with double click"
 msgstr "Start mit Einzelklick, Stopp nur mit Doppelklick"
 
-#: package/contents/ui/configAppearance.qml:212
+#: package/contents/ui/configAppearance.qml:213
 msgid "Scroll up:"
 msgstr "Mausrad hoch:"
 
-#: package/contents/ui/configAppearance.qml:226
+#: package/contents/ui/configAppearance.qml:227
 msgid "Scroll down:"
 msgstr "Mausrad runter:"
 
-#: package/contents/ui/configAppearance.qml:245
+#: package/contents/ui/configAppearance.qml:246
 #: package/contents/ui/configFollowMouse.qml:99
 msgid "OBS is not running, so no scenes are listed. Start OBS to see them."
 msgstr "OBS läuft nicht, deshalb fehlen hier die Szenen. OBS starten, dann erscheinen sie."
 
-#: package/contents/ui/configAppearance.qml:254
+#: package/contents/ui/configAppearance.qml:255
 msgid "Hold to discard:"
 msgstr "Halten zum Verwerfen:"
 
-#: package/contents/ui/configAppearance.qml:259
+#: package/contents/ui/configAppearance.qml:260
 msgid "Hold to launch:"
 msgstr "Halten zum Starten:"
 
-#: package/contents/ui/configAppearance.qml:267
+#: package/contents/ui/configAppearance.qml:268
 msgid "How long the button has to be held to discard a running recording, or to launch OBS when it is not running."
 msgstr "Wie lange der Knopf gedrückt bleiben muss, um eine laufende Aufnahme zu verwerfen oder OBS zu starten, wenn es nicht läuft."
 
-#: package/contents/ui/configAppearance.qml:271
+#: package/contents/ui/configAppearance.qml:272
 msgid "Launch OBS:"
 msgstr "OBS starten:"
 
-#: package/contents/ui/configAppearance.qml:272
+#: package/contents/ui/configAppearance.qml:273
 msgid "Normally"
 msgstr "Normal"
 
-#: package/contents/ui/configAppearance.qml:279
+#: package/contents/ui/configAppearance.qml:280
 msgid "Minimized to the task manager"
 msgstr "Minimiert in der Taskleiste"
 
-#: package/contents/ui/configAppearance.qml:286
+#: package/contents/ui/configAppearance.qml:287
 msgid "Minimized to the system tray"
 msgstr "Minimiert im Systemabschnitt"
 
-#: package/contents/ui/configAppearance.qml:298
+#: package/contents/ui/configAppearance.qml:299
 msgid "Applies only when the widget launches OBS. The system tray icon has to be enabled in OBS under Settings → General, otherwise the window cannot be reached."
 msgstr "Gilt nur für den Start über das Widget. Das OBS-Symbol im Systemabschnitt muss in OBS unter Einstellungen → Allgemein eingeschaltet sein, sonst bleibt das Fenster unerreichbar."
 
-#: package/contents/ui/configAppearance.qml:303
+#: package/contents/ui/configAppearance.qml:304
 msgid "Start recording right away"
 msgstr "Nach dem Start sofort aufnehmen"
 
-#: package/contents/ui/configAppearance.qml:307
+#: package/contents/ui/configAppearance.qml:308
 msgid "Discarded recording:"
 msgstr "Verworfene Aufnahme:"
 
-#: package/contents/ui/configAppearance.qml:308
+#: package/contents/ui/configAppearance.qml:309
 msgid "Move to trash"
 msgstr "In den Papierkorb verschieben"
 
-#: package/contents/ui/configAppearance.qml:315
+#: package/contents/ui/configAppearance.qml:316
 msgid "Delete permanently"
 msgstr "Endgültig löschen"
 
-#: package/contents/ui/configAppearance.qml:326
+#: package/contents/ui/configAppearance.qml:327
 msgid "Discarded recordings cannot be restored then."
 msgstr "Verworfene Aufnahmen lassen sich dann nicht wiederherstellen."
 
-#: package/contents/ui/configAppearance.qml:335
+#: package/contents/ui/configAppearance.qml:336
 msgid "While recording:"
 msgstr "Während der Aufnahme:"
 
-#: package/contents/ui/configAppearance.qml:336
+#: package/contents/ui/configAppearance.qml:337
 msgid "Show duration"
 msgstr "Dauer anzeigen"
 
-#: package/contents/ui/configAppearance.qml:341
+#: package/contents/ui/configAppearance.qml:342
 msgid "After stopping:"
 msgstr "Nach dem Stoppen:"
 
-#: package/contents/ui/configAppearance.qml:342
+#: package/contents/ui/configAppearance.qml:343
 msgid "Show a notification with the file name"
 msgstr "Benachrichtigung mit Dateinamen anzeigen"
 
-#: package/contents/ui/configAppearance.qml:347
+#: package/contents/ui/configAppearance.qml:348
 #: package/contents/ui/main.qml:548
 msgid "Replay Buffer"
 msgstr "Wiederholungspuffer"
 
-#: package/contents/ui/configAppearance.qml:352
+#: package/contents/ui/configAppearance.qml:353
 msgid "Replay buffer:"
 msgstr "Wiederholungspuffer:"
 
-#: package/contents/ui/configAppearance.qml:353
+#: package/contents/ui/configAppearance.qml:354
 msgid "Start automatically when OBS connects"
 msgstr "Automatisch starten, sobald OBS verbunden ist"
 
-#: package/contents/ui/configAppearance.qml:357
+#: package/contents/ui/configAppearance.qml:358
 msgid "Length:"
 msgstr "Länge:"
 
-#: package/contents/ui/configAppearance.qml:361
+#: package/contents/ui/configAppearance.qml:362
 msgid "Set in the widget"
 msgstr "Im Widget festlegen"
 
-#: package/contents/ui/configAppearance.qml:383
+#: package/contents/ui/configAppearance.qml:384
 msgid "The replay buffer has to be turned on in OBS under Settings → Output → Replay Buffer. A length set here is written to the OBS settings and applies from the next start of the buffer. In the advanced output mode of OBS, “Maximum Memory” can cut the buffer shorter."
 msgstr "Der Wiederholungspuffer muss in OBS unter Einstellungen → Ausgabe → Wiederholungspuffer eingeschaltet sein. Eine hier festgelegte Länge wird in die OBS-Einstellungen geschrieben und gilt ab dem nächsten Start des Puffers. Im erweiterten Ausgabemodus von OBS kann „Maximaler Speicher“ den Puffer kürzer machen."
 
-#: package/contents/ui/configAppearance.qml:391
+#: package/contents/ui/configAppearance.qml:392
 msgid "The slider sets the opacity of the dot, 0 % hides it. Without a custom color, the color of the Plasma theme is used. Pause (orange) and password errors (red outline) cannot be changed."
 msgstr "Der Schieberegler stellt die Deckkraft des Punkts ein, 0 % macht ihn unsichtbar. Ohne eigene Farbe gilt die Farbe des Plasma-Designs. Pause (orange) und Passwortfehler (roter Rand) bleiben fest."
 
