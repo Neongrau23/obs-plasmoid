@@ -765,6 +765,28 @@ PlasmoidItem {
             }
         }
 
+        // Mark while the replay buffer runs. Beside the dot instead of inside it: the dot's
+        // opacity pulses while recording and is reduced while OBS is closed.
+        ReplayMark {
+            id: replayMark
+            x: row.x + dot.x
+            y: row.y + dot.y
+            z: 1
+            dotSize: dot.width
+            style: Plasmoid.configuration.replayIndicator
+            markColor: Plasmoid.configuration.replayColor || Kirigami.Theme.positiveTextColor
+            visible: obs.connected && obs.replayBufferActive && style !== "none"
+            opacity: Plasmoid.configuration.replayOpacity / 100
+
+            Connections {
+                target: obs
+                // Also when the clip was saved with the OBS hotkey.
+                function onReplaySaved() {
+                    replayMark.blink();
+                }
+            }
+        }
+
         RowLayout {
             id: row
             anchors.centerIn: parent
