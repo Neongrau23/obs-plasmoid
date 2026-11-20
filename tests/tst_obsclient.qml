@@ -469,6 +469,19 @@ TestCase {
         compare(obs.lastError, "");
     }
 
+    // Releasing the slider sends its end value at once instead of after the throttle interval;
+    // otherwise the slider would jump back to the last sent value for a moment.
+    function test_3d4_flushesVolumeOnRelease() {
+        tryCompare(obs.audioInputs, "count", 2, 3000);
+        obs.volumeThrottleInterval = 3000;
+        const before = mockRequestCount("SetInputVolume");
+        obs.setInputVolume("Mikrofon", 0.25);
+        obs.setInputVolume("Mikrofon", 0.5);
+        obs.flushVolumes();
+        tryVerify(() => mockRequestCount("SetInputVolume") - before === 2, 1500);
+        obs.volumeThrottleInterval = 50;
+    }
+
     function inputs() {
         const rows = [];
         for (let i = 0; i < obs.audioInputs.count; i++) {

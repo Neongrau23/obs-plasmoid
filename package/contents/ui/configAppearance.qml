@@ -56,7 +56,7 @@ KCM.SimpleKCM {
         password: page.cfg_password
     }
 
-    // Screens assigned on the "Follow Mouse Pointer" page, as saved when the dialog opened.
+    // Screens assigned on the "Follow Mouse Pointer" page, as saved (ConfigSync follows changes).
     readonly property bool canFollow: Object.keys(Follow.parseScenes(cfg_followMouseScenes)).length > 0
 
     // Toggle next to a wheel scene: scrolling turns following on instead of off.

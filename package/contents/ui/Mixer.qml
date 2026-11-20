@@ -88,6 +88,8 @@ PlasmaExtras.Representation {
                         to: 1
                         opacity: row.muted ? 0.5 : 1
                         onMoved: mixer.client.setInputVolume(row.name, Fader.positionToMul(value))
+                        // The end value at once, so the slider does not jump back on release.
+                        onPressedChanged: if (!pressed) mixer.client.flushVolumes()
 
                         // Follow OBS, but not while dragging, so incoming events do not fight the mouse.
                         Binding on value {

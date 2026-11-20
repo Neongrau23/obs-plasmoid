@@ -13,6 +13,8 @@ Item {
     property string password: ""
     property int retryInterval: 3000
     property int authRetryInterval: 15000
+    // Least time between two volume requests per drag, see setInputVolume().
+    property int volumeThrottleInterval: 50
     // Start the replay buffer on every new connection if it is not running yet.
     property bool replayAutoStart: false
     // Replay buffer length written to the OBS profile on connect and on change; 0 leaves
@@ -167,6 +169,13 @@ Item {
                 d.sendVolumes();
                 volumeThrottle.start();
             }
+        }
+    }
+
+    // Sends volumes still held back by the throttle at once, e.g. when a slider is released.
+    function flushVolumes() {
+        if (connected && d.sendVolumes()) {
+            volumeThrottle.restart();
         }
     }
 
@@ -556,7 +565,7 @@ Item {
     // Runs on while values keep coming, stops after one quiet interval.
     Timer {
         id: volumeThrottle
-        interval: 50
+        interval: client.volumeThrottleInterval
         onTriggered: {
             if (d.sendVolumes()) {
                 restart();
