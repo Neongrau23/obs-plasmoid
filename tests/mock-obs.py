@@ -15,6 +15,13 @@ the server then behaves like OBS quitting and starting again N ms later.
 {"cmd": "failNext", "request": "..."} makes the next request of that type fail.
 {"cmd": "setTransition", "fixed": true, "ms": N} switches to a transition of N ms; a fixed
 one (e.g. stinger) reports no duration, like OBS. Sends CurrentSceneTransitionChanged.
+Replay buffer: GetReplayBufferStatus, Start/Stop/Toggle/SaveReplayBuffer (code 604 while it
+is disabled in the OBS settings, as in OBS 33) with ReplayBufferStateChanged and
+ReplayBufferSaved, plus Get/SetProfileParameter on a small profile.
+{"cmd": "setReplay", "enabled": bool} enables or disables the replay buffer (disabled at start).
+{"cmd": "saveReplay"} saves the replay buffer like the OBS hotkey.
+{"cmd": "setProfile", "category": "...", "name": "...", "value": "..." | null} sets a profile
+parameter; null removes it. {"cmd": "getProfile"} replies {"profile": {"Category/Name": value}}.
 
 Usage: mock-obs.py [--port 14455] [--password testpass]
 """
@@ -38,6 +45,8 @@ def b64sha(text: str) -> str:
 # Top to bottom as in the OBS scene list.
 SCENES = ["Gameplay", "Kamera", "Pause-Bildschirm"]
 RECORDING_PATH = "/videos/mock-recording.mkv"
+REPLAY_PATH = "/videos/mock-replay.mkv"
+REPLAY_UNAVAILABLE = {"result": False, "code": 604, "comment": "Replay buffer is not available."}
 
 
 class MockObs:
@@ -59,6 +68,10 @@ class MockObs:
             "Bildschirm": {"audio": False},
             "Mikrofon": {"audio": True, "mul": 0.5, "muted": False},
         }
+        self.replay_enabled = False
+        self.replay_active = False
+        self.profile = {("Output", "Mode"): "Advanced", ("AdvOut", "RecRBTime"): "20",
+                        ("SimpleOutput", "RecRBTime"): "20"}
         self.restart = None
         self.down_ms = 0
 
@@ -81,6 +94,18 @@ class MockObs:
                                    {"outputActive": on, "outputState": f"OBS_WEBSOCKET_OUTPUT_{state}",
                                     "outputPath": self.recording_path if not on else None})
         return True
+
+    async def set_replay(self, on: bool):
+        if on == self.replay_active:
+            return False
+        self.replay_active = on
+        state = "STARTED" if on else "STOPPED"
+        await self.broadcast_event("ReplayBufferStateChanged",
+                                   {"outputActive": on, "outputState": f"OBS_WEBSOCKET_OUTPUT_{state}"})
+        return True
+
+    async def save_replay(self):
+        await self.broadcast_event("ReplayBufferSaved", {"savedReplayPath": REPLAY_PATH})
 
     async def toggle_pause(self):
         if self.resumed_at is not None:
@@ -125,6 +150,30 @@ class MockObs:
                 data = {"outputPaused": self.resumed_at is None}
             else:
                 status = {"result": False, "code": 501, "comment": "Output not running."}
+        elif rtype in ("GetReplayBufferStatus", "StartReplayBuffer", "StopReplayBuffer",
+                       "ToggleReplayBuffer", "SaveReplayBuffer") and not self.replay_enabled:
+            status = REPLAY_UNAVAILABLE
+        elif rtype == "GetReplayBufferStatus":
+            data = {"outputActive": self.replay_active}
+        elif rtype in ("StartReplayBuffer", "StopReplayBuffer"):
+            if not await self.set_replay(rtype == "StartReplayBuffer"):
+                status = {"result": False, "code": 500, "comment": "Output already in requested state."}
+        elif rtype == "ToggleReplayBuffer":
+            await self.set_replay(not self.replay_active)
+            data = {"outputActive": self.replay_active}
+        elif rtype == "SaveReplayBuffer":
+            if self.replay_active:
+                await self.save_replay()
+            else:
+                status = {"result": False, "code": 501, "comment": "Replay buffer is not active."}
+        elif rtype in ("GetProfileParameter", "SetProfileParameter"):
+            req = d.get("requestData", {})
+            key = (req.get("parameterCategory"), req.get("parameterName"))
+            if rtype == "GetProfileParameter":
+                default = "Simple" if key == ("Output", "Mode") else None
+                data = {"parameterValue": self.profile.get(key), "defaultParameterValue": default}
+            else:
+                self.profile[key] = req["parameterValue"]
         elif rtype == "GetCurrentSceneTransition":
             data = {"transitionName": "Überblende", "transitionKind": "fade_transition",
                     "transitionFixed": self.transition_fixed,
@@ -194,6 +243,20 @@ class MockObs:
                 if cmd.get("cmd") == "addInput":
                     self.inputs[cmd["name"]] = {"audio": True, "mul": 1.0, "muted": False}
                     await self.broadcast_event("InputCreated", {"inputName": cmd["name"], "inputKind": "mock"})
+                if cmd.get("cmd") == "setReplay":
+                    self.replay_enabled = cmd["enabled"]
+                    if not self.replay_enabled:
+                        self.replay_active = False
+                if cmd.get("cmd") == "saveReplay" and self.replay_active:
+                    await self.save_replay()
+                if cmd.get("cmd") == "setProfile":
+                    key = (cmd["category"], cmd["name"])
+                    if cmd["value"] is None:
+                        self.profile.pop(key, None)
+                    else:
+                        self.profile[key] = cmd["value"]
+                if cmd.get("cmd") == "getProfile":
+                    await ws.send(json.dumps({"profile": {f"{c}/{n}": v for (c, n), v in self.profile.items()}}))
                 if cmd.get("cmd") == "restart":
                     self.down_ms = cmd.get("downMs", 1000)
                     self.restart.set()
@@ -238,6 +301,7 @@ class MockObs:
                 await self.broadcast_event("ExitStarted", {})
                 self.recording = False
                 self.resumed_at = None
+                self.replay_active = False
             print(f"mock-obs down for {self.down_ms} ms", flush=True)
             await asyncio.sleep(self.down_ms / 1000)
 

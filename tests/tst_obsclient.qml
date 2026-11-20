@@ -242,6 +242,152 @@ TestCase {
         compare(otherChangeSpy.count, 0);
     }
 
+    SignalSpy {
+        id: replaySavedSpy
+        target: obs
+        signalName: "replaySaved"
+    }
+
+    SignalSpy {
+        id: unavailableSpy
+        target: obs
+        signalName: "replayBufferUnavailable"
+    }
+
+    property var lastControlReply: null
+
+    Connections {
+        target: control
+        function onTextMessageReceived(message) {
+            lastControlReply = JSON.parse(message);
+        }
+    }
+
+    // Sends a command to the mock; the pause keeps it ahead of the client's next request.
+    function mockCommand(cmd) {
+        openControl();
+        control.sendTextMessage(JSON.stringify(cmd));
+        wait(100);
+    }
+
+    // A mock restart closes the control connection, and setting active to true again does
+    // nothing while it already is.
+    function openControl() {
+        if (control.status !== WebSocket.Open) {
+            control.active = false;
+            control.active = true;
+        }
+        tryCompare(control, "status", WebSocket.Open, 3000);
+    }
+
+    function reconnectObs() {
+        obs.reconnect();
+        tryCompare(obs, "connectionState", "connected", 3000);
+    }
+
+    // The mock's OBS profile as {"Category/Name": value}.
+    function mockProfile() {
+        lastControlReply = null;
+        mockCommand({ cmd: "getProfile" });
+        tryVerify(() => lastControlReply !== null, 3000);
+        return lastControlReply.profile;
+    }
+
+    function cleanupReplay() {
+        obs.replayAutoStart = false;
+        obs.replayLengthSeconds = 0;
+        if (obs.replayBufferActive) {
+            obs.toggleReplayBuffer();
+            tryCompare(obs, "replayBufferActive", false, 3000);
+        }
+    }
+
+    function test_3h_startsStopsAndSavesReplayBuffer() {
+        replaySavedSpy.clear();
+        mockCommand({ cmd: "setReplay", enabled: true });
+        reconnectObs();
+        tryCompare(obs, "replayBufferAvailable", true, 3000);
+        compare(obs.replayBufferActive, false, "no autostart by default");
+
+        obs.toggleReplayBuffer();
+        tryCompare(obs, "replayBufferActive", true, 3000);
+        obs.saveReplayBuffer();
+        tryCompare(replaySavedSpy, "count", 1, 3000);
+        compare(replaySavedSpy.signalArguments[0][0], "/videos/mock-replay.mkv");
+
+        // Saved with the OBS hotkey instead of the widget.
+        mockCommand({ cmd: "saveReplay" });
+        tryCompare(replaySavedSpy, "count", 2, 3000);
+
+        obs.toggleReplayBuffer();
+        tryCompare(obs, "replayBufferActive", false, 3000);
+        compare(obs.lastError, "");
+        cleanupReplay();
+    }
+
+    function test_3i_autoStartsReplayBufferOnConnect() {
+        obs.replayAutoStart = true;
+        reconnectObs();
+        tryCompare(obs, "replayBufferActive", true, 3000);
+
+        // OBS restarts: the buffer is gone with it and starts again on the new connection.
+        mockCommand({ cmd: "restart", downMs: 800 });
+        tryVerify(() => obs.connectionState !== "connected", 3000);
+        compare(obs.replayBufferActive, false);
+        compare(obs.replayBufferAvailable, false);
+        tryCompare(obs, "connectionState", "connected", 8000);
+        tryCompare(obs, "replayBufferActive", true, 3000);
+        cleanupReplay();
+        openControl();
+    }
+
+    function test_3j_reportsDisabledReplayBuffer() {
+        unavailableSpy.clear();
+        mockCommand({ cmd: "setReplay", enabled: false });
+        obs.replayAutoStart = true;
+        reconnectObs();
+        tryCompare(unavailableSpy, "count", 1, 3000);
+        compare(obs.replayBufferAvailable, false);
+        compare(obs.lastError, "", "a disabled buffer is not a widget error");
+
+        obs.toggleReplayBuffer();
+        tryCompare(unavailableSpy, "count", 2, 3000);
+
+        // Meanwhile the user enables the buffer in OBS; OBS sends no event for that.
+        mockCommand({ cmd: "setReplay", enabled: true });
+        obs.toggleReplayBuffer();
+        tryCompare(obs, "replayBufferActive", true, 3000);
+        compare(obs.replayBufferAvailable, true);
+        compare(unavailableSpy.count, 2);
+        cleanupReplay();
+    }
+
+    function test_3k_writesReplayLengthForOutputMode() {
+        // Off: the OBS profile stays untouched.
+        reconnectObs();
+        compare(mockProfile()["AdvOut/RecRBTime"], "20");
+
+        // Advanced output mode.
+        obs.replayLengthSeconds = 45;
+        reconnectObs();
+        tryVerify(() => mockProfile()["AdvOut/RecRBTime"] === "45", 3000);
+        compare(mockProfile()["SimpleOutput/RecRBTime"], "20");
+
+        // Fresh profile without a stored mode means simple mode; a change while the buffer
+        // runs is written but does not restart it.
+        mockCommand({ cmd: "setProfile", category: "Output", name: "Mode", value: null });
+        reconnectObs();
+        obs.toggleReplayBuffer();
+        tryCompare(obs, "replayBufferActive", true, 3000);
+        obs.replayLengthSeconds = 90;
+        tryVerify(() => mockProfile()["SimpleOutput/RecRBTime"] === "90", 3000);
+        verify(obs.replayBufferActive, "the running buffer keeps running");
+        compare(obs.lastError, "");
+
+        cleanupReplay();
+        mockCommand({ cmd: "setProfile", category: "Output", name: "Mode", value: "Advanced" });
+    }
+
     function inputs() {
         const rows = [];
         for (let i = 0; i < obs.audioInputs.count; i++) {

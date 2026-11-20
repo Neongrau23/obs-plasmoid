@@ -13,6 +13,11 @@ Item {
     property string password: ""
     property int retryInterval: 3000
     property int authRetryInterval: 15000
+    // Start the replay buffer on every new connection if it is not running yet.
+    property bool replayAutoStart: false
+    // Replay buffer length written to the OBS profile on connect and on change; 0 leaves
+    // the profile alone. Takes effect the next time the buffer starts.
+    property int replayLengthSeconds: 0
 
     // "offline" | "connecting" | "authRequired" | "authFailed" | "connected"
     readonly property string connectionState: d.state
@@ -26,6 +31,10 @@ Item {
     readonly property string currentScene: d.currentScene
     // Inputs with audio, in OBS input list order. Roles: name, volumeMul (0..1+), muted.
     readonly property ListModel audioInputs: inputsModel
+    // False while the replay buffer is turned off in the OBS output settings, which only
+    // OBS itself can change.
+    readonly property bool replayBufferAvailable: d.replayAvailable
+    readonly property bool replayBufferActive: d.replayActive
 
     // Emitted when a recording has been stopped and written to disk.
     signal recordingSaved(string path)
@@ -33,6 +42,10 @@ Item {
     // Removing the file is up to the receiver: OBS cannot delete files.
     signal recordingDiscarded(string path)
     signal sceneRenamed(string oldName, string newName)
+    // A replay buffer clip was written, also when it was saved with the OBS hotkey.
+    signal replaySaved(string path)
+    // The replay buffer was asked for (autostart or toggleReplayBuffer()) but is turned off in OBS.
+    signal replayBufferUnavailable()
 
     function toggleRecord() {
         if (connected) {
@@ -66,6 +79,43 @@ Item {
         if (connected && recording) {
             d.lastError = "";
             d.request("ToggleRecordPause");
+        }
+    }
+
+    // OBS has no event for the replay buffer being turned on in its settings, so while it
+    // counts as unavailable, ask again before giving up.
+    function toggleReplayBuffer() {
+        if (!connected) {
+            return;
+        }
+        d.lastError = "";
+        if (!d.replayAvailable) {
+            d.queryReplayBuffer(available => {
+                if (!available) {
+                    client.replayBufferUnavailable();
+                } else if (!d.replayActive) {
+                    d.request("StartReplayBuffer");
+                }
+            });
+            return;
+        }
+        d.request("ToggleReplayBuffer", {}, (ok, data, status) => {
+            if (!ok) {
+                d.replayFailed(status);
+            }
+        });
+    }
+
+    function saveReplayBuffer() {
+        if (connected && d.replayActive) {
+            d.lastError = "";
+            d.request("SaveReplayBuffer");
+        }
+    }
+
+    onReplayLengthSecondsChanged: {
+        if (connected) {
+            d.writeReplayLength();
         }
     }
 
@@ -130,7 +180,8 @@ Item {
 
         // Event subscriptions: General (1 << 0) for ExitStarted, Scenes (1 << 2),
         // Inputs (1 << 3) for mute/volume, Transitions (1 << 4) for scene transition
-        // start/end and duration, Outputs (1 << 6) for RecordStateChanged.
+        // start/end and duration, Outputs (1 << 6) for RecordStateChanged and the
+        // ReplayBufferStateChanged/ReplayBufferSaved events.
         readonly property int eventSubscriptions: (1 << 0) | (1 << 2) | (1 << 3) | (1 << 4) | (1 << 6)
 
         property string state: "offline"
@@ -150,6 +201,11 @@ Item {
         property bool transitioning: false
         // Duration of the current scene transition in ms, -1 for fixed ones (e.g. stinger).
         property int transitionDuration: -1
+        property bool replayAvailable: false
+        property bool replayActive: false
+
+        // OBS answers every replay buffer request with this while the buffer is turned off.
+        readonly property int replayUnavailableCode: 604
 
         function reset(newState) {
             state = newState;
@@ -165,6 +221,8 @@ Item {
             switchLocked = false;
             transitioning = false;
             transitionDuration = -1;
+            replayAvailable = false;
+            replayActive = false;
             identifySent = false;
         }
 
@@ -191,6 +249,71 @@ Item {
 
         function errorText(status) {
             return status.comment || ("Fehler " + status.code);
+        }
+
+        function replayFailed(status) {
+            if (status.code === replayUnavailableCode) {
+                replayAvailable = false;
+                replayActive = false;
+                client.replayBufferUnavailable();
+            } else {
+                lastError = errorText(status);
+            }
+        }
+
+        // done(available) once OBS has answered.
+        function queryReplayBuffer(done) {
+            request("GetReplayBufferStatus", {}, (ok, data, status) => {
+                replayAvailable = ok;
+                replayActive = ok && data.outputActive;
+                if (!ok && status.code !== replayUnavailableCode) {
+                    lastError = errorText(status);
+                }
+                done(ok);
+            });
+        }
+
+        // The length lives in a different profile section per output mode. A fresh profile
+        // has no stored mode; OBS then uses its default, simple mode.
+        function writeReplayLength(done) {
+            const seconds = client.replayLengthSeconds;
+            const finish = () => { if (done) done(); };
+            if (seconds <= 0) {
+                finish();
+                return;
+            }
+            request("GetProfileParameter", { parameterCategory: "Output", parameterName: "Mode" }, (ok, data, status) => {
+                if (!ok) {
+                    lastError = errorText(status);
+                    finish();
+                    return;
+                }
+                const mode = data.parameterValue ?? data.defaultParameterValue;
+                request("SetProfileParameter", {
+                    parameterCategory: mode === "Advanced" ? "AdvOut" : "SimpleOutput",
+                    parameterName: "RecRBTime",
+                    parameterValue: String(seconds)
+                }, (ok, data, status) => {
+                    if (!ok) {
+                        lastError = errorText(status);
+                    }
+                    finish();
+                });
+            });
+        }
+
+        // Length first, so an autostarted buffer already uses it.
+        function setupReplayBuffer() {
+            writeReplayLength(() => queryReplayBuffer(available => {
+                if (!client.replayAutoStart) {
+                    return;
+                }
+                if (!available) {
+                    client.replayBufferUnavailable();
+                } else if (!replayActive) {
+                    request("StartReplayBuffer");
+                }
+            }));
         }
 
         function requestTransition() {
@@ -279,6 +402,11 @@ Item {
                     discardPending = false;
                 }
                 request("GetRecordStatus");
+            } else if (data.eventType === "ReplayBufferStateChanged") {
+                replayAvailable = true;
+                replayActive = data.eventData.outputActive;
+            } else if (data.eventType === "ReplayBufferSaved") {
+                client.replaySaved(data.eventData.savedReplayPath);
             } else if (data.eventType === "InputVolumeChanged" || data.eventType === "InputMuteStateChanged") {
                 const row = inputRow(data.eventData.inputName);
                 if (row >= 0 && data.eventType === "InputVolumeChanged") {
@@ -354,6 +482,7 @@ Item {
                 request("GetSceneList");
                 requestTransition();
                 refreshInputs();
+                setupReplayBuffer();
                 break;
             case 5: onEvent(msg.d); break;
             case 7: onResponse(msg.d); break;
