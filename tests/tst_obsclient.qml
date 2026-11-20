@@ -86,7 +86,7 @@ TestCase {
         obs.discardRecording();
         tryCompare(obs, "recording", false, 3000);
         tryCompare(discardedSpy, "count", 1, 3000);
-        compare(discardedSpy.signalArguments[0][0], "/videos/mock-recording.mkv");
+        compare(JSON.stringify(discardedSpy.signalArguments[0][0]), JSON.stringify(["/videos/mock-recording.mkv"]));
         compare(savedSpy.count, 0, "a discarded recording is not reported as saved");
 
         // The next normal stop is a save again.
@@ -95,6 +95,34 @@ TestCase {
         obs.toggleRecord();
         tryCompare(savedSpy, "count", 1, 3000);
         compare(discardedSpy.count, 1);
+    }
+
+    // With automatic file splitting in OBS, discarding removes every part, not just the last.
+    function test_3a3_discardsEverySplitFile() {
+        savedSpy.clear();
+        discardedSpy.clear();
+        obs.toggleRecord();
+        tryCompare(obs, "recording", true, 3000);
+        mockCommand({ cmd: "splitFile" });
+        mockCommand({ cmd: "splitFile" });
+        obs.discardRecording();
+        tryCompare(discardedSpy, "count", 1, 3000);
+        compare(JSON.stringify(discardedSpy.signalArguments[0][0]),
+                JSON.stringify(["/videos/mock-recording.mkv", "/videos/mock-recording-2.mkv",
+                                "/videos/mock-recording-3.mkv"]));
+
+        // A saved split recording still reports its last file, and the next one starts fresh.
+        obs.toggleRecord();
+        tryCompare(obs, "recording", true, 3000);
+        mockCommand({ cmd: "splitFile" });
+        obs.toggleRecord();
+        tryCompare(savedSpy, "count", 1, 3000);
+        compare(savedSpy.signalArguments[0][0], "/videos/mock-recording-2.mkv");
+        obs.toggleRecord();
+        tryCompare(obs, "recording", true, 3000);
+        obs.discardRecording();
+        tryCompare(discardedSpy, "count", 2, 3000);
+        compare(JSON.stringify(discardedSpy.signalArguments[1][0]), JSON.stringify(["/videos/mock-recording.mkv"]));
     }
 
     function test_3a2_failedDiscardKeepsNextRecording() {

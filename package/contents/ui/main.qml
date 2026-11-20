@@ -465,22 +465,36 @@ PlasmoidItem {
     }
 
     // OBS cannot delete files, so the widget does it: kioclient for the KDE trash, rm otherwise.
-    function removeRecording(path) {
-        const name = path.split("/").pop();
+    // All files of a discarded recording in one command: several with automatic file
+    // splitting in OBS. The notification names them all.
+    function removeRecording(paths) {
+        const one = paths.length === 1;
+        const names = paths.map(path => path.split("/").pop()).join(", ");
         const toTrash = Plasmoid.configuration.discardMode !== "delete";
-        const quoted = "'" + path.replace(/'/g, "'\\''") + "'";
+        const quoted = paths.map(path => "'" + path.replace(/'/g, "'\\''") + "'").join(" ");
         const command = toTrash ? "kioclient --noninteractive --platform offscreen move " + quoted + " trash:/"
                                 : "rm -- " + quoted;
         executable.run(command, (exitCode, stderr) => {
             if (exitCode !== 0) {
                 notify(i18n("Could not remove the recording"),
-                       i18n("%1 is still in the recording folder.\n%2", name, errorText(stderr)), "dialog-error",
-                       i18n("Open Folder"), folderUrl(path), [fileUrl(path)]);
+                       one ? i18n("%1 is still in the recording folder.\n%2", names, errorText(stderr))
+                           : i18np("%1 file is still in the recording folder: %2\n%3",
+                                   "%1 files are still in the recording folder: %2\n%3",
+                                   paths.length, names, errorText(stderr)),
+                       "dialog-error",
+                       i18n("Open Folder"), folderUrl(paths[0]), paths.map(fileUrl));
             } else if (toTrash) {
-                notify(i18n("Recording discarded"), i18n("%1 was moved to the trash.", name), "user-trash-full",
-                       i18n("Open Trash"), "trash:/");
+                notify(i18n("Recording discarded"),
+                       one ? i18n("%1 was moved to the trash.", names)
+                           : i18np("%1 file was moved to the trash: %2",
+                                   "%1 files were moved to the trash: %2", paths.length, names),
+                       "user-trash-full", i18n("Open Trash"), "trash:/");
             } else {
-                notify(i18n("Recording discarded"), i18n("%1 was deleted permanently.", name), "edit-delete");
+                notify(i18n("Recording discarded"),
+                       one ? i18n("%1 was deleted permanently.", names)
+                           : i18np("%1 file was deleted permanently: %2",
+                                   "%1 files were deleted permanently: %2", paths.length, names),
+                       "edit-delete");
             }
         });
     }

@@ -10,7 +10,9 @@ InputVolumeChanged, InputMuteStateChanged, InputCreated and ExitStarted events.
 A connection to the path /control accepts {"cmd": "restart", "downMs": N}:
 the server then behaves like OBS quitting and starting again N ms later.
 {"cmd": "addInput", "name": "..."} adds an audio input and sends InputCreated.
-{"cmd": "setPath", "path": "..."} sets the file path reported when a recording stops.
+{"cmd": "setPath", "path": "..."} sets the file path of the next recording.
+{"cmd": "splitFile"} makes the running recording continue in a new file, like automatic file
+splitting in OBS, and sends RecordFileChanged; the new file is <path>-2, -3, ...
 {"cmd": "renameScene", "from": "...", "to": "..."} renames a scene and sends SceneNameChanged.
 {"cmd": "failNext", "request": "...", "code": N} makes the next request of that type fail
 (default code 702; 207 is what OBS answers while it is still loading).
@@ -59,7 +61,9 @@ class MockObs:
         self.resumed_at = None   # monotonic start of the current segment, None while paused
         self.scenes = list(SCENES)
         self.scene = self.scenes[0]
-        self.recording_path = RECORDING_PATH
+        self.base_path = RECORDING_PATH  # file of the next recording
+        self.recording_path = RECORDING_PATH  # file the running recording writes to
+        self.split_count = 1
         self.transition_ms = 300
         self.transition_fixed = False
         self.fail_next = {}  # request type -> status code of its next, failing answer
@@ -90,10 +94,14 @@ class MockObs:
         self.recording = on
         self.elapsed = 0.0
         self.resumed_at = time.monotonic() if on else None
+        if on:
+            self.recording_path = self.base_path
+            self.split_count = 1
         state = "STARTED" if on else "STOPPED"
+        # Like OBS 33: the path comes with STARTED and STOPPED.
         await self.broadcast_event("RecordStateChanged",
                                    {"outputActive": on, "outputState": f"OBS_WEBSOCKET_OUTPUT_{state}",
-                                    "outputPath": self.recording_path if not on else None})
+                                    "outputPath": self.recording_path})
         return True
 
     async def set_replay(self, on: bool):
@@ -239,7 +247,12 @@ class MockObs:
                     self.transition_ms = cmd["ms"]
                     await self.broadcast_event("CurrentSceneTransitionChanged", {"transitionName": "Überblende"})
                 if cmd.get("cmd") == "setPath":
-                    self.recording_path = cmd["path"]
+                    self.base_path = cmd["path"]
+                if cmd.get("cmd") == "splitFile" and self.recording:
+                    self.split_count += 1
+                    stem, dot, ext = self.base_path.rpartition(".")
+                    self.recording_path = f"{stem}-{self.split_count}.{ext}"
+                    await self.broadcast_event("RecordFileChanged", {"newOutputPath": self.recording_path})
                 if cmd.get("cmd") == "addInput":
                     self.inputs[cmd["name"]] = {"audio": True, "mul": 1.0, "muted": False}
                     await self.broadcast_event("InputCreated", {"inputName": cmd["name"], "inputKind": "mock"})

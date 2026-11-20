@@ -38,9 +38,10 @@ Item {
 
     // Emitted when a recording has been stopped and written to disk.
     signal recordingSaved(string path)
-    // Instead of recordingSaved when the recording was stopped by discardRecording().
-    // Removing the file is up to the receiver: OBS cannot delete files.
-    signal recordingDiscarded(string path)
+    // Instead of recordingSaved when the recording was stopped by discardRecording(), with
+    // every file of the recording: with automatic file splitting in OBS there are several.
+    // Removing them is up to the receiver: OBS cannot delete files.
+    signal recordingDiscarded(var paths)
     signal sceneRenamed(string oldName, string newName)
     // A replay buffer clip was written, also when it was saved with the OBS hotkey.
     signal replaySaved(string path)
@@ -204,6 +205,9 @@ Item {
         property var callbacks: ({})
         property int inputsGeneration: 0
         property bool discardPending: false
+        // Files of the running recording: the first from the start, one more per file split.
+        // A connection made during a recording only learns of the files from then on.
+        property var recordFiles: []
         property bool switchLocked: false
         property bool transitioning: false
         // Duration of the current scene transition in ms, -1 for fixed ones (e.g. stinger).
@@ -230,6 +234,7 @@ Item {
             inputsGeneration++;
             callbacks = {};
             discardPending = false;
+            recordFiles = [];
             switchLocked = false;
             transitioning = false;
             transitionDuration = -1;
@@ -417,18 +422,27 @@ Item {
                 if (s === "OBS_WEBSOCKET_OUTPUT_STARTED" || s === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
                     durationMs = 0;
                 }
+                if (s === "OBS_WEBSOCKET_OUTPUT_STARTED") {
+                    recordFiles = data.eventData.outputPath ? [data.eventData.outputPath] : [];
+                }
                 if (s === "OBS_WEBSOCKET_OUTPUT_STOPPED" && data.eventData.outputPath) {
                     // The file is complete only now, not yet when StopRecord returns.
                     if (discardPending) {
-                        client.recordingDiscarded(data.eventData.outputPath);
+                        const files = recordFiles.includes(data.eventData.outputPath)
+                            ? recordFiles : recordFiles.concat([data.eventData.outputPath]);
+                        client.recordingDiscarded(files);
                     } else {
                         client.recordingSaved(data.eventData.outputPath);
                     }
                 }
                 if (s === "OBS_WEBSOCKET_OUTPUT_STOPPED") {
                     discardPending = false;
+                    recordFiles = [];
                 }
                 request("GetRecordStatus");
+            } else if (data.eventType === "RecordFileChanged") {
+                // Automatic file splitting: the recording goes on in a new file.
+                recordFiles = recordFiles.concat([data.eventData.newOutputPath]);
             } else if (data.eventType === "ReplayBufferStateChanged") {
                 replayAvailable = true;
                 replayActive = data.eventData.outputActive;
