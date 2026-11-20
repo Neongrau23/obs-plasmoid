@@ -14,6 +14,7 @@ KCM.SimpleKCM {
     // declared here so the dialog does not log warnings. Only the current page is saved.
     // followMouse is left out, see configFollowMouse.qml.
     property bool cfg_showDuration
+    property bool cfg_showHints
     property bool cfg_notifyOnSave
     property string cfg_clickMode
     property int cfg_holdDurationMs

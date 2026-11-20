@@ -199,11 +199,17 @@ PlasmoidItem {
         client: obs
     }
     toolTipMainText: i18n("OBS Control")
+    // A tooltip line that only explains the controls; left out when showHints is off.
+    function hint(text) {
+        return Plasmoid.configuration.showHints ? "\n" + text : "";
+    }
+
     toolTipSubText: {
         if (obs.lastError !== "") {
             return i18n("Error: %1", obs.lastError);
         }
-        const scene = obs.currentScene !== "" ? "\n" + i18n("Scene: %1", obs.currentScene) + wheelHint
+        const scene = obs.currentScene !== "" ? "\n" + i18n("Scene: %1", obs.currentScene)
+                                                + (Plasmoid.configuration.showHints ? wheelHint : "")
                                                 + (followingMouse ? "\n" + i18n("Scene follows the mouse pointer") : "")
                                               : "";
         const replay = obs.replayBufferActive ? "\n" + i18n("Replay buffer active") : "";
@@ -211,13 +217,13 @@ PlasmoidItem {
         case "connected":
             if (obs.paused) {
                 return i18n("Recording paused – %1", durationText) + scene + replay
-                     + "\n" + i18n("%1: stop · Middle click: resume", toggleHint)
-                     + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "");
+                     + hint(i18n("%1: stop · Middle click: resume", toggleHint))
+                     + (obsIsLocal ? hint(i18n("Hold: discard recording")) : "");
             }
             return obs.recording ? i18n("Recording – %1", durationText) + scene + replay
-                                   + "\n" + i18n("%1: stop · Middle click: pause", toggleHint)
-                                   + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "")
-                                 : i18n("Ready") + scene + replay + "\n" + i18n("%1: start recording", toggleHint);
+                                   + hint(i18n("%1: stop · Middle click: pause", toggleHint))
+                                   + (obsIsLocal ? hint(i18n("Hold: discard recording")) : "")
+                                 : i18n("Ready") + scene + replay + hint(i18n("%1: start recording", toggleHint));
         case "authRequired":
             return i18n("OBS requires a password\nClick to enter it in the settings");
         case "authFailed":
@@ -227,8 +233,8 @@ PlasmoidItem {
             return i18n("Launching OBS…");
         }
         return i18n("OBS is not running – connects automatically once OBS starts")
-             + "\n" + (Plasmoid.configuration.launchRecording ? i18n("Hold: launch OBS and record")
-                                                                : i18n("Hold: launch OBS"));
+             + hint(Plasmoid.configuration.launchRecording ? i18n("Hold: launch OBS and record")
+                                                            : i18n("Hold: launch OBS"));
     }
 
     // Holding the button while OBS is not reachable starts it. Set until OBS connects or 30 s pass.

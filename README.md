@@ -77,7 +77,9 @@ widget settings. Without a custom color, the Plasma theme color applies. At
 0 % opacity the dot stays invisible but remains clickable.
 
 While OBS is not running, the widget tries to connect every 3 seconds, every
-15 seconds after a rejected password. The tooltip names the exact state.
+15 seconds after a rejected password. The tooltip names the exact state. The control hints in it
+(click, middle click, mouse wheel, hold) can be turned off under “Appearance &
+Behavior”; the state and messages that ask for an action stay.
 
 ## Requirements
 

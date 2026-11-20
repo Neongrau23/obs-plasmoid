@@ -18,6 +18,7 @@ KCM.SimpleKCM {
     // all keys it declares, with the value from when the dialog opened, and following is
     // switched on and off in the context menu, also while the dialog is open.
     property bool cfg_showDuration
+    property bool cfg_showHints
     property bool cfg_notifyOnSave
     property string cfg_clickMode
     property int cfg_holdDurationMs

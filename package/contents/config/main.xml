@@ -60,6 +60,11 @@
     <entry name="scrollDownFollowMouse" type="Bool">
       <default>false</default>
     </entry>
+    <!-- Control hints in the tooltip (click, middle click, wheel, hold). States and messages
+         that ask for an action, such as a missing password, are always shown. -->
+    <entry name="showHints" type="Bool">
+      <default>true</default>
+    </entry>
     <entry name="notifyOnSave" type="Bool">
       <default>true</default>
     </entry>

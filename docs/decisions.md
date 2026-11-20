@@ -145,6 +145,12 @@ the next real notch.
 
 ## Display and interaction
 
+**Control hints in the tooltip can be turned off** (`showHints`, `hint()` in
+`main.qml`), on by default so new users find the gestures. Only the lines
+that explain the controls go; the state, the scene, following the mouse
+pointer, the replay buffer, errors and the prompts for a missing or rejected
+password stay, since without them a problem would leave someone stuck.
+
 **The replay buffer mark sits beside the dot, not inside it** (`ReplayMark.qml`).
 The dot's opacity pulses while recording and is reduced while OBS is closed;
 as a child, the mark would pulse and fade with it. The small dot top right is

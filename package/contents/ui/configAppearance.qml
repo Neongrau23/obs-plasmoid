@@ -13,6 +13,7 @@ KCM.SimpleKCM {
     id: page
 
     property alias cfg_showDuration: showDurationBox.checked
+    property alias cfg_showHints: showHintsBox.checked
     property alias cfg_notifyOnSave: notifyOnSaveBox.checked
     property string cfg_clickMode
     property alias cfg_holdDurationMs: holdDurationBox.value
@@ -334,6 +335,15 @@ KCM.SimpleKCM {
             id: showDurationBox
             Kirigami.FormData.label: i18n("While recording:")
             text: i18n("Show duration")
+        }
+
+        QQC2.CheckBox {
+            id: showHintsBox
+            Kirigami.FormData.label: i18n("Tooltip:")
+            text: i18n("Show control hints")
+            QQC2.ToolTip.text: i18n("Click, middle click, mouse wheel and hold. The state and error messages are always shown.")
+            QQC2.ToolTip.visible: hovered
+            QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
         }
 
         QQC2.CheckBox {
