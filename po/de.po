@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-20 21:30+0100\n"
+"POT-Creation-Date: 2026-11-20 21:42+0100\n"
 "PO-Revision-Date: 2026-10-21 08:45+0200\n"
 "Last-Translator: Neongrau23\n"
 "Language-Team: German\n"
@@ -40,11 +40,11 @@ msgstr "Stummschalten"
 msgid "Unmute"
 msgstr "Ton einschalten"
 
-#: package/contents/ui/Mixer.qml:109
+#: package/contents/ui/Mixer.qml:111
 msgid "No audio sources"
 msgstr "Keine Audioquellen"
 
-#: package/contents/ui/Mixer.qml:109
+#: package/contents/ui/Mixer.qml:111
 msgid "OBS is not running"
 msgstr "OBS läuft nicht"
 
@@ -454,8 +454,12 @@ msgid ""
 msgid_plural ""
 "%1 files are still in the recording folder: %2\n"
 "%3"
-msgstr[0] "%1 Datei liegt noch im Aufnahmeordner: %2\n%3"
-msgstr[1] "%1 Dateien liegen noch im Aufnahmeordner: %2\n%3"
+msgstr[0] ""
+"%1 Datei liegt noch im Aufnahmeordner: %2\n"
+"%3"
+msgstr[1] ""
+"%1 Dateien liegen noch im Aufnahmeordner: %2\n"
+"%3"
 
 #: package/contents/ui/main.qml:487 package/contents/ui/main.qml:493
 msgid "Recording discarded"
