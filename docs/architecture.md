@@ -75,7 +75,8 @@ Requests go through `d.request(type, data, callback)`:
 - `setupReplayBuffer()` runs after every Identified: first
   `writeReplayLength()` (only when `replayLengthSeconds` > 0), then
   `GetReplayBufferStatus`, then `StartReplayBuffer` if `replayAutoStart` is
-  on and the buffer is not running yet.
+  on and the buffer is not running yet. Code 207 (OBS still loading) repeats
+  the whole setup every second, up to 20 times.
 - `writeReplayLength()` reads `Output/Mode` and writes `RecRBTime` to
   `AdvOut` (advanced mode) or `SimpleOutput` (everything else, including a
   profile without a stored mode). It also runs when the setting changes while
@@ -86,7 +87,8 @@ Requests go through `d.request(type, data, callback)`:
 - `ReplayBufferStateChanged` sets `replayBufferActive`; `ReplayBufferSaved`
   fires `replaySaved` with `savedReplayPath`, no matter who saved.
 - `main.qml` binds the settings, shows the menu entries, the tooltip line and
-  the notifications.
+  the notifications. “Quit OBS” stops the recording, then the replay buffer,
+  then terminates OBS (`continueQuit()`).
 
 ## Scenes
 

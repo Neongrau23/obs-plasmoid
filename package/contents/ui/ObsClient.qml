@@ -90,9 +90,9 @@ Item {
         }
         d.lastError = "";
         if (!d.replayAvailable) {
-            d.queryReplayBuffer(available => {
-                if (!available) {
-                    client.replayBufferUnavailable();
+            d.queryReplayBuffer((ok, status) => {
+                if (!ok) {
+                    d.replayFailed(status);
                 } else if (!d.replayActive) {
                     d.request("StartReplayBuffer");
                 }
@@ -104,6 +104,13 @@ Item {
                 d.replayFailed(status);
             }
         });
+    }
+
+    function stopReplayBuffer() {
+        if (connected && d.replayActive) {
+            d.lastError = "";
+            d.request("StopReplayBuffer");
+        }
     }
 
     function saveReplayBuffer() {
@@ -206,6 +213,11 @@ Item {
 
         // OBS answers every replay buffer request with this while the buffer is turned off.
         readonly property int replayUnavailableCode: 604
+        // obs-websocket accepts connections before OBS has finished loading and answers
+        // requests with this until then, e.g. when OBS starts at login.
+        readonly property int notReadyCode: 207
+        readonly property int replaySetupRetries: 20
+        property int replaySetupAttempts: 0
 
         function reset(newState) {
             state = newState;
@@ -223,6 +235,8 @@ Item {
             transitionDuration = -1;
             replayAvailable = false;
             replayActive = false;
+            replaySetupAttempts = 0;
+            replaySetupRetry.stop();
             identifySent = false;
         }
 
@@ -261,31 +275,34 @@ Item {
             }
         }
 
-        // done(available) once OBS has answered.
+        // done(ok, status) once OBS has answered; errors are left to the caller.
         function queryReplayBuffer(done) {
             request("GetReplayBufferStatus", {}, (ok, data, status) => {
                 replayAvailable = ok;
                 replayActive = ok && data.outputActive;
-                if (!ok && status.code !== replayUnavailableCode) {
-                    lastError = errorText(status);
-                }
-                done(ok);
+                done(ok, status);
             });
         }
 
         // The length lives in a different profile section per output mode. A fresh profile
         // has no stored mode; OBS then uses its default, simple mode.
+        // done(ok, status) when finished; without done, errors go to lastError.
         function writeReplayLength(done) {
             const seconds = client.replayLengthSeconds;
-            const finish = () => { if (done) done(); };
+            const finish = (ok, status) => {
+                if (done) {
+                    done(ok, status);
+                } else if (!ok) {
+                    lastError = errorText(status);
+                }
+            };
             if (seconds <= 0) {
-                finish();
+                finish(true);
                 return;
             }
             request("GetProfileParameter", { parameterCategory: "Output", parameterName: "Mode" }, (ok, data, status) => {
                 if (!ok) {
-                    lastError = errorText(status);
-                    finish();
+                    finish(false, status);
                     return;
                 }
                 const mode = data.parameterValue ?? data.defaultParameterValue;
@@ -293,27 +310,37 @@ Item {
                     parameterCategory: mode === "Advanced" ? "AdvOut" : "SimpleOutput",
                     parameterName: "RecRBTime",
                     parameterValue: String(seconds)
-                }, (ok, data, status) => {
-                    if (!ok) {
-                        lastError = errorText(status);
-                    }
-                    finish();
-                });
+                }, (ok, data, status) => finish(ok, status));
             });
         }
 
-        // Length first, so an autostarted buffer already uses it.
+        // Length first, so an autostarted buffer already uses it. While OBS is still loading,
+        // everything is tried again a little later.
         function setupReplayBuffer() {
-            writeReplayLength(() => queryReplayBuffer(available => {
-                if (!client.replayAutoStart) {
+            const failed = status => {
+                if (status.code === notReadyCode && ++replaySetupAttempts <= replaySetupRetries) {
+                    replaySetupRetry.restart();
+                } else if (status.code === replayUnavailableCode) {
+                    if (client.replayAutoStart) {
+                        client.replayBufferUnavailable();
+                    }
+                } else {
+                    lastError = errorText(status);
+                }
+            };
+            writeReplayLength((ok, status) => {
+                if (!ok) {
+                    failed(status);
                     return;
                 }
-                if (!available) {
-                    client.replayBufferUnavailable();
-                } else if (!replayActive) {
-                    request("StartReplayBuffer");
-                }
-            }));
+                queryReplayBuffer((ok, status) => {
+                    if (!ok) {
+                        failed(status);
+                    } else if (client.replayAutoStart && !replayActive) {
+                        request("StartReplayBuffer");
+                    }
+                });
+            });
         }
 
         function requestTransition() {
@@ -492,6 +519,16 @@ Item {
 
     ListModel {
         id: inputsModel
+    }
+
+    Timer {
+        id: replaySetupRetry
+        interval: 1000
+        onTriggered: {
+            if (client.connected) {
+                d.setupReplayBuffer();
+            }
+        }
     }
 
     Timer {

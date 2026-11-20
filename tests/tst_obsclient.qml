@@ -388,6 +388,33 @@ TestCase {
         mockCommand({ cmd: "setProfile", category: "Output", name: "Mode", value: "Advanced" });
     }
 
+    // While OBS is still loading, obs-websocket answers 207 instead of the real state.
+    function test_3l_retriesReplaySetupWhileObsIsLoading() {
+        unavailableSpy.clear();
+        mockCommand({ cmd: "setReplay", enabled: true });
+        obs.replayAutoStart = true;
+        obs.replayLengthSeconds = 50;
+        mockCommand({ cmd: "failNext", request: "GetProfileParameter", code: 207 });
+        mockCommand({ cmd: "failNext", request: "GetReplayBufferStatus", code: 207 });
+        reconnectObs();
+        tryCompare(obs, "replayBufferActive", true, 5000);
+        compare(unavailableSpy.count, 0, "loading is not reported as turned off");
+        compare(obs.lastError, "");
+        compare(mockProfile()["AdvOut/RecRBTime"], "50");
+        cleanupReplay();
+    }
+
+    // Quitting OBS waits for the replay buffer to stop: OBS asks before quitting while it runs.
+    function test_3m_stopsReplayBuffer() {
+        obs.stopReplayBuffer();
+        compare(obs.lastError, "", "stopping an inactive buffer does nothing");
+        obs.toggleReplayBuffer();
+        tryCompare(obs, "replayBufferActive", true, 3000);
+        obs.stopReplayBuffer();
+        tryCompare(obs, "replayBufferActive", false, 3000);
+        compare(obs.lastError, "");
+    }
+
     function inputs() {
         const rows = [];
         for (let i = 0; i < obs.audioInputs.count; i++) {

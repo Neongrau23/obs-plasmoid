@@ -12,7 +12,8 @@ the server then behaves like OBS quitting and starting again N ms later.
 {"cmd": "addInput", "name": "..."} adds an audio input and sends InputCreated.
 {"cmd": "setPath", "path": "..."} sets the file path reported when a recording stops.
 {"cmd": "renameScene", "from": "...", "to": "..."} renames a scene and sends SceneNameChanged.
-{"cmd": "failNext", "request": "..."} makes the next request of that type fail.
+{"cmd": "failNext", "request": "...", "code": N} makes the next request of that type fail
+(default code 702; 207 is what OBS answers while it is still loading).
 {"cmd": "setTransition", "fixed": true, "ms": N} switches to a transition of N ms; a fixed
 one (e.g. stinger) reports no duration, like OBS. Sends CurrentSceneTransitionChanged.
 Replay buffer: GetReplayBufferStatus, Start/Stop/Toggle/SaveReplayBuffer (code 604 while it
@@ -61,7 +62,7 @@ class MockObs:
         self.recording_path = RECORDING_PATH
         self.transition_ms = 300
         self.transition_fixed = False
-        self.fail_next = set()
+        self.fail_next = {}  # request type -> status code of its next, failing answer
         # Input list order as OBS returns it; inputs without audio reject volume/mute requests.
         self.inputs = {
             "Desktop-Audio": {"audio": True, "mul": 1.0, "muted": False},
@@ -134,8 +135,7 @@ class MockObs:
         status = {"result": True, "code": 100}
         data = None
         if rtype in self.fail_next:
-            self.fail_next.discard(rtype)
-            status = {"result": False, "code": 702, "comment": "Mock failure."}
+            status = {"result": False, "code": self.fail_next.pop(rtype), "comment": "Mock failure."}
         elif rtype == "GetRecordStatus":
             data = self.record_status()
         elif rtype == "ToggleRecord":
@@ -233,7 +233,7 @@ class MockObs:
                         self.scene = cmd["to"]
                     await self.broadcast_event("SceneNameChanged", {"oldSceneName": cmd["from"], "sceneName": cmd["to"]})
                 if cmd.get("cmd") == "failNext":
-                    self.fail_next.add(cmd["request"])
+                    self.fail_next[cmd["request"]] = cmd.get("code", 702)
                 if cmd.get("cmd") == "setTransition":
                     self.transition_fixed = cmd.get("fixed", False)
                     self.transition_ms = cmd["ms"]

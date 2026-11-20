@@ -356,7 +356,12 @@ PlasmoidItem {
         onRecordingSaved: path => {
             root.notifySaved(path, i18n("Recording saved"));
             if (root.quittingObs) {
-                root.terminateObs();
+                root.continueQuit();
+            }
+        }
+        onReplayBufferActiveChanged: {
+            if (root.quittingObs && !replayBufferActive) {
+                root.continueQuit();
             }
         }
         onRecordingDiscarded: path => root.removeRecording(path)
@@ -380,8 +385,16 @@ PlasmoidItem {
             return;
         }
         quittingObs = true;
+        continueQuit();
+    }
+
+    // OBS asks before quitting while an output is active, so the recording and the replay
+    // buffer are stopped first, one after the other; each stop calls this again.
+    function continueQuit() {
         if (obs.recording) {
             obs.stopRecording();
+        } else if (obs.replayBufferActive) {
+            obs.stopReplayBuffer();
         } else {
             terminateObs();
         }

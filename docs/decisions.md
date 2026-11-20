@@ -72,6 +72,15 @@ throws away what is in it, which is exactly what someone wants to save.
 buffer is not available.”) until the buffer is turned on in its own settings
 dialog. The widget explains where instead.
 
+**Retry the replay buffer setup while OBS is loading.** obs-websocket accepts
+connections before OBS has finished loading and answers 207 until then. When
+OBS starts at login, the widget often connects in that window; without the
+retry, autostart would report the buffer as turned off and never start it.
+Only 604 counts as turned off.
+
+**Stop the replay buffer before quitting OBS.** OBS asks before quitting while
+any output is active, so the SIGTERM alone would leave it running.
+
 **Ask again before reporting “turned off”** (`toggleReplayBuffer()`). OBS
 sends no event when the buffer is turned on in its settings, so a stale
 “unavailable” from the connect would otherwise stick until reconnecting.
