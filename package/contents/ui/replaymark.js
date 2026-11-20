@@ -10,9 +10,10 @@ function badge(dotSize) {
     return { cx: r + offset, cy: r - offset, size: Math.max(5, Math.round(dotSize * 0.45)) };
 }
 
-// Line below the dot, like the marker of running apps in the task manager.
+// Line below the dot, like the marker of running apps in the task manager. Its width has
+// the dot's parity, so both ends sit on whole pixels.
 function bar(dotSize) {
-    const width = Math.round(dotSize * 0.8);
+    const width = dotSize - 2 * Math.round(dotSize * 0.1);
     const height = Math.max(2, Math.round(dotSize * 0.15));
     const gap = Math.max(1, Math.round(dotSize * 0.15));
     return { x: (dotSize - width) / 2, y: dotSize + gap, width: width, height: height };

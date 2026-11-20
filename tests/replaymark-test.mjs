@@ -31,6 +31,8 @@ for (const dot of [10, 13, 26]) {
     check(`bar ${dot}: centered`, near(bar.x * 2 + bar.width, dot));
     check(`bar ${dot}: narrower than the dot`, bar.width < dot && bar.width > 0);
     check(`bar ${dot}: at least 2 px high`, bar.height >= 2);
+    // Half pixels blur the line's ends on screens without scaling.
+    check(`bar ${dot}: on whole pixels`, Number.isInteger(bar.x) && Number.isInteger(bar.y));
 }
 
 // Arc end at 3 o'clock, drawn clockwise (y grows downwards): the tip points down.

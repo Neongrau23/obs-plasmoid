@@ -775,7 +775,8 @@ PlasmoidItem {
             dotSize: dot.width
             style: Plasmoid.configuration.replayIndicator
             markColor: Plasmoid.configuration.replayColor || Kirigami.Theme.positiveTextColor
-            visible: obs.connected && obs.replayBufferActive && style !== "none"
+            // Hidden while holding: the hold ring runs through the same spot.
+            visible: obs.connected && obs.replayBufferActive && style !== "none" && compact.holdProgress === 0
             opacity: Plasmoid.configuration.replayOpacity / 100
 
             Connections {
