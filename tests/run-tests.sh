@@ -7,6 +7,7 @@ node sha256-test.mjs
 node fader-test.mjs
 node follow-test.mjs
 node seconds-test.mjs
+node replaymark-test.mjs
 
 python3 mock-obs.py --port 14455 --password testpass &
 mock_pid=$!
