@@ -155,6 +155,11 @@ OBS: set the port in the widget to 14455 and the password to `testpass`.
 
 The texts in the code are English; translations live in `po/`: German in
 `po/de.po`, Dutch in `po/nl.po` (thanks to Heimen Stoffels).
+
+Translations are welcome, new languages as well as updates to existing ones,
+whenever you feel like it. A translation does not have to keep up with every
+release: texts that are not translated yet simply show in English.
+
 After changing texts:
 
 ```sh
