@@ -24,7 +24,7 @@ version 28).
 | Mouse wheel up/down | Switch to the scene chosen for it in the settings; a toggle next to each scene makes the switch turn “Scene Follows Mouse Pointer” on instead of off |
 | Press and hold | Stop and discard the running recording (a red ring shows the progress, releasing early cancels; only when OBS runs on this computer) |
 | Press and hold while OBS is not running | Start OBS (green ring); if OBS is already running but without a WebSocket connection, the widget says so instead of starting a second OBS. Optionally OBS starts minimized to the taskbar or the system tray and begins recording right away (Settings → Appearance & Behavior) |
-| Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
+| Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Replay Buffer”, “Save Clip”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
 
 **Scene follows the mouse pointer:** With several screens, OBS shows the
 scene of the screen the mouse pointer is currently on. Which scene belongs to
@@ -55,6 +55,18 @@ notification says so.
 
 After stopping, a notification shows the file name, with an “Open Folder”
 button. It can be turned off under “Appearance & Behavior”.
+
+**Replay buffer:** “Replay Buffer” in the context menu starts or stops the
+OBS replay buffer, “Save Clip” saves its last seconds. In a fullscreen game
+the panel is out of reach, so the OBS hotkey “Save Replay” stays the main way
+to save; the widget shows a notification for every saved clip either way.
+Under “Appearance & Behavior” the buffer can start automatically whenever OBS
+connects, and its length can be set in the widget (off by default; the length
+from OBS applies then). A length set in the widget is written to the OBS
+settings for the active output mode and applies from the next start of the
+buffer. The replay buffer itself has to be turned on in OBS under Settings →
+Output → Replay Buffer; OBS does not allow that from outside, so the widget
+says so instead.
 
 Color and opacity for “OBS closed”, “OBS running” and “Recording”, as well as
 the duration display, can be changed under “Appearance & Behavior” in the
@@ -120,7 +132,9 @@ of “Scene follows the mouse pointer”, and the connection client against a
 mock OBS server (`python3` with `websockets`): wrong password, connecting,
 starting/stopping a recording including duration and file path, discarding,
 pausing and resuming, scene list, switching and renaming scenes, audio
-sources with volume and muting, restarting OBS with automatic reconnect,
+sources with volume and muting, replay buffer (start/stop, saving also via
+the OBS hotkey, autostart, turned off in OBS, length per output mode),
+restarting OBS with automatic reconnect,
 missing password. The real OBS instance is not touched (the mock runs on port
 14455).
 

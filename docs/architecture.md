@@ -47,7 +47,8 @@ Opcodes used: 0 Hello, 1 Identify, 2 Identified, 5 Event, 6 Request,
 7 RequestResponse.
 
 After the Identified, the client queries everything once: `GetRecordStatus`,
-`GetSceneList`, `GetCurrentSceneTransition` and the audio sources. After
+`GetSceneList`, `GetCurrentSceneTransition`, the audio sources and the
+replay buffer (`setupReplayBuffer()`). After
 that it stays up to date through events (subscription mask in
 `d.eventSubscriptions`: General, Scenes, Inputs, Transitions, Outputs).
 
@@ -68,6 +69,24 @@ Requests go through `d.request(type, data, callback)`:
   normally stopped recording would be discarded.
 - OBS does not deliver the duration as an event. During a recording a timer
   queries `GetRecordStatus` every second.
+
+## Replay buffer
+
+- `setupReplayBuffer()` runs after every Identified: first
+  `writeReplayLength()` (only when `replayLengthSeconds` > 0), then
+  `GetReplayBufferStatus`, then `StartReplayBuffer` if `replayAutoStart` is
+  on and the buffer is not running yet.
+- `writeReplayLength()` reads `Output/Mode` and writes `RecRBTime` to
+  `AdvOut` (advanced mode) or `SimpleOutput` (everything else, including a
+  profile without a stored mode). It also runs when the setting changes while
+  connected; a running buffer is not restarted.
+- Code 604 means the buffer is turned off in the OBS output settings:
+  `replayBufferAvailable` turns false and `replayBufferUnavailable` fires
+  (for autostart and for `toggleReplayBuffer()`), without `lastError`.
+- `ReplayBufferStateChanged` sets `replayBufferActive`; `ReplayBufferSaved`
+  fires `replaySaved` with `savedReplayPath`, no matter who saved.
+- `main.qml` binds the settings, shows the menu entries, the tooltip line and
+  the notifications.
 
 ## Scenes
 

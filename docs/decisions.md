@@ -47,6 +47,35 @@ double click thus does not toggle twice.
 after connecting. OBS then starts on its own as soon as it has loaded; a
 request sent right after connecting can get lost before that.
 
+## Replay buffer
+
+**The widget complements the OBS hotkey “Save Replay”, it does not replace
+it.** In a fullscreen game the panel is out of reach, and a Plasma widget gets
+only one activation shortcut. So the widget shows and controls the buffer and
+notifies about every clip, and offers saving in the menu for everyone else.
+
+**The length is written to OBS only when turned on** (`replayLengthOverride`,
+default off). The widget is used with all kinds of OBS setups; it must not
+overwrite someone's OBS settings unasked. When off, the length set in OBS
+applies.
+
+**`SetProfileParameter` for the length.** Checked against OBS 33.0.1
+(obs-websocket 5.7.6), advanced mode: `AdvOut/RecRBTime` set to 7 before
+`StartReplayBuffer` gave a 6.4 s clip after 15 s of buffering, without
+restarting OBS. The setting page hence says “from the next start”.
+
+**A running buffer is not restarted after a length change.** Restarting
+throws away what is in it, which is exactly what someone wants to save.
+
+**Turning the buffer on in OBS cannot be done from the widget.** Writing
+`RecRB=true` to the profile is accepted, but OBS keeps answering 604 (“Replay
+buffer is not available.”) until the buffer is turned on in its own settings
+dialog. The widget explains where instead.
+
+**Ask again before reporting “turned off”** (`toggleReplayBuffer()`). OBS
+sends no event when the buffer is turned on in its settings, so a stale
+“unavailable” from the connect would otherwise stick until reconnecting.
+
 ## Scenes
 
 **Mouse wheel switches wait for the transition to end** (`switchScene()`).
