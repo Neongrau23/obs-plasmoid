@@ -29,6 +29,9 @@ KCM.SimpleKCM {
     property int cfg_readyOpacity
     property string cfg_recordingColor
     property int cfg_recordingOpacity
+    property bool cfg_replayAutoStart
+    property bool cfg_replayLengthOverride
+    property int cfg_replayLengthSeconds
     property string cfg_followMouseScenes
     property int cfg_followMouseDelayMs
 

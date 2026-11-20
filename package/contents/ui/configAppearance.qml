@@ -30,6 +30,9 @@ KCM.SimpleKCM {
     property int cfg_readyOpacity
     property string cfg_recordingColor
     property int cfg_recordingOpacity
+    property alias cfg_replayAutoStart: replayAutoStartBox.checked
+    property alias cfg_replayLengthOverride: replayLengthOverrideBox.checked
+    property alias cfg_replayLengthSeconds: replayLengthBox.value
 
     // Keys of the other pages; followMouse is left out, see configFollowMouse.qml.
     property string cfg_followMouseScenes
@@ -311,6 +314,47 @@ KCM.SimpleKCM {
             id: notifyOnSaveBox
             Kirigami.FormData.label: i18n("After stopping:")
             text: i18n("Show a notification with the file name")
+        }
+
+        Item {
+            Kirigami.FormData.isSection: true
+            Kirigami.FormData.label: i18n("Replay Buffer")
+        }
+
+        QQC2.CheckBox {
+            id: replayAutoStartBox
+            Kirigami.FormData.label: i18n("Replay buffer:")
+            text: i18n("Start automatically when OBS connects")
+        }
+
+        RowLayout {
+            Kirigami.FormData.label: i18n("Length:")
+
+            QQC2.CheckBox {
+                id: replayLengthOverrideBox
+                text: i18n("Set in the widget")
+            }
+
+            QQC2.SpinBox {
+                id: replayLengthBox
+                enabled: replayLengthOverrideBox.checked
+                from: 5
+                to: 21600
+                stepSize: 5
+                textFromValue: value => i18n("%1 s", value)
+                valueFromText: text => {
+                    const seconds = Seconds.parse(text);
+                    return isNaN(seconds) ? value : Math.round(seconds);
+                }
+            }
+        }
+
+        QQC2.Label {
+            Layout.fillWidth: true
+            Layout.maximumWidth: Kirigami.Units.gridUnit * 22
+            wrapMode: Text.Wrap
+            font: Kirigami.Theme.smallFont
+            text: i18n("The replay buffer has to be turned on in OBS under Settings → Output → Replay Buffer. A length set here is written to the OBS settings and applies from the next start of the buffer. In the advanced output mode of OBS, “Maximum Memory” can cut the buffer shorter.")
         }
 
         QQC2.Label {

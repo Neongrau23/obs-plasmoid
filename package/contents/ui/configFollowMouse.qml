@@ -35,6 +35,9 @@ KCM.SimpleKCM {
     property int cfg_readyOpacity
     property string cfg_recordingColor
     property int cfg_recordingOpacity
+    property bool cfg_replayAutoStart
+    property bool cfg_replayLengthOverride
+    property int cfg_replayLengthSeconds
     property string cfg_host
     property int cfg_port
     property string cfg_password

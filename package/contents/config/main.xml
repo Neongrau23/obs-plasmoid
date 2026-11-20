@@ -99,5 +99,19 @@
       <min>0</min>
       <max>5000</max>
     </entry>
+    <!-- Start the OBS replay buffer whenever the widget connects. -->
+    <entry name="replayAutoStart" type="Bool">
+      <default>false</default>
+    </entry>
+    <!-- Only when on, replayLengthSeconds is written to the OBS profile; otherwise the
+         length set in OBS applies and the profile is left alone. 21600 s is the OBS maximum. -->
+    <entry name="replayLengthOverride" type="Bool">
+      <default>false</default>
+    </entry>
+    <entry name="replayLengthSeconds" type="Int">
+      <default>30</default>
+      <min>5</min>
+      <max>21600</max>
+    </entry>
   </group>
 </kcfg>
