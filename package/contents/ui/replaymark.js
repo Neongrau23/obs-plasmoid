@@ -7,7 +7,7 @@
 function badge(dotSize) {
     const r = dotSize / 2;
     const offset = r * 0.72;
-    return { cx: r + offset, cy: r - offset, size: Math.max(5, Math.round(dotSize * 0.45)) };
+    return { cx: r + offset, cy: r - offset, size: Math.max(4, Math.round(dotSize * 0.38)) };
 }
 
 // Line below the dot, like the marker of running apps in the task manager. Its width has

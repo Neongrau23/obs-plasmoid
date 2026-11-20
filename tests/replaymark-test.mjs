@@ -24,7 +24,7 @@ for (const dot of [10, 13, 26]) {
     check(`badge ${dot}: right of the center`, b.cx > r);
     check(`badge ${dot}: above the center`, b.cy < r);
     check(`badge ${dot}: on the 45° diagonal`, near(b.cx - r, r - b.cy));
-    check(`badge ${dot}: at least 5 px`, b.size >= 5);
+    check(`badge ${dot}: at least 4 px`, b.size >= 4);
 
     const bar = m.bar(dot);
     check(`bar ${dot}: below the dot with a gap`, bar.y > dot);
@@ -34,6 +34,9 @@ for (const dot of [10, 13, 26]) {
     // Half pixels blur the line's ends on screens without scaling.
     check(`bar ${dot}: on whole pixels`, Number.isInteger(bar.x) && Number.isInteger(bar.y));
 }
+
+// At the usual dot size of 13 px, the small dot is 5 px.
+check("badge 13: 5 px", m.badge(13).size === 5);
 
 // Arc end at 3 o'clock, drawn clockwise (y grows downwards): the tip points down.
 const [tip, b1, b2] = m.arrowHead(0, 0, 10, 0, 4);
