@@ -82,7 +82,8 @@
     <entry name="recordingOpacity" type="Int">
       <default>100</default>
     </entry>
-    <!-- Mark at the dot while the replay buffer runs: bar (below), dot or arrow (top right), none. -->
+    <!-- Mark at the dot while the replay buffer runs: bar (below), dot or arrow (top right),
+         center (small dot in the middle), none. -->
     <entry name="replayIndicator" type="String">
       <default>bar</default>
     </entry>

@@ -10,6 +10,13 @@ function badge(dotSize) {
     return { cx: r + offset, cy: r - offset, size: Math.max(4, Math.round(dotSize * 0.38)) };
 }
 
+// Smaller dot in the middle of the dot. Its size has the dot's parity, so it sits on whole
+// pixels, and it leaves a gap inside the outline of the ready state.
+function core(dotSize) {
+    const size = Math.max(3, dotSize - 2 * Math.round(dotSize * 0.32));
+    return { x: (dotSize - size) / 2, size: size };
+}
+
 // Line below the dot, like the marker of running apps in the task manager. Its width has
 // the dot's parity, so both ends sit on whole pixels.
 function bar(dotSize) {

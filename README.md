@@ -67,7 +67,7 @@ settings for the active output mode and applies from the next start of the
 buffer. The replay buffer itself has to be turned on in OBS under Settings →
 Output → Replay Buffer; OBS does not allow that from outside, so the widget
 says so instead. While the buffer runs, a mark at the dot shows it: a line
-below the dot (default), a small dot or a circular arrow at its top right, or
+below the dot (default), a small dot or a circular arrow at its top right, a small dot in its middle, or
 nothing (Settings → Appearance & Behavior). It pulses briefly for every saved
 clip.
 

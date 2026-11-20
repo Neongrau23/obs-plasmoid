@@ -6,7 +6,8 @@ import org.kde.kirigami as Kirigami
 import "replaymark.js" as Mark
 
 // Indicator for a running replay buffer, laid over a dot of dotSize at the item's origin:
-// a line below it ("bar"), or a dot or circular arrow at its top right ("dot", "arrow").
+// a line below it ("bar"), a dot or circular arrow at its top right ("dot", "arrow"), or a
+// smaller dot in its middle ("center").
 Item {
     id: mark
 
@@ -16,6 +17,7 @@ Item {
 
     readonly property var badgeGeo: Mark.badge(dotSize)
     readonly property var barGeo: Mark.bar(dotSize)
+    readonly property var coreGeo: Mark.core(dotSize)
     property real blinkScale: 1
 
     // Short double pulse, e.g. for a saved clip.
@@ -33,6 +35,17 @@ Item {
         width: mark.barGeo.width
         height: mark.barGeo.height
         radius: height / 2
+        color: mark.markColor
+        scale: mark.blinkScale
+    }
+
+    Rectangle {
+        visible: mark.style === "center"
+        x: mark.coreGeo.x
+        y: mark.coreGeo.x
+        width: mark.coreGeo.size
+        height: width
+        radius: width / 2
         color: mark.markColor
         scale: mark.blinkScale
     }

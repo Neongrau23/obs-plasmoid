@@ -26,6 +26,14 @@ for (const dot of [10, 13, 26]) {
     check(`badge ${dot}: on the 45° diagonal`, near(b.cx - r, r - b.cy));
     check(`badge ${dot}: at least 4 px`, b.size >= 4);
 
+    const core = m.core(dot);
+    check(`core ${dot}: centered`, near(core.x * 2 + core.size, dot));
+    check(`core ${dot}: on whole pixels`, Number.isInteger(core.x));
+    // The ready state's outline is round(dot / 8) wide; keep at least 1 px free inside it.
+    const outline = Math.max(1, Math.round(dot / 8));
+    check(`core ${dot}: gap to the outline`, core.size <= dot - 2 * outline - 2);
+    check(`core ${dot}: at least 3 px`, core.size >= 3);
+
     const bar = m.bar(dot);
     check(`bar ${dot}: below the dot with a gap`, bar.y > dot);
     check(`bar ${dot}: centered`, near(bar.x * 2 + bar.width, dot));

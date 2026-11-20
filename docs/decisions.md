@@ -151,7 +151,9 @@ as a child, the mark would pulse and fade with it. A line below is the
 default: it works in every state and at the dot's size of about 13 px. The
 small dot and the circular arrow sit top right with a disc in the theme
 background color, so they stand out from the dot's outline; the arrow gets a
-little more room than the dot to stay recognizable.
+little more room than the dot to stay recognizable. The small dot in the
+middle keeps a gap of at least 1 px inside the outline of the ready state and
+uses the mark color in every state, also on the red or orange fill.
 
 **Combo box index from the array, not `indexOfValue()`** (replay mark style in
 `configAppearance.qml`). `indexOfValue()` can run before the combo box has

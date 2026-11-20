@@ -172,6 +172,7 @@ KCM.SimpleKCM {
                 { value: "bar", text: i18n("Line below the dot") },
                 { value: "dot", text: i18n("Small dot at the top right") },
                 { value: "arrow", text: i18n("Circular arrow at the top right") },
+                { value: "center", text: i18n("Small dot in the middle") },
                 { value: "none", text: i18n("None") }
             ]
             Kirigami.FormData.label: i18n("Replay buffer indicator:")
