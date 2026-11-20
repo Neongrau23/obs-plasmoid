@@ -11,6 +11,7 @@ A connection to the path /control accepts {"cmd": "restart", "downMs": N}:
 the server then behaves like OBS quitting and starting again N ms later.
 {"cmd": "addInput", "name": "..."} adds an audio input and sends InputCreated.
 {"cmd": "setPath", "path": "..."} sets the file path of the next recording.
+{"cmd": "countRequests", "request": "..."} replies {"count": N}, the requests of that type so far.
 {"cmd": "splitFile"} makes the running recording continue in a new file, like automatic file
 splitting in OBS, and sends RecordFileChanged; the new file is <path>-2, -3, ...
 {"cmd": "renameScene", "from": "...", "to": "..."} renames a scene and sends SceneNameChanged.
@@ -66,6 +67,7 @@ class MockObs:
         self.split_count = 1
         self.transition_ms = 300
         self.transition_fixed = False
+        self.request_counts = {}
         self.fail_next = {}  # request type -> status code of its next, failing answer
         # Input list order as OBS returns it; inputs without audio reject volume/mute requests.
         self.inputs = {
@@ -140,6 +142,7 @@ class MockObs:
 
     async def handle_request(self, ws, d: dict):
         rtype = d["requestType"]
+        self.request_counts[rtype] = self.request_counts.get(rtype, 0) + 1
         status = {"result": True, "code": 100}
         data = None
         if rtype in self.fail_next:
@@ -268,6 +271,8 @@ class MockObs:
                         self.profile.pop(key, None)
                     else:
                         self.profile[key] = cmd["value"]
+                if cmd.get("cmd") == "countRequests":
+                    await ws.send(json.dumps({"count": self.request_counts.get(cmd["request"], 0)}))
                 if cmd.get("cmd") == "getProfile":
                     await ws.send(json.dumps({"profile": {f"{c}/{n}": v for (c, n), v in self.profile.items()}}))
                 if cmd.get("cmd") == "restart":

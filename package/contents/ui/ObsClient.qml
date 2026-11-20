@@ -157,10 +157,16 @@ Item {
         return true;
     }
 
+    // Throttled: a dragged slider moves many times a second. The first value goes out at once,
+    // then the latest one per input every volumeThrottle interval.
     function setInputVolume(name, volumeMul) {
         if (connected) {
             d.lastError = "";
-            d.request("SetInputVolume", { inputName: name, inputVolumeMul: volumeMul });
+            d.pendingVolumes[name] = volumeMul;
+            if (!volumeThrottle.running) {
+                d.sendVolumes();
+                volumeThrottle.start();
+            }
         }
     }
 
@@ -208,6 +214,8 @@ Item {
         // Files of the running recording: the first from the start, one more per file split.
         // A connection made during a recording only learns of the files from then on.
         property var recordFiles: []
+        // Input name -> volume not yet sent, see setInputVolume().
+        property var pendingVolumes: ({})
         property bool switchLocked: false
         property bool transitioning: false
         // Duration of the current scene transition in ms, -1 for fixed ones (e.g. stinger).
@@ -235,6 +243,8 @@ Item {
             callbacks = {};
             discardPending = false;
             recordFiles = [];
+            pendingVolumes = {};
+            volumeThrottle.stop();
             switchLocked = false;
             transitioning = false;
             transitionDuration = -1;
@@ -268,6 +278,14 @@ Item {
 
         function errorText(status) {
             return status.comment || ("Fehler " + status.code);
+        }
+
+        // Returns whether anything was sent.
+        function sendVolumes() {
+            const names = Object.keys(pendingVolumes);
+            names.forEach(name => request("SetInputVolume", { inputName: name, inputVolumeMul: pendingVolumes[name] }));
+            pendingVolumes = {};
+            return names.length > 0;
         }
 
         function replayFailed(status) {
@@ -533,6 +551,17 @@ Item {
 
     ListModel {
         id: inputsModel
+    }
+
+    // Runs on while values keep coming, stops after one quiet interval.
+    Timer {
+        id: volumeThrottle
+        interval: 50
+        onTriggered: {
+            if (d.sendVolumes()) {
+                restart();
+            }
+        }
     }
 
     Timer {

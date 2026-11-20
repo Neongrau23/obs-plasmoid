@@ -5,6 +5,10 @@ import QtWebSockets
 import "../package/contents/ui"
 
 // Runs against tests/mock-obs.py (port 14455, password "testpass"); see run-tests.sh.
+// Qt Quick Test runs the functions in name order, not in file order, and all share one
+// client and mock: the numbers in the names set the order, and later tests build on the
+// state earlier ones leave (connection, current scene, recording path). A new test gets a
+// name that sorts where its preconditions hold.
 TestCase {
     name: "ObsClient"
 
@@ -440,6 +444,28 @@ TestCase {
         tryCompare(obs, "replayBufferActive", true, 3000);
         obs.stopReplayBuffer();
         tryCompare(obs, "replayBufferActive", false, 3000);
+        compare(obs.lastError, "");
+    }
+
+    function mockRequestCount(type) {
+        lastControlReply = null;
+        mockCommand({ cmd: "countRequests", request: type });
+        tryVerify(() => lastControlReply !== null, 3000);
+        return lastControlReply.count;
+    }
+
+    // Dragging a mixer slider moves it many times a second; OBS gets the first value at once
+    // and then at most one value per throttle interval, the last one always.
+    function test_3d3_throttlesVolumeChanges() {
+        tryCompare(obs.audioInputs, "count", 2, 3000);
+        const before = mockRequestCount("SetInputVolume");
+        for (let i = 1; i <= 20; i++) {
+            obs.setInputVolume("Mikrofon", i / 40);
+        }
+        tryVerify(() => inputs().indexOf("Mikrofon:0.5:") >= 0, 3000);
+        wait(200);
+        const sent = mockRequestCount("SetInputVolume") - before;
+        verify(sent >= 1 && sent <= 3, "sent " + sent + " requests for 20 moves");
         compare(obs.lastError, "");
     }
 
