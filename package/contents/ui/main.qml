@@ -206,17 +206,18 @@ PlasmoidItem {
         const scene = obs.currentScene !== "" ? "\n" + i18n("Scene: %1", obs.currentScene) + wheelHint
                                                 + (followingMouse ? "\n" + i18n("Scene follows the mouse pointer") : "")
                                               : "";
+        const replay = obs.replayBufferActive ? "\n" + i18n("Replay buffer active") : "";
         switch (obs.connectionState) {
         case "connected":
             if (obs.paused) {
-                return i18n("Recording paused – %1", durationText) + scene
+                return i18n("Recording paused – %1", durationText) + scene + replay
                      + "\n" + i18n("%1: stop · Middle click: resume", toggleHint)
                      + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "");
             }
-            return obs.recording ? i18n("Recording – %1", durationText) + scene
+            return obs.recording ? i18n("Recording – %1", durationText) + scene + replay
                                    + "\n" + i18n("%1: stop · Middle click: pause", toggleHint)
                                    + (obsIsLocal ? "\n" + i18n("Hold: discard recording") : "")
-                                 : i18n("Ready") + scene + "\n" + i18n("%1: start recording", toggleHint);
+                                 : i18n("Ready") + scene + replay + "\n" + i18n("%1: start recording", toggleHint);
         case "authRequired":
             return i18n("OBS requires a password\nClick to enter it in the settings");
         case "authFailed":
@@ -346,8 +347,14 @@ PlasmoidItem {
         host: Plasmoid.configuration.host
         port: Plasmoid.configuration.port
         password: Plasmoid.configuration.password
+        replayAutoStart: Plasmoid.configuration.replayAutoStart
+        replayLengthSeconds: Plasmoid.configuration.replayLengthOverride ? Plasmoid.configuration.replayLengthSeconds : 0
+        onReplaySaved: path => root.notifySaved(path, i18n("Clip saved"))
+        onReplayBufferUnavailable: root.notify(i18n("Replay buffer is off in OBS"),
+                                               i18n("Turn it on in OBS under Settings → Output → Replay Buffer."),
+                                               "dialog-information")
         onRecordingSaved: path => {
-            root.notifySaved(path);
+            root.notifySaved(path, i18n("Recording saved"));
             if (root.quittingObs) {
                 root.terminateObs();
             }
@@ -423,9 +430,9 @@ PlasmoidItem {
         notification.sendEvent();
     }
 
-    function notifySaved(path) {
+    function notifySaved(path, title) {
         if (Plasmoid.configuration.notifyOnSave) {
-            notify(i18n("Recording saved"), path.split("/").pop(), "media-record",
+            notify(title, path.split("/").pop(), "media-record",
                    i18n("Open Folder"), folderUrl(path), [fileUrl(path)]);
         }
     }
@@ -512,13 +519,36 @@ PlasmoidItem {
             actions.push(followAction, sceneSeparator);
         }
         if (obs.connected) {
-            actions.push(mixerAction);
+            actions.push(replayAction, saveClipAction, mixerAction);
             if (obsIsLocal) {
                 actions.push(quitAction);
             }
             actions.push(mixerSeparator);
         }
         Plasmoid.contextualActions = actions;
+    }
+
+    // Saving mainly happens with the OBS hotkey, which also works in fullscreen games;
+    // the menu offers it for everyone else.
+    PlasmaCore.Action {
+        id: replayAction
+        text: i18n("Replay Buffer")
+        icon.name: "media-playlist-repeat"
+        checkable: true
+        checked: obs.replayBufferActive
+        onTriggered: {
+            // OBS confirms the new state by event.
+            checked = Qt.binding(() => obs.replayBufferActive);
+            obs.toggleReplayBuffer();
+        }
+    }
+
+    PlasmaCore.Action {
+        id: saveClipAction
+        text: i18n("Save Clip")
+        icon.name: "document-save"
+        enabled: obs.replayBufferActive
+        onTriggered: obs.saveReplayBuffer()
     }
 
     PlasmaCore.Action {
