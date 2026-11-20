@@ -66,10 +66,10 @@ from OBS applies then). A length set in the widget is written to the OBS
 settings for the active output mode and applies from the next start of the
 buffer. The replay buffer itself has to be turned on in OBS under Settings →
 Output → Replay Buffer; OBS does not allow that from outside, so the widget
-says so instead. While the buffer runs, a mark at the dot shows it: a line
-below the dot (default), a small dot or a circular arrow at its top right or in its middle, or
-nothing (Settings → Appearance & Behavior). It pulses briefly for every saved
-clip.
+says so instead. While the buffer runs, a mark at the dot shows it: a small dot
+at its top right (default), a small dot in its middle, a circular arrow at its
+top right, a line below it, or nothing (Settings → Appearance & Behavior). It
+pulses briefly for every saved clip.
 
 Color and opacity for “OBS closed”, “OBS running”, “Recording” and “Replay
 buffer running”, as well as the duration display, can be changed under “Appearance & Behavior” in the

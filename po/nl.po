@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-20 20:50+0100\n"
+"POT-Creation-Date: 2026-11-20 20:57+0100\n"
 "PO-Revision-Date: 2026-10-27 11:02+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -55,7 +55,7 @@ msgid "OBS is not running"
 msgstr "OBS is niet actief"
 
 #: package/contents/ui/SceneComboBox.qml:18
-#: package/contents/ui/configAppearance.qml:177
+#: package/contents/ui/configAppearance.qml:176
 msgid "None"
 msgstr "Geen"
 
@@ -72,7 +72,7 @@ msgid "Assign a scene to a screen on the “Follow Mouse Pointer” page first."
 msgstr ""
 
 #: package/contents/ui/configAppearance.qml:78
-#: package/contents/ui/configAppearance.qml:371
+#: package/contents/ui/configAppearance.qml:370
 #: package/contents/ui/configFollowMouse.qml:114
 msgid "%1 s"
 msgstr "%1 sec."
@@ -102,152 +102,148 @@ msgid "Replay buffer running:"
 msgstr ""
 
 #: package/contents/ui/configAppearance.qml:172
-msgid "Line below the dot"
-msgstr ""
-
-#: package/contents/ui/configAppearance.qml:173
 msgid "Small dot at the top right"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:174
+#: package/contents/ui/configAppearance.qml:173
 msgid "Small dot in the middle"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:175
+#: package/contents/ui/configAppearance.qml:174
 msgid "Circular arrow at the top right"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:176
-msgid "Circular arrow in the middle"
+#: package/contents/ui/configAppearance.qml:175
+msgid "Line below the dot"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:179
+#: package/contents/ui/configAppearance.qml:178
 msgid "Replay buffer indicator:"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:187
+#: package/contents/ui/configAppearance.qml:186
 msgid "Start/stop recording:"
 msgstr "Opname starten/stoppen:"
 
-#: package/contents/ui/configAppearance.qml:188
+#: package/contents/ui/configAppearance.qml:187
 msgid "Single click"
 msgstr "Eenmaal klikken"
 
-#: package/contents/ui/configAppearance.qml:195 package/contents/ui/main.qml:36
+#: package/contents/ui/configAppearance.qml:194 package/contents/ui/main.qml:36
 msgid "Double click"
 msgstr "Dubbelklikken"
 
-#: package/contents/ui/configAppearance.qml:202
+#: package/contents/ui/configAppearance.qml:201
 msgid "Start with single click, stop only with double click"
 msgstr "Starten met één klik; stoppen met dubbelklik"
 
-#: package/contents/ui/configAppearance.qml:213
+#: package/contents/ui/configAppearance.qml:212
 msgid "Scroll up:"
 msgstr "Omhoog scrollen:"
 
-#: package/contents/ui/configAppearance.qml:227
+#: package/contents/ui/configAppearance.qml:226
 msgid "Scroll down:"
 msgstr "Omlaag scrollen:"
 
-#: package/contents/ui/configAppearance.qml:246
+#: package/contents/ui/configAppearance.qml:245
 #: package/contents/ui/configFollowMouse.qml:99
 msgid "OBS is not running, so no scenes are listed. Start OBS to see them."
 msgstr "Er worden geen scènes getoond, omdat OBS niet actief is. Start OBS om scènes te tonen."
 
-#: package/contents/ui/configAppearance.qml:255
+#: package/contents/ui/configAppearance.qml:254
 msgid "Hold to discard:"
 msgstr "Ingedrukt houden om af te keuren:"
 
-#: package/contents/ui/configAppearance.qml:260
+#: package/contents/ui/configAppearance.qml:259
 msgid "Hold to launch:"
 msgstr "Ingedrukt houden om te starten:"
 
-#: package/contents/ui/configAppearance.qml:268
+#: package/contents/ui/configAppearance.qml:267
 msgid "How long the button has to be held to discard a running recording, or to launch OBS when it is not running."
 msgstr "Hoelang de knop ingedrukt moet worden gehouden om een opname af te keuren of OBS te starten."
 
-#: package/contents/ui/configAppearance.qml:272
+#: package/contents/ui/configAppearance.qml:271
 msgid "Launch OBS:"
 msgstr "OBS starten:"
 
-#: package/contents/ui/configAppearance.qml:273
+#: package/contents/ui/configAppearance.qml:272
 msgid "Normally"
 msgstr "Normaal"
 
-#: package/contents/ui/configAppearance.qml:280
+#: package/contents/ui/configAppearance.qml:279
 msgid "Minimized to the task manager"
 msgstr "Geminimaliseerd (taakbeheer)"
 
-#: package/contents/ui/configAppearance.qml:287
+#: package/contents/ui/configAppearance.qml:286
 msgid "Minimized to the system tray"
 msgstr "Geminimaliseerd (systeemvak)"
 
-#: package/contents/ui/configAppearance.qml:299
+#: package/contents/ui/configAppearance.qml:298
 msgid "Applies only when the widget launches OBS. The system tray icon has to be enabled in OBS under Settings → General, otherwise the window cannot be reached."
 msgstr "Deze instelling is alleen van toepassing als de widget OBS start. Schakel tevens het systeemvakpictogram in in de OBS-instellingen onder ‘Algemeen’."
 
-#: package/contents/ui/configAppearance.qml:304
+#: package/contents/ui/configAppearance.qml:303
 msgid "Start recording right away"
 msgstr "Opname direct starten"
 
-#: package/contents/ui/configAppearance.qml:308
+#: package/contents/ui/configAppearance.qml:307
 msgid "Discarded recording:"
 msgstr "Afgekeurde opname:"
 
-#: package/contents/ui/configAppearance.qml:309
+#: package/contents/ui/configAppearance.qml:308
 msgid "Move to trash"
 msgstr "Verplaatsen naar prullenbak"
 
-#: package/contents/ui/configAppearance.qml:316
+#: package/contents/ui/configAppearance.qml:315
 msgid "Delete permanently"
 msgstr "Permanent verwijderen"
 
-#: package/contents/ui/configAppearance.qml:327
+#: package/contents/ui/configAppearance.qml:326
 msgid "Discarded recordings cannot be restored then."
 msgstr "Afgekeurde opnames kunnen in dat geval niet worden hersteld."
 
-#: package/contents/ui/configAppearance.qml:336
+#: package/contents/ui/configAppearance.qml:335
 msgid "While recording:"
 msgstr "Tijdens opname:"
 
-#: package/contents/ui/configAppearance.qml:337
+#: package/contents/ui/configAppearance.qml:336
 msgid "Show duration"
 msgstr "Opnameduur tonen"
 
-#: package/contents/ui/configAppearance.qml:342
+#: package/contents/ui/configAppearance.qml:341
 msgid "After stopping:"
 msgstr "Na opname:"
 
-#: package/contents/ui/configAppearance.qml:343
+#: package/contents/ui/configAppearance.qml:342
 msgid "Show a notification with the file name"
 msgstr "Melding met bestandsnaam tonen"
 
-#: package/contents/ui/configAppearance.qml:348
+#: package/contents/ui/configAppearance.qml:347
 #: package/contents/ui/main.qml:548
 msgid "Replay Buffer"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:353
+#: package/contents/ui/configAppearance.qml:352
 msgid "Replay buffer:"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:354
+#: package/contents/ui/configAppearance.qml:353
 msgid "Start automatically when OBS connects"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:358
+#: package/contents/ui/configAppearance.qml:357
 msgid "Length:"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:362
+#: package/contents/ui/configAppearance.qml:361
 msgid "Set in the widget"
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:384
+#: package/contents/ui/configAppearance.qml:383
 msgid "The replay buffer has to be turned on in OBS under Settings → Output → Replay Buffer. A length set here is written to the OBS settings and applies from the next start of the buffer. In the advanced output mode of OBS, “Maximum Memory” can cut the buffer shorter."
 msgstr ""
 
-#: package/contents/ui/configAppearance.qml:392
+#: package/contents/ui/configAppearance.qml:391
 msgid "The slider sets the opacity of the dot, 0 % hides it. Without a custom color, the color of the Plasma theme is used. Pause (orange) and password errors (red outline) cannot be changed."
 msgstr "Met behulp van deze schuifbalk kun je de doorzichtigheid van het opnamerondje instellen. 0% verbergt het rondje. Zonder zelfgekozen kleur wordt die van het Plasmathema gebruikt. Gepauzeerd (oranje) en wachtwoordfouten (rood) kunnen niet worden gewijzigd."
 

@@ -34,12 +34,6 @@ for (const dot of [10, 13, 26]) {
     check(`core ${dot}: gap to the outline`, core.size <= dot - 2 * outline - 2);
     check(`core ${dot}: at least 3 px`, core.size >= 3);
 
-    const arrow = m.centerArrow(dot);
-    check(`center arrow ${dot}: centered`, near(arrow.x * 2 + arrow.size, dot));
-    check(`center arrow ${dot}: on whole pixels`, Number.isInteger(arrow.x));
-    check(`center arrow ${dot}: gap to the outline`, arrow.size <= dot - 2 * outline - 2);
-    check(`center arrow ${dot}: not larger than the corner arrow`, arrow.size <= m.arrowSize(dot));
-
     const bar = m.bar(dot);
     check(`bar ${dot}: below the dot with a gap`, bar.y > dot);
     check(`bar ${dot}: centered`, near(bar.x * 2 + bar.width, dot));
@@ -53,7 +47,6 @@ for (const dot of [10, 13, 26]) {
 check("badge 13: 5 px", m.badge(13).size === 5);
 // The circular arrow needs more room than a dot to stay recognizable.
 check("arrow 13: 7 px", m.arrowSize(13) === 7);
-check("center arrow 13: 7 px", m.centerArrow(13).size === 7);
 
 // Arc end at 3 o'clock, drawn clockwise (y grows downwards): the tip points down.
 const [tip, b1, b2] = m.arrowHead(0, 0, 10, 0, 4);

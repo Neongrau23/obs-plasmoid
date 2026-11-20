@@ -147,17 +147,17 @@ the next real notch.
 
 **The replay buffer mark sits beside the dot, not inside it** (`ReplayMark.qml`).
 The dot's opacity pulses while recording and is reduced while OBS is closed;
-as a child, the mark would pulse and fade with it. A line below is the
-default: it works in every state and at the dot's size of about 13 px. The
-small dot and the circular arrow sit top right with a disc in the theme
+as a child, the mark would pulse and fade with it. The small dot top right is
+the default. It and the circular arrow sit top right with a disc in the theme
 background color, so they stand out from the dot's outline; the arrow gets a
 little more room than the dot to stay recognizable. The small dot in the
 middle keeps a gap of at least 1 px inside the outline of the ready state and
-uses the mark color in every state, also on the red or orange fill. The same
-holds for the circular arrow in the middle; it is one pixel smaller than the
-corner arrow where needed to stay centered on whole pixels. Both arrows share
-one `Arrow` component in `ReplayMark.qml`, their sizes come from
-`replaymark.js`.
+uses the mark color in every state, also on the red or orange fill.
+
+**No circular arrow in the middle.** Tried and removed on 2026-11-20: at the
+real dot size of 13 px, a round arrow inside the round outline blurs into a
+double ring with a 1 px gap, and a thin green arrow has hardly any contrast on
+the red or orange fill. The arrow top right stands free on its own disc.
 
 **Combo box index from the array, not `indexOfValue()`** (replay mark style in
 `configAppearance.qml`). `indexOfValue()` can run before the combo box has

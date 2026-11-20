@@ -169,11 +169,10 @@ KCM.SimpleKCM {
         // combo box has built its model and would then always show the first entry.
         QQC2.ComboBox {
             readonly property var styles: [
-                { value: "bar", text: i18n("Line below the dot") },
                 { value: "dot", text: i18n("Small dot at the top right") },
                 { value: "center", text: i18n("Small dot in the middle") },
                 { value: "arrow", text: i18n("Circular arrow at the top right") },
-                { value: "centerArrow", text: i18n("Circular arrow in the middle") },
+                { value: "bar", text: i18n("Line below the dot") },
                 { value: "none", text: i18n("None") }
             ]
             Kirigami.FormData.label: i18n("Replay buffer indicator:")
