@@ -30,6 +30,9 @@ KCM.SimpleKCM {
     property int cfg_readyOpacity
     property string cfg_recordingColor
     property int cfg_recordingOpacity
+    property string cfg_replayIndicator
+    property string cfg_replayColor
+    property int cfg_replayOpacity
     property alias cfg_replayAutoStart: replayAutoStartBox.checked
     property alias cfg_replayLengthOverride: replayLengthOverrideBox.checked
     property alias cfg_replayLengthSeconds: replayLengthBox.value
@@ -154,6 +157,28 @@ KCM.SimpleKCM {
             Kirigami.FormData.label: i18n("Recording:")
             key: "recording"
             themeColor: Kirigami.Theme.negativeTextColor
+        }
+
+        StateRow {
+            Kirigami.FormData.label: i18n("Replay buffer running:")
+            key: "replay"
+            themeColor: Kirigami.Theme.positiveTextColor
+        }
+
+        // Index computed from the array, not via indexOfValue(): that can run before the
+        // combo box has built its model and would then always show the first entry.
+        QQC2.ComboBox {
+            readonly property var styles: [
+                { value: "bar", text: i18n("Line below the dot") },
+                { value: "dot", text: i18n("Dot at the top right") },
+                { value: "arrow", text: i18n("Circular arrow at the top right") },
+                { value: "none", text: i18n("None") }
+            ]
+            Kirigami.FormData.label: i18n("Replay buffer indicator:")
+            textRole: "text"
+            model: styles
+            currentIndex: Math.max(0, styles.findIndex(style => style.value === page.cfg_replayIndicator))
+            onActivated: index => page.cfg_replayIndicator = styles[index].value
         }
 
         QQC2.RadioButton {

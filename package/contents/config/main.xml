@@ -82,6 +82,16 @@
     <entry name="recordingOpacity" type="Int">
       <default>100</default>
     </entry>
+    <!-- Mark at the dot while the replay buffer runs: bar (below), dot or arrow (top right), none. -->
+    <entry name="replayIndicator" type="String">
+      <default>bar</default>
+    </entry>
+    <entry name="replayColor" type="String">
+      <default></default>
+    </entry>
+    <entry name="replayOpacity" type="Int">
+      <default>100</default>
+    </entry>
   </group>
   <group name="FollowMouse">
     <!-- Switches the scene to the one assigned to the screen the mouse pointer is on.
