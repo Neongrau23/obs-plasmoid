@@ -5,6 +5,7 @@ import QtQuick.Shapes
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.extras as PlasmaExtras
 import org.kde.kirigami as Kirigami
 import org.kde.notification
 import org.kde.plasma.plasma5support as P5Support
@@ -546,30 +547,23 @@ PlasmoidItem {
         }
     }
 
-    // Right-click menu: scene collections (only with more than one), scenes (current ones
-    // checked) and following the mouse pointer, then the replay buffer, audio mixer and quit
-    // entries. Collections come first: the scenes below belong to the checked one.
+    // Right-click menu: scenes (current one checked) and following the mouse pointer, then
+    // the replay buffer, scene collection (only with more than one), audio mixer and quit entries.
     function updateContextualActions() {
         const actions = [];
-        const withCollections = collectionActions.count > 1;
-        if (withCollections) {
-            actions.push(collectionHeader);
-            for (let i = 0; i < collectionActions.count; i++) {
-                actions.push(collectionActions.objectAt(i));
-            }
-        }
         if (sceneActions.count > 0) {
             actions.push(sceneHeader);
             for (let i = 0; i < sceneActions.count; i++) {
                 actions.push(sceneActions.objectAt(i));
             }
             actions.push(followAction, sceneSeparator);
-        } else if (withCollections) {
-            // While OBS loads a collection, it has no scenes for a moment.
-            actions.push(sceneSeparator);
         }
         if (obs.connected) {
-            actions.push(replayAction, saveClipAction, mixerAction);
+            actions.push(replayAction, saveClipAction);
+            if (collectionItems.count > 1) {
+                actions.push(collectionAction);
+            }
+            actions.push(mixerAction);
             if (obsIsLocal) {
                 actions.push(quitAction);
             }
@@ -679,32 +673,65 @@ PlasmoidItem {
         onObjectRemoved: Qt.callLater(root.updateContextualActions)
     }
 
+    // Scene collections in a menu of their own, so that many scenes and several collections
+    // do not make one long context menu. Plasma's context menu takes submenus only as a C++
+    // QMenu, so the entry opens this menu at the widget, as the mixer entry opens its popup.
     PlasmaCore.Action {
-        id: collectionHeader
-        isSeparator: true
-        text: i18n("Scene Collection")
+        id: collectionAction
+        text: i18n("Scene Collection…")
+        icon.name: "view-list-tree"
+        enabled: !obs.sceneCollectionChanging
+        onTriggered: collectionMenuTimer.restart()
+    }
+
+    // Same race as with the mixer popup: wait for the context menu to go.
+    Timer {
+        id: collectionMenuTimer
+        interval: 200
+        onTriggered: {
+            collectionMenu.visualParent = root.compactRepresentationItem;
+            collectionMenu.openRelative();
+        }
+    }
+
+    PlasmaExtras.Menu {
+        id: collectionMenu
+        placement: {
+            switch (Plasmoid.location) {
+            case PlasmaCore.Types.BottomEdge: return PlasmaExtras.Menu.TopPosedLeftAlignedPopup;
+            case PlasmaCore.Types.LeftEdge: return PlasmaExtras.Menu.RightPosedTopAlignedPopup;
+            case PlasmaCore.Types.RightEdge: return PlasmaExtras.Menu.LeftPosedTopAlignedPopup;
+            default: return PlasmaExtras.Menu.BottomPosedLeftAlignedPopup;
+            }
+        }
     }
 
     // Switching is allowed during a recording, as in OBS itself.
     Instantiator {
-        id: collectionActions
+        id: collectionItems
         model: obs.sceneCollections
 
-        delegate: PlasmaCore.Action {
+        delegate: PlasmaExtras.MenuItem {
             required property string modelData
             text: modelData
             checkable: true
             checked: modelData === obs.currentSceneCollection
             enabled: !obs.sceneCollectionChanging
-            onTriggered: {
+            onClicked: {
                 // As with scenes: OBS confirms the switch by event.
                 checked = Qt.binding(() => modelData === obs.currentSceneCollection);
                 obs.setSceneCollection(modelData);
             }
         }
 
-        onObjectAdded: Qt.callLater(root.updateContextualActions)
-        onObjectRemoved: Qt.callLater(root.updateContextualActions)
+        onObjectAdded: (index, object) => {
+            collectionMenu.addMenuItem(object);
+            Qt.callLater(root.updateContextualActions);
+        }
+        onObjectRemoved: (index, object) => {
+            collectionMenu.removeMenuItem(object);
+            Qt.callLater(root.updateContextualActions);
+        }
     }
 
     compactRepresentation: MouseArea {

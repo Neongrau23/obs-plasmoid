@@ -166,10 +166,14 @@ its scenes, while OBS only lists the scenes of the loaded one.
 itself, which neither blocks nor asks. Like a scene picked by mistake, a
 collection picked by mistake is undone by picking the old one.
 
-**Scene collections in the menu only with more than one**, above the scenes:
-with one there is nothing to choose, and the scenes listed belong to the
-checked collection. A section with a heading like the scenes, so the menu
-keeps one flat layout.
+**Scene collections in a menu of their own**, behind “Scene Collection…”
+next to the mixer entry, and only with more than one: with many scenes and
+several collections, one long context menu got hard to read (user's wish).
+The scenes stay in the context menu, one click away, as they are switched
+far more often. A real submenu is not possible from QML:
+`PlasmaCore.Action.menu` takes only a C++ `QMenu`, and only private KDE
+modules create one. So the entry opens a `PlasmaExtras.Menu` (public API)
+at the widget, the way “Audio Mixer…” opens its popup.
 
 **Partial notches from the touchpad expire** on a change of direction or
 after a 400 ms pause (`handleWheel()`). Otherwise a remainder would swallow

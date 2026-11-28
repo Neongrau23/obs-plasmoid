@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-28 01:37+0100\n"
+"POT-Creation-Date: 2026-11-28 01:48+0100\n"
 "PO-Revision-Date: 2026-10-27 11:02+0100\n"
 "Last-Translator: Heimen Stoffels <vistausss@fastmail.com>\n"
 "Language-Team: \n"
@@ -129,7 +129,7 @@ msgstr "Opname starten/stoppen:"
 msgid "Single click"
 msgstr "Eenmaal klikken"
 
-#: package/contents/ui/configAppearance.qml:196 package/contents/ui/main.qml:36
+#: package/contents/ui/configAppearance.qml:196 package/contents/ui/main.qml:37
 msgid "Double click"
 msgstr "Dubbelklikken"
 
@@ -231,7 +231,7 @@ msgid "Show a notification with the file name"
 msgstr "Melding met bestandsnaam tonen"
 
 #: package/contents/ui/configAppearance.qml:358
-#: package/contents/ui/main.qml:585
+#: package/contents/ui/main.qml:579
 msgid "Replay Buffer"
 msgstr ""
 
@@ -305,75 +305,75 @@ msgstr "Wachtwoord:"
 msgid "Port and password are shown in OBS under Tools → WebSocket Server Settings → Show Connect Info. Leave the password empty if authentication is disabled there."
 msgstr "De poort en het wachtwoord worden getoond in OBS onder Gereedschap → WebSocket-serverinstellingen → Verbindingsinformatie tonen. Laat leeg als verificatie daar is uitgeschakeld."
 
-#: package/contents/ui/main.qml:36
+#: package/contents/ui/main.qml:37
 msgid "Click"
 msgstr "Klikken"
 
-#: package/contents/ui/main.qml:176
+#: package/contents/ui/main.qml:177
 msgid "Scroll up: %1 · down: %2"
 msgstr "Omhoog scrollen: %1 · Omlaag scrollen: %2"
 
-#: package/contents/ui/main.qml:179
+#: package/contents/ui/main.qml:180
 msgid "Scroll up: %1"
 msgstr "Omhoog scrollen: %1"
 
-#: package/contents/ui/main.qml:181
+#: package/contents/ui/main.qml:182
 msgid "Scroll down: %1"
 msgstr "Omlaag scrollen: %1"
 
-#: package/contents/ui/main.qml:204
+#: package/contents/ui/main.qml:205
 msgid "OBS Control"
 msgstr "OBS-bediening"
 
-#: package/contents/ui/main.qml:212
+#: package/contents/ui/main.qml:213
 msgid "Error: %1"
 msgstr "Foutmelding: %1"
 
-#: package/contents/ui/main.qml:216
+#: package/contents/ui/main.qml:217
 msgid "Scene collection: %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:217
+#: package/contents/ui/main.qml:218
 msgid "Scene: %1"
 msgstr "Scène: %1"
 
-#: package/contents/ui/main.qml:219
+#: package/contents/ui/main.qml:220
 msgid "Scene follows the mouse pointer"
 msgstr "Scène volgt de muisaanwijzer"
 
-#: package/contents/ui/main.qml:221
+#: package/contents/ui/main.qml:222
 msgid "Replay buffer active"
 msgstr ""
 
-#: package/contents/ui/main.qml:225
+#: package/contents/ui/main.qml:226
 msgid "Recording paused – %1"
 msgstr "Opname gepauzeerd — %1"
 
-#: package/contents/ui/main.qml:226
+#: package/contents/ui/main.qml:227
 msgid "%1: stop · Middle click: resume"
 msgstr "%1: stoppen · Middelklikken: hervatten"
 
-#: package/contents/ui/main.qml:227 package/contents/ui/main.qml:231
+#: package/contents/ui/main.qml:228 package/contents/ui/main.qml:232
 msgid "Hold: discard recording"
 msgstr "Ingedrukt houden: opname afkeuren"
 
-#: package/contents/ui/main.qml:229
+#: package/contents/ui/main.qml:230
 msgid "Recording – %1"
 msgstr "Opname — %1"
 
-#: package/contents/ui/main.qml:230
+#: package/contents/ui/main.qml:231
 msgid "%1: stop · Middle click: pause"
 msgstr "%1: stoppen · Middelklikken: pauzeren"
 
-#: package/contents/ui/main.qml:232
+#: package/contents/ui/main.qml:233
 msgid "%1: start recording"
 msgstr "%1: opname starten"
 
-#: package/contents/ui/main.qml:232
+#: package/contents/ui/main.qml:233
 msgid "Ready"
 msgstr "Gereed"
 
-#: package/contents/ui/main.qml:234
+#: package/contents/ui/main.qml:235
 msgid ""
 "OBS requires a password\n"
 "Click to enter it in the settings"
@@ -381,7 +381,7 @@ msgstr ""
 "OBS vereist een wachtwoord\n"
 "Klik om dit in te voeren in de instellingen"
 
-#: package/contents/ui/main.qml:236
+#: package/contents/ui/main.qml:237
 msgid ""
 "Password rejected\n"
 "Click to check it in the settings"
@@ -389,67 +389,67 @@ msgstr ""
 "Wachtwoord afgekeurd\n"
 "Klik om dit te controleren in de instellingen"
 
-#: package/contents/ui/main.qml:239
+#: package/contents/ui/main.qml:240
 msgid "Launching OBS…"
 msgstr "Bezig met starten van OBS…"
 
-#: package/contents/ui/main.qml:241
+#: package/contents/ui/main.qml:242
 msgid "OBS is not running – connects automatically once OBS starts"
 msgstr "OBS is niet actief — er wordt automatisch verbinding gemaakt zodra OBS gestart is"
 
-#: package/contents/ui/main.qml:242
+#: package/contents/ui/main.qml:243
 msgid "Hold: launch OBS and record"
 msgstr "Ingedrukt houden: OBS en opname starten"
 
-#: package/contents/ui/main.qml:243
+#: package/contents/ui/main.qml:244
 msgid "Hold: launch OBS"
 msgstr "Ingedrukt houden: OBS starten"
 
-#: package/contents/ui/main.qml:293
+#: package/contents/ui/main.qml:294
 msgid "OBS is already running"
 msgstr "OBS is al actief"
 
-#: package/contents/ui/main.qml:294
+#: package/contents/ui/main.qml:295
 msgid "But the widget cannot reach it. In OBS, enable the server under Tools → WebSocket Server Settings and compare port and password with the widget settings."
 msgstr "De widget kan geen verbinding maken met OBS. Start de server via Gereedschap → WebSocket-serverinstellingen en vergelijk de poort en het wachtwoord met die van de widgetinstellingen."
 
-#: package/contents/ui/main.qml:297 package/contents/ui/main.qml:301
+#: package/contents/ui/main.qml:298 package/contents/ui/main.qml:302
 msgid "Could not launch OBS"
 msgstr "OBS kan niet worden gestart"
 
-#: package/contents/ui/main.qml:298
+#: package/contents/ui/main.qml:299
 msgid "Neither the command “obs” nor the Flatpak com.obsproject.Studio is installed."
 msgstr "De opdracht ‘obs’ noch de Flatpak ‘com.obsproject.Studio’ is beschikbaar."
 
-#: package/contents/ui/main.qml:364
+#: package/contents/ui/main.qml:365
 msgid "Clip saved"
 msgstr ""
 
-#: package/contents/ui/main.qml:365
+#: package/contents/ui/main.qml:366
 msgid "Replay buffer is off in OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:366
+#: package/contents/ui/main.qml:367
 msgid "Turn it on in OBS under Settings → Output → Replay Buffer."
 msgstr ""
 
-#: package/contents/ui/main.qml:369
+#: package/contents/ui/main.qml:370
 msgid "Recording saved"
 msgstr "De opname is opgeslagen"
 
-#: package/contents/ui/main.qml:422 package/contents/ui/main.qml:426
+#: package/contents/ui/main.qml:423 package/contents/ui/main.qml:427
 msgid "Could not quit OBS"
 msgstr "OBS kan niet worden afgesloten"
 
-#: package/contents/ui/main.qml:461 package/contents/ui/main.qml:491
+#: package/contents/ui/main.qml:462 package/contents/ui/main.qml:492
 msgid "Open Folder"
 msgstr "Map openen"
 
-#: package/contents/ui/main.qml:485
+#: package/contents/ui/main.qml:486
 msgid "Could not remove the recording"
 msgstr "De opname kan niet worden verwijderd"
 
-#: package/contents/ui/main.qml:486
+#: package/contents/ui/main.qml:487
 msgid ""
 "%1 is still in the recording folder.\n"
 "%2"
@@ -457,7 +457,7 @@ msgstr ""
 "‘%1’ staat nog in de opnamemap.\n"
 "%2"
 
-#: package/contents/ui/main.qml:487
+#: package/contents/ui/main.qml:488
 msgid ""
 "%1 file is still in the recording folder: %2\n"
 "%3"
@@ -467,66 +467,66 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:493 package/contents/ui/main.qml:499
+#: package/contents/ui/main.qml:494 package/contents/ui/main.qml:500
 msgid "Recording discarded"
 msgstr "De opname is afgekeurd"
 
-#: package/contents/ui/main.qml:494
+#: package/contents/ui/main.qml:495
 msgid "%1 was moved to the trash."
 msgstr "‘%1’ is verplaatst naar de prullenbak."
 
-#: package/contents/ui/main.qml:495
+#: package/contents/ui/main.qml:496
 msgid "%1 file was moved to the trash: %2"
 msgid_plural "%1 files were moved to the trash: %2"
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:497
+#: package/contents/ui/main.qml:498
 msgid "Open Trash"
 msgstr "Prullenbak openen"
 
-#: package/contents/ui/main.qml:500
+#: package/contents/ui/main.qml:501
 msgid "%1 was deleted permanently."
 msgstr "‘%1’ is permanent verwijderd."
 
-#: package/contents/ui/main.qml:501
+#: package/contents/ui/main.qml:502
 msgid "%1 file was deleted permanently: %2"
 msgid_plural "%1 files were deleted permanently: %2"
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:598
+#: package/contents/ui/main.qml:592
 msgid "Save Clip"
 msgstr ""
 
-#: package/contents/ui/main.qml:606
+#: package/contents/ui/main.qml:600
 msgid "Audio Mixer…"
 msgstr "Audiomixer…"
 
-#: package/contents/ui/main.qml:621
+#: package/contents/ui/main.qml:615
 msgid "Quitting OBS…"
 msgstr "Bezig met afsluiten van OBS…"
 
-#: package/contents/ui/main.qml:622
+#: package/contents/ui/main.qml:616
 msgid "Quit OBS"
 msgstr "OBS afsluiten"
 
-#: package/contents/ui/main.qml:622
+#: package/contents/ui/main.qml:616
 msgid "Stop Recording and Quit OBS"
 msgstr "Opname stoppen en OBS afsluiten"
 
-#: package/contents/ui/main.qml:636
+#: package/contents/ui/main.qml:630
 msgid "Scene"
 msgstr "Scène"
 
-#: package/contents/ui/main.qml:642
+#: package/contents/ui/main.qml:636
 msgid "Scene Follows Mouse Pointer"
 msgstr "Scène volgt de muisaanwijzer"
 
-#: package/contents/ui/main.qml:642
+#: package/contents/ui/main.qml:636
 msgid "Scene Follows Mouse Pointer…"
 msgstr "Scène volgt de muisaanwijzer…"
 
-#: package/contents/ui/main.qml:685
-msgid "Scene Collection"
+#: package/contents/ui/main.qml:681
+msgid "Scene Collection…"
 msgstr ""

@@ -129,8 +129,11 @@ Requests go through `d.request(type, data, callback)`:
   audio sources again. Since `currentScene` was empty in between,
   `ScreenFollower` takes the new scene as a starting point, not as a foreign
   change.
-- The context menu shows the collections only with more than one, above the
-  scenes; its entries are disabled while a collection loads.
+- “Scene Collection…” in the context menu (only with more than one) opens
+  `collectionMenu`, a `PlasmaExtras.Menu` at the compact representation,
+  placed by panel edge; like the mixer popup, 200 ms after the context menu
+  closed. Its entries come from an `Instantiator` (`collectionItems`) and are
+  disabled while a collection loads.
 
 ## Scene follows the mouse pointer
 
