@@ -547,8 +547,9 @@ PlasmoidItem {
         }
     }
 
-    // Right-click menu: scenes (current one checked) and following the mouse pointer, then
-    // the replay buffer, scene collection (only with more than one), audio mixer and quit entries.
+    // Right-click menu: the scenes (current one checked) on their own, then following the mouse
+    // pointer, the replay buffer, scene collection (only with more than one), audio mixer and
+    // quit entries.
     function updateContextualActions() {
         const actions = [];
         if (sceneActions.count > 0) {
@@ -556,7 +557,7 @@ PlasmoidItem {
             for (let i = 0; i < sceneActions.count; i++) {
                 actions.push(sceneActions.objectAt(i));
             }
-            actions.push(followAction, sceneSeparator);
+            actions.push(sceneSeparator, followAction);
         }
         if (obs.connected) {
             actions.push(replayAction, saveClipAction);
