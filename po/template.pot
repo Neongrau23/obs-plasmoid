@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-20 21:42+0100\n"
+"POT-Creation-Date: 2026-11-28 01:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,7 +231,7 @@ msgid "Show a notification with the file name"
 msgstr ""
 
 #: package/contents/ui/configAppearance.qml:358
-#: package/contents/ui/main.qml:568
+#: package/contents/ui/main.qml:585
 msgid "Replay Buffer"
 msgstr ""
 
@@ -309,145 +309,149 @@ msgstr ""
 msgid "Click"
 msgstr ""
 
-#: package/contents/ui/main.qml:173
+#: package/contents/ui/main.qml:176
 msgid "Scroll up: %1 · down: %2"
 msgstr ""
 
-#: package/contents/ui/main.qml:176
+#: package/contents/ui/main.qml:179
 msgid "Scroll up: %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:178
+#: package/contents/ui/main.qml:181
 msgid "Scroll down: %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:201
+#: package/contents/ui/main.qml:204
 msgid "OBS Control"
 msgstr ""
 
-#: package/contents/ui/main.qml:209
+#: package/contents/ui/main.qml:212
 msgid "Error: %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:211
+#: package/contents/ui/main.qml:216
+msgid "Scene collection: %1"
+msgstr ""
+
+#: package/contents/ui/main.qml:217
 msgid "Scene: %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:213
+#: package/contents/ui/main.qml:219
 msgid "Scene follows the mouse pointer"
 msgstr ""
 
-#: package/contents/ui/main.qml:215
+#: package/contents/ui/main.qml:221
 msgid "Replay buffer active"
 msgstr ""
 
-#: package/contents/ui/main.qml:219
+#: package/contents/ui/main.qml:225
 msgid "Recording paused – %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:220
+#: package/contents/ui/main.qml:226
 msgid "%1: stop · Middle click: resume"
 msgstr ""
 
-#: package/contents/ui/main.qml:221 package/contents/ui/main.qml:225
+#: package/contents/ui/main.qml:227 package/contents/ui/main.qml:231
 msgid "Hold: discard recording"
 msgstr ""
 
-#: package/contents/ui/main.qml:223
+#: package/contents/ui/main.qml:229
 msgid "Recording – %1"
 msgstr ""
 
-#: package/contents/ui/main.qml:224
+#: package/contents/ui/main.qml:230
 msgid "%1: stop · Middle click: pause"
 msgstr ""
 
-#: package/contents/ui/main.qml:226
+#: package/contents/ui/main.qml:232
 msgid "%1: start recording"
 msgstr ""
 
-#: package/contents/ui/main.qml:226
+#: package/contents/ui/main.qml:232
 msgid "Ready"
 msgstr ""
 
-#: package/contents/ui/main.qml:228
+#: package/contents/ui/main.qml:234
 msgid ""
 "OBS requires a password\n"
 "Click to enter it in the settings"
 msgstr ""
 
-#: package/contents/ui/main.qml:230
+#: package/contents/ui/main.qml:236
 msgid ""
 "Password rejected\n"
 "Click to check it in the settings"
 msgstr ""
 
-#: package/contents/ui/main.qml:233
+#: package/contents/ui/main.qml:239
 msgid "Launching OBS…"
 msgstr ""
 
-#: package/contents/ui/main.qml:235
+#: package/contents/ui/main.qml:241
 msgid "OBS is not running – connects automatically once OBS starts"
 msgstr ""
 
-#: package/contents/ui/main.qml:236
+#: package/contents/ui/main.qml:242
 msgid "Hold: launch OBS and record"
 msgstr ""
 
-#: package/contents/ui/main.qml:237
+#: package/contents/ui/main.qml:243
 msgid "Hold: launch OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:287
+#: package/contents/ui/main.qml:293
 msgid "OBS is already running"
 msgstr ""
 
-#: package/contents/ui/main.qml:288
+#: package/contents/ui/main.qml:294
 msgid "But the widget cannot reach it. In OBS, enable the server under Tools → WebSocket Server Settings and compare port and password with the widget settings."
 msgstr ""
 
-#: package/contents/ui/main.qml:291 package/contents/ui/main.qml:295
+#: package/contents/ui/main.qml:297 package/contents/ui/main.qml:301
 msgid "Could not launch OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:292
+#: package/contents/ui/main.qml:298
 msgid "Neither the command “obs” nor the Flatpak com.obsproject.Studio is installed."
 msgstr ""
 
-#: package/contents/ui/main.qml:358
+#: package/contents/ui/main.qml:364
 msgid "Clip saved"
 msgstr ""
 
-#: package/contents/ui/main.qml:359
+#: package/contents/ui/main.qml:365
 msgid "Replay buffer is off in OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:360
+#: package/contents/ui/main.qml:366
 msgid "Turn it on in OBS under Settings → Output → Replay Buffer."
 msgstr ""
 
-#: package/contents/ui/main.qml:363
+#: package/contents/ui/main.qml:369
 msgid "Recording saved"
 msgstr ""
 
-#: package/contents/ui/main.qml:416 package/contents/ui/main.qml:420
+#: package/contents/ui/main.qml:422 package/contents/ui/main.qml:426
 msgid "Could not quit OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:455 package/contents/ui/main.qml:485
+#: package/contents/ui/main.qml:461 package/contents/ui/main.qml:491
 msgid "Open Folder"
 msgstr ""
 
-#: package/contents/ui/main.qml:479
+#: package/contents/ui/main.qml:485
 msgid "Could not remove the recording"
 msgstr ""
 
-#: package/contents/ui/main.qml:480
+#: package/contents/ui/main.qml:486
 msgid ""
 "%1 is still in the recording folder.\n"
 "%2"
 msgstr ""
 
-#: package/contents/ui/main.qml:481
+#: package/contents/ui/main.qml:487
 msgid ""
 "%1 file is still in the recording folder: %2\n"
 "%3"
@@ -457,62 +461,66 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:487 package/contents/ui/main.qml:493
+#: package/contents/ui/main.qml:493 package/contents/ui/main.qml:499
 msgid "Recording discarded"
 msgstr ""
 
-#: package/contents/ui/main.qml:488
+#: package/contents/ui/main.qml:494
 msgid "%1 was moved to the trash."
 msgstr ""
 
-#: package/contents/ui/main.qml:489
+#: package/contents/ui/main.qml:495
 msgid "%1 file was moved to the trash: %2"
 msgid_plural "%1 files were moved to the trash: %2"
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:491
+#: package/contents/ui/main.qml:497
 msgid "Open Trash"
 msgstr ""
 
-#: package/contents/ui/main.qml:494
+#: package/contents/ui/main.qml:500
 msgid "%1 was deleted permanently."
 msgstr ""
 
-#: package/contents/ui/main.qml:495
+#: package/contents/ui/main.qml:501
 msgid "%1 file was deleted permanently: %2"
 msgid_plural "%1 files were deleted permanently: %2"
 msgstr[0] ""
 msgstr[1] ""
 
-#: package/contents/ui/main.qml:581
+#: package/contents/ui/main.qml:598
 msgid "Save Clip"
 msgstr ""
 
-#: package/contents/ui/main.qml:589
+#: package/contents/ui/main.qml:606
 msgid "Audio Mixer…"
 msgstr ""
 
-#: package/contents/ui/main.qml:604
+#: package/contents/ui/main.qml:621
 msgid "Quitting OBS…"
 msgstr ""
 
-#: package/contents/ui/main.qml:605
+#: package/contents/ui/main.qml:622
 msgid "Quit OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:605
+#: package/contents/ui/main.qml:622
 msgid "Stop Recording and Quit OBS"
 msgstr ""
 
-#: package/contents/ui/main.qml:619
+#: package/contents/ui/main.qml:636
 msgid "Scene"
 msgstr ""
 
-#: package/contents/ui/main.qml:625
+#: package/contents/ui/main.qml:642
 msgid "Scene Follows Mouse Pointer"
 msgstr ""
 
-#: package/contents/ui/main.qml:625
+#: package/contents/ui/main.qml:642
 msgid "Scene Follows Mouse Pointer…"
+msgstr ""
+
+#: package/contents/ui/main.qml:685
+msgid "Scene Collection"
 msgstr ""

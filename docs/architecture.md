@@ -47,17 +47,23 @@ Opcodes used: 0 Hello, 1 Identify, 2 Identified, 5 Event, 6 Request,
 7 RequestResponse.
 
 After the Identified, the client queries everything once: `GetRecordStatus`,
-`GetSceneList`, `GetCurrentSceneTransition`, the audio sources and the
-replay buffer (`setupReplayBuffer()`). After
+`GetSceneList`, `GetSceneCollectionList`, `GetCurrentSceneTransition`, the
+audio sources and the replay buffer (`setupReplayBuffer()`). After
 that it stays up to date through events (subscription mask in
-`d.eventSubscriptions`: General, Scenes, Inputs, Transitions, Outputs).
+`d.eventSubscriptions`: General, Config, Scenes, Inputs, Transitions,
+Outputs).
 
 Requests go through `d.request(type, data, callback)`:
 
 - **With callback:** the response goes only to the callback, also on error
   (`ok` = false).
-- **Without callback:** `onResponse()` handles `GetRecordStatus` and
-  `GetSceneList`; errors end up in `lastError` and thus in the tooltip.
+- **Without callback:** `onResponse()` handles `GetRecordStatus`,
+  `GetSceneList` and `GetSceneCollectionList`; errors end up in `lastError`
+  and thus in the tooltip.
+- **While OBS loads a scene collection** (`d.collectionChanging`) nothing is
+  sent: a callback gets `ok` = false with code 207 (“not ready”), as OBS
+  itself would answer, a request without callback is dropped. A 207 for a
+  request sent just before does not go to `lastError`.
 
 ## Recording
 
@@ -105,6 +111,26 @@ Requests go through `d.request(type, data, callback)`:
   `setScene()` (menu) does not block.
 - On `SceneNameChanged` the client emits `sceneRenamed`; `main.qml` updates
   the mouse wheel scenes and the screen scenes in the configuration.
+- `switchScene()` also refuses a scene missing from `scenes`, e.g. a mouse
+  wheel scene of another scene collection.
+
+## Scene collections
+
+- `sceneCollections` and `currentSceneCollection` come from
+  `GetSceneCollectionList` and stay current through
+  `SceneCollectionListChanged` and `CurrentSceneCollectionChanged`.
+- `setSceneCollection()` sends `SetCurrentSceneCollection`. OBS answers only
+  once the collection is loaded.
+- OBS sends no scene or input events for the collection it unloads and
+  loads, only `CurrentSceneCollectionChanging` before and
+  `CurrentSceneCollectionChanged` after. On the first the client empties
+  `scenes`, `currentScene` and the audio sources and holds back requests
+  (`sceneCollectionChanging`); on the second it loads scenes, transition and
+  audio sources again. Since `currentScene` was empty in between,
+  `ScreenFollower` takes the new scene as a starting point, not as a foreign
+  change.
+- The context menu shows the collections only with more than one, above the
+  scenes; its entries are disabled while a collection loads.
 
 ## Scene follows the mouse pointer
 

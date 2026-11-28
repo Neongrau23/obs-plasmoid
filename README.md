@@ -2,7 +2,7 @@
 
 Shows in the panel whether OBS Studio is recording, and starts, stops or
 pauses the recording with a click. The context menu lets you switch scenes
-and open an audio mixer. Speaks obs-websocket v5 (built into OBS since
+and scene collections and open an audio mixer. Speaks obs-websocket v5 (built into OBS since
 version 28).
 
 ![Context menu with scenes while recording](docs/images/context-menu.png)
@@ -24,7 +24,7 @@ version 28).
 | Mouse wheel up/down | Switch to the scene chosen for it in the settings; a toggle next to each scene makes the switch turn “Scene Follows Mouse Pointer” on instead of off |
 | Press and hold | Stop and discard the running recording (a red ring shows the progress, releasing early cancels; only when OBS runs on this computer) |
 | Press and hold while OBS is not running | Start OBS (green ring); if OBS is already running but without a WebSocket connection, the widget says so instead of starting a second OBS. Optionally OBS starts minimized to the taskbar or the system tray and begins recording right away (Settings → Appearance & Behavior) |
-| Right click | Menu with all scenes (current one checked), “Scene Follows Mouse Pointer”, “Replay Buffer”, “Save Clip”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
+| Right click | Menu with the scene collections (only with more than one), all scenes (current ones checked), “Scene Follows Mouse Pointer”, “Replay Buffer”, “Save Clip”, “Audio Mixer…” and “Quit OBS” (only when OBS runs on this computer); a running recording is stopped and saved first |
 
 **Scene follows the mouse pointer:** With several screens, OBS shows the
 scene of the screen the mouse pointer is currently on. Which scene belongs to
@@ -38,6 +38,13 @@ way (mouse wheel without the toggle, menu, in OBS) turns it off. The tooltip
 shows whether it is active.
 
 ![Settings page assigning a scene to each screen](docs/images/settings-follow-mouse.png)
+
+**Scene collections:** With more than one scene collection in OBS, the
+context menu lists them above the scenes, and the tooltip names the loaded
+one. Switching there or in OBS updates the scenes and the audio mixer. The
+mouse wheel scenes and the screen scenes are stored by scene name for all
+collections alike: a scene the loaded collection does not have switches
+nothing, and the tooltip leaves it out.
 
 The audio mixer shows every OBS source with audio, each with a volume slider
 and a mute button. The slider follows the same curve as the mixer in OBS, so
@@ -138,7 +145,8 @@ of “Scene follows the mouse pointer”, and the connection client against a
 mock OBS server (`python3` with `websockets`): wrong password, connecting,
 starting/stopping a recording including duration and file path, discarding
 (also every file of a split recording),
-pausing and resuming, scene list, switching and renaming scenes, audio
+pausing and resuming, scene list, switching and renaming scenes, switching
+scene collections (from the widget and in OBS), audio
 sources with volume and muting (throttled while dragging), replay buffer (start/stop, saving also via
 the OBS hotkey, autostart, turned off in OBS, length per output mode),
 restarting OBS with automatic reconnect,

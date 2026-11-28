@@ -447,6 +447,49 @@ TestCase {
         compare(obs.lastError, "");
     }
 
+    // The scenes and inputs of a newly loaded scene collection replace the old ones, as OBS
+    // sends no scene or input events for it, and nothing goes to OBS while it loads.
+    function test_3n_switchesSceneCollection() {
+        tryCompare(obs, "sceneSwitchBusy", false, 3000);
+        compare(obs.currentSceneCollection, "Standard");
+        compare(obs.sceneCollections, ["Standard", "Turnier"]);
+        compare(obs.currentScene, "Kamera");
+        otherChangeSpy.clear();
+        const notReady = mockRequestCount("<not ready>");
+
+        obs.setSceneCollection("Turnier");
+        tryCompare(obs, "sceneCollectionChanging", true, 3000);
+        compare(obs.scenes, []);
+        compare(obs.audioInputs.count, 0);
+        verify(!obs.switchScene("Gameplay"));
+        obs.setScene("Gameplay");
+        obs.setInputMuted("Mikrofon", true);
+        obs.setSceneCollection("Standard");
+
+        tryCompare(obs, "sceneCollectionChanging", false, 3000);
+        compare(obs.currentSceneCollection, "Turnier");
+        tryCompare(obs, "currentScene", "Intro", 3000);
+        compare(obs.scenes, ["Intro", "Gameplay"]);
+        tryVerify(() => inputs() === "Mikrofon:0.8:false", 3000);
+        compare(mockRequestCount("<not ready>"), notReady, "nothing sent while OBS loads");
+        compare(obs.lastError, "");
+        compare(otherChangeSpy.count, 0, "the scene of the new collection is no scene change");
+
+        // A scene of another collection, e.g. a wheel scene, switches nothing.
+        verify(!obs.switchScene("Kamera"));
+
+        // Collections added and switched in OBS itself.
+        mockCommand({ cmd: "addCollection", name: "Neu" });
+        tryVerify(() => obs.sceneCollections.join() === "Standard,Turnier,Neu", 3000);
+        mockCommand({ cmd: "switchCollection", name: "Standard" });
+        tryCompare(obs, "currentSceneCollection", "Standard", 3000);
+        tryCompare(obs, "currentScene", "Kamera", 3000);
+        compare(obs.scenes, ["Gameplay", "Kamera", "Pause"]);
+        tryCompare(obs.audioInputs, "count", 3, 3000);
+        compare(otherChangeSpy.count, 0);
+        compare(obs.lastError, "");
+    }
+
     function mockRequestCount(type) {
         lastControlReply = null;
         mockCommand({ cmd: "countRequests", request: type });

@@ -26,6 +26,13 @@ ReplayBufferSaved, plus Get/SetProfileParameter on a small profile.
 {"cmd": "saveReplay"} saves the replay buffer like the OBS hotkey.
 {"cmd": "setProfile", "category": "...", "name": "...", "value": "..." | null} sets a profile
 parameter; null removes it. {"cmd": "getProfile"} replies {"profile": {"Category/Name": value}}.
+Scene collections "Standard" (loaded at start) and "Turnier", each with its own scenes and
+inputs: GetSceneCollectionList, SetCurrentSceneCollection. A switch behaves like OBS: it
+sends CurrentSceneCollectionChanging, answers every request with 207 for half a second while
+it loads (counted as request "<not ready>"), sends no scene or input events for the loaded
+collection and finishes with CurrentSceneCollectionChanged; only then the reply comes.
+{"cmd": "switchCollection", "name": "..."} switches like the collection menu in OBS.
+{"cmd": "addCollection", "name": "..."} adds an empty collection and sends SceneCollectionListChanged.
 
 Usage: mock-obs.py [--port 14455] [--password testpass]
 """
@@ -51,6 +58,8 @@ SCENES = ["Gameplay", "Kamera", "Pause-Bildschirm"]
 RECORDING_PATH = "/videos/mock-recording.mkv"
 REPLAY_PATH = "/videos/mock-replay.mkv"
 REPLAY_UNAVAILABLE = {"result": False, "code": 604, "comment": "Replay buffer is not available."}
+NOT_READY = {"result": False, "code": 207, "comment": "OBS is not ready to perform the request."}
+COLLECTION_LOAD_SECONDS = 0.5
 
 
 class MockObs:
@@ -75,6 +84,15 @@ class MockObs:
             "Bildschirm": {"audio": False},
             "Mikrofon": {"audio": True, "mul": 0.5, "muted": False},
         }
+        # Scenes, current scene and inputs of the collections not loaded; the loaded one
+        # lives in self.scenes, self.scene and self.inputs.
+        self.collection = "Standard"
+        self.collections = {
+            "Standard": None,
+            "Turnier": {"scenes": ["Intro", "Gameplay"], "scene": "Intro",
+                        "inputs": {"Mikrofon": {"audio": True, "mul": 0.8, "muted": False}}},
+        }
+        self.loading = False
         self.replay_enabled = False
         self.replay_active = False
         self.profile = {("Output", "Mode"): "Advanced", ("AdvOut", "RecRBTime"): "20",
@@ -115,6 +133,17 @@ class MockObs:
                                    {"outputActive": on, "outputState": f"OBS_WEBSOCKET_OUTPUT_{state}"})
         return True
 
+    async def switch_collection(self, name: str):
+        self.loading = True
+        await self.broadcast_event("CurrentSceneCollectionChanging", {"sceneCollectionName": self.collection})
+        await asyncio.sleep(COLLECTION_LOAD_SECONDS)
+        self.collections[self.collection] = {"scenes": self.scenes, "scene": self.scene, "inputs": self.inputs}
+        loaded = self.collections[name]
+        self.collection = name
+        self.scenes, self.scene, self.inputs = loaded["scenes"], loaded["scene"], loaded["inputs"]
+        self.loading = False
+        await self.broadcast_event("CurrentSceneCollectionChanged", {"sceneCollectionName": name})
+
     async def save_replay(self):
         await self.broadcast_event("ReplayBufferSaved", {"savedReplayPath": REPLAY_PATH})
 
@@ -145,7 +174,10 @@ class MockObs:
         self.request_counts[rtype] = self.request_counts.get(rtype, 0) + 1
         status = {"result": True, "code": 100}
         data = None
-        if rtype in self.fail_next:
+        if self.loading:
+            self.request_counts["<not ready>"] = self.request_counts.get("<not ready>", 0) + 1
+            status = NOT_READY
+        elif rtype in self.fail_next:
             status = {"result": False, "code": self.fail_next.pop(rtype), "comment": "Mock failure."}
         elif rtype == "GetRecordStatus":
             data = self.record_status()
@@ -192,6 +224,14 @@ class MockObs:
                     "transitionConfigurable": True, "transitionSettings": {}}
         elif rtype == "GetSceneList":
             data = self.scene_list()
+        elif rtype == "GetSceneCollectionList":
+            data = {"currentSceneCollectionName": self.collection, "sceneCollections": list(self.collections)}
+        elif rtype == "SetCurrentSceneCollection":
+            name = d.get("requestData", {}).get("sceneCollectionName")
+            if name in self.collections:
+                await self.switch_collection(name)
+            else:
+                status = {"result": False, "code": 600, "comment": f"No scene collection was found by the name of `{name}`."}
         elif rtype == "SetCurrentProgramScene":
             name = d.get("requestData", {}).get("sceneName")
             if name in self.scenes:
@@ -271,6 +311,12 @@ class MockObs:
                         self.profile.pop(key, None)
                     else:
                         self.profile[key] = cmd["value"]
+                if cmd.get("cmd") == "switchCollection":
+                    asyncio.create_task(self.switch_collection(cmd["name"]))
+                if cmd.get("cmd") == "addCollection":
+                    self.collections[cmd["name"]] = {"scenes": ["Szene"], "scene": "Szene", "inputs": {}}
+                    await self.broadcast_event("SceneCollectionListChanged",
+                                               {"sceneCollections": list(self.collections)})
                 if cmd.get("cmd") == "countRequests":
                     await ws.send(json.dumps({"count": self.request_counts.get(cmd["request"], 0)}))
                 if cmd.get("cmd") == "getProfile":
@@ -305,7 +351,10 @@ class MockObs:
         try:
             async for raw in ws:
                 msg = json.loads(raw)
-                if msg.get("op") == 6:
+                if msg.get("op") == 6 and msg["d"]["requestType"] == "SetCurrentSceneCollection":
+                    # OBS goes on answering requests while it loads the collection.
+                    asyncio.create_task(self.handle_request(ws, msg["d"]))
+                elif msg.get("op") == 6:
                     await self.handle_request(ws, msg["d"])
         finally:
             self.clients.discard(ws)

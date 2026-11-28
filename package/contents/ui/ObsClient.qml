@@ -31,6 +31,12 @@ Item {
     // Scene names in the order the OBS scene list shows them, top to bottom.
     readonly property var scenes: d.scenes
     readonly property string currentScene: d.currentScene
+    // Scene collection names in the order OBS lists them, and the one loaded.
+    readonly property var sceneCollections: d.sceneCollections
+    readonly property string currentSceneCollection: d.currentSceneCollection
+    // True while OBS loads another scene collection. Meanwhile scenes and audio inputs are
+    // empty, and requests are not sent: OBS cannot answer them then.
+    readonly property bool sceneCollectionChanging: d.collectionChanging
     // Inputs with audio, in OBS input list order. Roles: name, volumeMul (0..1+), muted.
     readonly property ListModel audioInputs: inputsModel
     // False while the replay buffer is turned off in the OBS output settings, which only
@@ -144,7 +150,8 @@ Item {
     // transition makes OBS cut it short. For rapid input such as mouse wheel notches.
     // Returns whether the switch was requested.
     function switchScene(name) {
-        if (!connected || sceneSwitchBusy || name === currentScene) {
+        // A scene missing from the loaded scene collection, e.g. a wheel scene of another one.
+        if (!connected || sceneSwitchBusy || name === currentScene || !d.scenes.includes(name)) {
             return false;
         }
         d.lastError = "";
@@ -157,6 +164,14 @@ Item {
             }
         });
         return true;
+    }
+
+    // OBS loads the collection and reports it by event; the reply comes only once it is loaded.
+    function setSceneCollection(name) {
+        if (connected && !d.collectionChanging && name !== d.currentSceneCollection) {
+            d.lastError = "";
+            d.request("SetCurrentSceneCollection", { sceneCollectionName: name });
+        }
     }
 
     // Throttled: a dragged slider moves many times a second. The first value goes out at once,
@@ -201,11 +216,11 @@ Item {
     QtObject {
         id: d
 
-        // Event subscriptions: General (1 << 0) for ExitStarted, Scenes (1 << 2),
-        // Inputs (1 << 3) for mute/volume, Transitions (1 << 4) for scene transition
-        // start/end and duration, Outputs (1 << 6) for RecordStateChanged and the
-        // ReplayBufferStateChanged/ReplayBufferSaved events.
-        readonly property int eventSubscriptions: (1 << 0) | (1 << 2) | (1 << 3) | (1 << 4) | (1 << 6)
+        // Event subscriptions: General (1 << 0) for ExitStarted, Config (1 << 1) for scene
+        // collection changes, Scenes (1 << 2), Inputs (1 << 3) for mute/volume, Transitions
+        // (1 << 4) for scene transition start/end and duration, Outputs (1 << 6) for
+        // RecordStateChanged and the ReplayBufferStateChanged/ReplayBufferSaved events.
+        readonly property int eventSubscriptions: (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4) | (1 << 6)
 
         property string state: "offline"
         property bool recording: false
@@ -214,6 +229,9 @@ Item {
         property string lastError: ""
         property var scenes: []
         property string currentScene: ""
+        property var sceneCollections: []
+        property string currentSceneCollection: ""
+        property bool collectionChanging: false
         property bool identifySent: false
         property int nextRequestId: 1
         // requestId -> function(ok, responseData) for requests that handle their own result.
@@ -247,6 +265,9 @@ Item {
             durationMs = 0;
             scenes = [];
             currentScene = "";
+            sceneCollections = [];
+            currentSceneCollection = "";
+            collectionChanging = false;
             inputsModel.clear();
             inputsGeneration++;
             callbacks = {};
@@ -268,7 +289,17 @@ Item {
             socket.sendTextMessage(JSON.stringify({ op: op, d: data }));
         }
 
+        // While OBS loads a scene collection, requests are not sent: OBS answers them with
+        // notReadyCode at best, and its documentation warns they can crash it. The callback
+        // gets that answer instead, later as a reply from OBS would come.
         function request(type, data, callback) {
+            if (collectionChanging) {
+                if (callback) {
+                    const status = { result: false, code: notReadyCode, comment: "OBS is loading a scene collection." };
+                    Qt.callLater(() => callback(false, null, status));
+                }
+                return;
+            }
             const id = String(nextRequestId++);
             if (callback) {
                 callbacks[id] = callback;
@@ -503,6 +534,26 @@ Item {
                     client.sceneRenamed(data.eventData.oldSceneName, data.eventData.sceneName);
                 }
                 request("GetSceneList");
+            } else if (data.eventType === "CurrentSceneCollectionChanging") {
+                // OBS sends no scene or input events for the collection it unloads and loads.
+                collectionChanging = true;
+                scenes = [];
+                currentScene = "";
+                inputsModel.clear();
+                inputsGeneration++;
+                pendingVolumes = {};
+                volumeThrottle.stop();
+                switchLocked = false;
+                transitioning = false;
+                switchFallback.stop();
+            } else if (data.eventType === "CurrentSceneCollectionChanged") {
+                collectionChanging = false;
+                currentSceneCollection = data.eventData.sceneCollectionName;
+                request("GetSceneList");
+                requestTransition();
+                refreshInputs();
+            } else if (data.eventType === "SceneCollectionListChanged") {
+                sceneCollections = data.eventData.sceneCollections;
             } else if (data.eventType === "ExitStarted") {
                 // OBS is shutting down; drop the connection now instead of waiting for the socket to die.
                 socket.active = false;
@@ -518,7 +569,11 @@ Item {
                 return;
             }
             if (!data.requestStatus.result) {
-                lastError = errorText(data.requestStatus);
+                // Sent just before OBS began loading a scene collection, e.g. the status poll
+                // during a recording: no error the user could do anything about.
+                if (!(collectionChanging && data.requestStatus.code === notReadyCode)) {
+                    lastError = errorText(data.requestStatus);
+                }
                 return;
             }
             if (data.requestType === "GetRecordStatus") {
@@ -532,6 +587,9 @@ Item {
                     .sort((a, b) => b.sceneIndex - a.sceneIndex)
                     .map(scene => scene.sceneName);
                 currentScene = data.responseData.currentProgramSceneName;
+            } else if (data.requestType === "GetSceneCollectionList") {
+                sceneCollections = data.responseData.sceneCollections;
+                currentSceneCollection = data.responseData.currentSceneCollectionName;
             }
         }
 
@@ -548,6 +606,7 @@ Item {
                 state = "connected";
                 request("GetRecordStatus");
                 request("GetSceneList");
+                request("GetSceneCollectionList");
                 requestTransition();
                 refreshInputs();
                 setupReplayBuffer();

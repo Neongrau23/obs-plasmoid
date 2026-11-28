@@ -82,7 +82,8 @@ PlasmoidItem {
         const follow = up ? Plasmoid.configuration.scrollUpFollowMouse
                           : Plasmoid.configuration.scrollDownFollowMouse;
         wheelDelta = 0;
-        if (scene === "") {
+        // Not in the loaded scene collection: nothing to switch to, so following stays as is.
+        if (!obs.scenes.includes(scene)) {
             return;
         }
         // One flick of the wheel delivers several notches within milliseconds; switchScene()
@@ -166,9 +167,11 @@ PlasmoidItem {
         });
     }
 
+    // Only scenes of the loaded scene collection: the wheel switches to no other.
     readonly property string wheelHint: {
-        const up = Plasmoid.configuration.scrollUpScene;
-        const down = Plasmoid.configuration.scrollDownScene;
+        const loaded = name => obs.scenes.includes(name) ? name : "";
+        const up = loaded(Plasmoid.configuration.scrollUpScene);
+        const down = loaded(Plasmoid.configuration.scrollDownScene);
         if (up !== "" && down !== "") {
             return "\n" + i18n("Scroll up: %1 · down: %2", up, down);
         }
@@ -208,10 +211,13 @@ PlasmoidItem {
         if (obs.lastError !== "") {
             return i18n("Error: %1", obs.lastError);
         }
-        const scene = obs.currentScene !== "" ? "\n" + i18n("Scene: %1", obs.currentScene)
+        // The collection only matters once there is more than one to choose from.
+        const collection = obs.sceneCollections.length > 1 && obs.currentSceneCollection !== ""
+            ? "\n" + i18n("Scene collection: %1", obs.currentSceneCollection) : "";
+        const scene = collection + (obs.currentScene !== "" ? "\n" + i18n("Scene: %1", obs.currentScene)
                                                 + (Plasmoid.configuration.showHints ? wheelHint : "")
                                                 + (followingMouse ? "\n" + i18n("Scene follows the mouse pointer") : "")
-                                              : "";
+                                              : "");
         const replay = obs.replayBufferActive ? "\n" + i18n("Replay buffer active") : "";
         switch (obs.connectionState) {
         case "connected":
@@ -540,16 +546,27 @@ PlasmoidItem {
         }
     }
 
-    // Right-click menu: scenes (current one checked) and following the mouse pointer, then
-    // the audio mixer and quit entries.
+    // Right-click menu: scene collections (only with more than one), scenes (current ones
+    // checked) and following the mouse pointer, then the replay buffer, audio mixer and quit
+    // entries. Collections come first: the scenes below belong to the checked one.
     function updateContextualActions() {
         const actions = [];
+        const withCollections = collectionActions.count > 1;
+        if (withCollections) {
+            actions.push(collectionHeader);
+            for (let i = 0; i < collectionActions.count; i++) {
+                actions.push(collectionActions.objectAt(i));
+            }
+        }
         if (sceneActions.count > 0) {
             actions.push(sceneHeader);
             for (let i = 0; i < sceneActions.count; i++) {
                 actions.push(sceneActions.objectAt(i));
             }
             actions.push(followAction, sceneSeparator);
+        } else if (withCollections) {
+            // While OBS loads a collection, it has no scenes for a moment.
+            actions.push(sceneSeparator);
         }
         if (obs.connected) {
             actions.push(replayAction, saveClipAction, mixerAction);
@@ -655,6 +672,34 @@ PlasmoidItem {
                 checked = Qt.binding(() => modelData === obs.currentScene);
                 root.stopFollowingMouse();
                 obs.setScene(modelData);
+            }
+        }
+
+        onObjectAdded: Qt.callLater(root.updateContextualActions)
+        onObjectRemoved: Qt.callLater(root.updateContextualActions)
+    }
+
+    PlasmaCore.Action {
+        id: collectionHeader
+        isSeparator: true
+        text: i18n("Scene Collection")
+    }
+
+    // Switching is allowed during a recording, as in OBS itself.
+    Instantiator {
+        id: collectionActions
+        model: obs.sceneCollections
+
+        delegate: PlasmaCore.Action {
+            required property string modelData
+            text: modelData
+            checkable: true
+            checked: modelData === obs.currentSceneCollection
+            enabled: !obs.sceneCollectionChanging
+            onTriggered: {
+                // As with scenes: OBS confirms the switch by event.
+                checked = Qt.binding(() => modelData === obs.currentSceneCollection);
+                obs.setSceneCollection(modelData);
             }
         }
 

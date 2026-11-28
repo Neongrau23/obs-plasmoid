@@ -147,6 +147,30 @@ following is toggled in the menu or automatically, also while the dialog is
 open; “Apply” would revert that. Cost: a warning in the log when the dialog
 opens.
 
+**Scene collections: reload on `CurrentSceneCollectionChanged`, send nothing
+while OBS loads.** Checked against OBS on 2026-11-28 (obs-websocket 5): a
+switch sends only `CurrentSceneCollectionChanging` and, about 70–150 ms
+later, `CurrentSceneCollectionChanged`, no scene or input events. Requests
+in between get code 207, and the obs-websocket documentation calls them
+undefined behaviour that can crash OBS. Before this the widget kept the scenes and
+audio sources of the old collection until it reconnected.
+
+**Wheel and screen scenes stay one set for all scene collections**, stored by
+scene name. Collections often share scene names, and a scene missing from the
+loaded collection is skipped (`switchScene()`, `ScreenFollower`); the
+settings pages keep it as “not found in OBS” instead of dropping it. A set
+per collection would need the settings pages to know every collection and
+its scenes, while OBS only lists the scenes of the loaded one.
+
+**Switching scene collections is allowed during a recording**, as in OBS
+itself, which neither blocks nor asks. Like a scene picked by mistake, a
+collection picked by mistake is undone by picking the old one.
+
+**Scene collections in the menu only with more than one**, above the scenes:
+with one there is nothing to choose, and the scenes listed belong to the
+checked collection. A section with a heading like the scenes, so the menu
+keeps one flat layout.
+
 **Partial notches from the touchpad expire** on a change of direction or
 after a 400 ms pause (`handleWheel()`). Otherwise a remainder would swallow
 the next real notch.
