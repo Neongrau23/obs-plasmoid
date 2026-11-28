@@ -65,6 +65,26 @@ port 14455 and password `testpass` in the widget.
 3. Read it in the code via `Plasmoid.configuration.<key>`.
 4. Add to the usage section of the README, translate texts (see above).
 
+## Screenshots
+
+Taken in English, see “Screenshots in English” in
+[decisions.md](decisions.md). On a desktop in another language, switch only
+Plasma to English for the time being, with a runtime drop-in that is gone
+after a reboot at the latest:
+
+```sh
+d=/run/user/$(id -u)/systemd/user/plasma-plasmashell.service.d
+mkdir -p "$d"
+printf '[Service]\nEnvironment=LANGUAGE=en_US:en\nEnvironment=LC_MESSAGES=en_US.UTF-8\n' > "$d/english.conf"
+systemctl --user daemon-reload && systemctl --user restart plasma-plasmashell
+```
+
+The settings dialog opened from the panel then is English too. Afterwards
+remove `$d/english.conf`, run `daemon-reload` and restart Plasma again. If a
+`plasmashell` runs outside the unit (`pgrep -a plasmashell` shows no
+`--no-respawn`), the restart does not reach it: quit it with
+`kquitapp6 plasmashell` and start the unit.
+
 ## Release
 
 1. Bump the version in `package/metadata.json` (`KPlugin.Version`).

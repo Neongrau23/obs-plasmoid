@@ -8,7 +8,7 @@ installation and the file overview are in the
 | --- | --- |
 | [architecture.md](architecture.md) | How ObsClient, panel indicator and mixer work together; connection states, protocol, data flow |
 | [decisions.md](decisions.md) | Decisions with their reasons, grouped by topic |
-| [development.md](development.md) | Workflow after code changes, testing with and without OBS, new texts and settings, release |
+| [development.md](development.md) | Workflow after code changes, testing with and without OBS, new texts and settings, screenshots, release |
 
 ## What goes where
 

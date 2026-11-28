@@ -276,3 +276,9 @@ software and a prerequisite for further translations.
 texts in the code, so that contributors without German can follow it.
 
 **License GPL-2.0-or-later**, as is common in KDE.
+
+**Screenshots in English** (README and KDE Store gallery), although the
+developer's desktop runs in German: the README names menu entries and
+settings by their English text, and readers of an English page should find
+those words in the picture. Window shots go into the store gallery without
+the shadow border, which makes them look shifted in the store's previews.
