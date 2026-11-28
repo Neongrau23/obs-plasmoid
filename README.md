@@ -5,9 +5,7 @@ pauses the recording with a click. The context menu lets you switch scenes
 and scene collections and open an audio mixer. Speaks obs-websocket v5 (built into OBS since
 version 28).
 
-![Context menu with scenes while recording](docs/images/context-menu.png)
-
-![Tooltip showing state, scene and mouse wheel scenes](docs/images/tooltip.png)
+![Context menu with scenes, replay buffer, scene collection and mixer entries](docs/images/context-menu.png)
 
 | Indicator | Meaning | Click |
 | --- | --- | --- |
