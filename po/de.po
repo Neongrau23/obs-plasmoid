@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: io.github.neongrau23.obscontrol\n"
 "Report-Msgid-Bugs-To: https://github.com/Neongrau23/obs-plasmoid/issues\n"
-"POT-Creation-Date: 2026-11-28 01:48+0100\n"
+"POT-Creation-Date: 2026-11-28 01:54+0100\n"
 "PO-Revision-Date: 2026-10-21 08:45+0200\n"
 "Last-Translator: Neongrau23\n"
 "Language-Team: German\n"
@@ -225,7 +225,7 @@ msgid "Show a notification with the file name"
 msgstr "Benachrichtigung mit Dateinamen anzeigen"
 
 #: package/contents/ui/configAppearance.qml:358
-#: package/contents/ui/main.qml:579
+#: package/contents/ui/main.qml:580
 msgid "Replay Buffer"
 msgstr "Wiederholungspuffer"
 
@@ -493,38 +493,38 @@ msgid_plural "%1 files were deleted permanently: %2"
 msgstr[0] "%1 Datei wurde endgültig gelöscht: %2"
 msgstr[1] "%1 Dateien wurden endgültig gelöscht: %2"
 
-#: package/contents/ui/main.qml:592
+#: package/contents/ui/main.qml:593
 msgid "Save Clip"
 msgstr "Clip speichern"
 
-#: package/contents/ui/main.qml:600
+#: package/contents/ui/main.qml:601
 msgid "Audio Mixer…"
 msgstr "Audio-Mixer …"
 
-#: package/contents/ui/main.qml:615
+#: package/contents/ui/main.qml:616
 msgid "Quitting OBS…"
 msgstr "OBS wird beendet …"
 
-#: package/contents/ui/main.qml:616
+#: package/contents/ui/main.qml:617
 msgid "Quit OBS"
 msgstr "OBS beenden"
 
-#: package/contents/ui/main.qml:616
+#: package/contents/ui/main.qml:617
 msgid "Stop Recording and Quit OBS"
 msgstr "Aufnahme stoppen und OBS beenden"
 
-#: package/contents/ui/main.qml:630
+#: package/contents/ui/main.qml:631
 msgid "Scene"
 msgstr "Szene"
 
-#: package/contents/ui/main.qml:636
+#: package/contents/ui/main.qml:637
 msgid "Scene Follows Mouse Pointer"
 msgstr "Szene folgt dem Mauszeiger"
 
-#: package/contents/ui/main.qml:636
+#: package/contents/ui/main.qml:637
 msgid "Scene Follows Mouse Pointer…"
 msgstr "Szene folgt dem Mauszeiger …"
 
-#: package/contents/ui/main.qml:681
+#: package/contents/ui/main.qml:682
 msgid "Scene Collection…"
 msgstr "Szenensammlung…"
